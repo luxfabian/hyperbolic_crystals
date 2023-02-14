@@ -151,8 +151,8 @@ void TriangleGroup::reduce(string &word)
 
 void TriangleGroup::read_generators(void)
 {
-  string file_name_A = "generators/"+to_string(this->p)+"_"+to_string(this->q)+".A";
-  string file_name_B = "generators/"+to_string(this->p)+"_"+to_string(this->q)+".B";
+  string file_name_A = "./generators/"+to_string(this->p)+"_"+to_string(this->q)+".A";
+  string file_name_B = "./generators/"+to_string(this->p)+"_"+to_string(this->q)+".B";
   ifstream file_A(file_name_A);
   ifstream file_B(file_name_B);
 
@@ -164,31 +164,53 @@ void TriangleGroup::read_generators(void)
   vector<vector<int>> A_flat;
   vector<vector<int>> B_flat;
 
+  // Read in A
   if(file_A.is_open())
   {
     while(getline(file_A, line))
     {
       istringstream iss(line);
       c.clear();
-      if(iss>>buffer)
+      while(iss>>buffer)
       {
         c.push_back(buffer);
       }
       A_flat.push_back(c);
     }
   }
+  else
   {
     throw runtime_error(file_name_A+" not found!");
   }
   file_A.close();
+
+  // Read in B
+  if(file_B.is_open())
+  {
+    while(getline(file_B, line))
+    {
+      istringstream iss(line);
+      c.clear();
+      while(iss>>buffer)
+      {
+        c.push_back(buffer);
+      }
+      B_flat.push_back(c);
+    }
+  }
+  else
+  {
+    throw runtime_error(file_name_B+" not found!");
+  }
+  file_B.close();
 
   int k=0;
   for(int i=0; i<3; i++)
   {
     for(int j=0; j<3; j++)
     {
-      this->A.mat[i][j] = Ring( A_flat[k], this->reduction);
-      // this->B[i][j] = Ring( B_flat[k], this->reduction);
+      this->A.mat[i][j] = Ring(A_flat[k], this->reduction);
+      this->B.mat[i][j] = Ring(B_flat[k], this->reduction);
       k++;
     }
   }
