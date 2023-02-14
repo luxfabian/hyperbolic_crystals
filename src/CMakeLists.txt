@@ -5,6 +5,11 @@
 
 # -- generate_group.cpp
 
-include_directories(../include ${Boost_INCLUDE_DIR})
-set(SOURCES generate_group.cpp ../src/generate_group.cpp ../src/triangle_group.cpp)
-add_executable(generate_group.x ${SOURCES})
+# include_directories(../include ${Boost_INCLUDE_DIR})
+# set(SOURCES generate_group.cpp ../src/generate_group.cpp ../src/triangle_group.cpp)
+# add_executable(generate_group.x ${SOURCES})
+
+
+# include_directories(../include ${Boost_INCLUDE_DIR})
+# set(SOURCES generate_group_open.cpp)
+# add_executable(generate_group_open.x ${SOURCES})
