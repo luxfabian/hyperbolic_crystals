@@ -21,12 +21,16 @@ using namespace std;
 class G
 {
 public:
-    string word;
+    string word = "";
     vector<int> reduction;
 
     // -- matrix representation of the word
     Ring mat[3][3];
 
+    // Default constructor
+    G(void);
+
+    // Initialize with known field specs
     G(const vector<int> reduction);
 
     // Modulo operator
@@ -62,6 +66,12 @@ public:
     int p, q;
     const int r = 2;
 
+    vector<int> reduction;
+
+    // Generators
+    G A;
+    G B;
+
     vector<string> relations;
 
     // -- constructor
@@ -69,6 +79,8 @@ public:
 
     // -- apply relations of the group
     void reduce(string &word);
+private:
+    void read_generators(void);
 };
 
 
