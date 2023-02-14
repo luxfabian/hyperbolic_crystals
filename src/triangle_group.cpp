@@ -20,9 +20,15 @@
 
 #include <vector>
 
+
+
+
 using namespace std;
 
-// Initializes the unit element
+G::G(void)
+{
+}
+
 G::G(const vector<int> reduction)
 {
   this->reduction = reduction;
@@ -113,9 +119,11 @@ string word_power(const string &word, const int &n)
 
 TriangleGroup::TriangleGroup(const int &p, const int &q)
 {
-  // -- set signature
+  // Signature
   this->p = p;
-  this->q = q;
+  this->q = q;  
+
+  this->reduction = read_numberfield_reduction(p,q);
 
   bool triangle_is_admissble = (1.0 / p + 1.0 / q < 0.5);
 
@@ -128,6 +136,8 @@ TriangleGroup::TriangleGroup(const int &p, const int &q)
   this->relations.push_back(word_power("A", this->p));
   this->relations.push_back(word_power("B", this->q));
   this->relations.push_back(word_power("AB", 2));
+
+  this->read_generators();
 }
 
 // apply relations of the group
@@ -137,4 +147,52 @@ void TriangleGroup::reduce(string &word)
   {
     boost::replace_all(word, relation, "");
   }
+}
+
+void TriangleGroup::read_generators(void)
+{
+  string file_name_A = "generators/"+to_string(this->p)+"_"+to_string(this->q)+".A";
+  string file_name_B = "generators/"+to_string(this->p)+"_"+to_string(this->q)+".B";
+  ifstream file_A(file_name_A);
+  ifstream file_B(file_name_B);
+
+  string line;
+  int buffer;
+  vector<int> c;
+
+  // 1D representation of the matrix; needs to be re-shaped at the end
+  vector<vector<int>> A_flat;
+  vector<vector<int>> B_flat;
+
+  if(file_A.is_open())
+  {
+    while(getline(file_A, line))
+    {
+      istringstream iss(line);
+      c.clear();
+      if(iss>>buffer)
+      {
+        c.push_back(buffer);
+      }
+      A_flat.push_back(c);
+    }
+  }
+  {
+    throw runtime_error(file_name_A+" not found!");
+  }
+  file_A.close();
+
+  int k=0;
+  for(int i=0; i<3; i++)
+  {
+    for(int j=0; j<3; j++)
+    {
+      this->A.mat[i][j] = Ring( A_flat[k], this->reduction);
+      // this->B[i][j] = Ring( B_flat[k], this->reduction);
+      k++;
+    }
+  }
+
+  this->A.word +"A";
+  this->B.word +"B";
 }

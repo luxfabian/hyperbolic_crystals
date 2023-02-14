@@ -2,6 +2,10 @@
     "cmake.configureOnOpen": true,
     "files.associations": {
         "iostream": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "sstream": "cpp",
+        "stdexcept": "cpp",
+        "iosfwd": "cpp",
+        "ostream": "cpp"
     }
 }
