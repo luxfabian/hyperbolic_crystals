@@ -20,10 +20,19 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 
 #---------------------------------------------------------------------#
-# Copy input files
+# Copy input files to both ./build and ./build/bin 
 #---------------------------------------------------------------------#
 
 file(COPY ${CMAKE_SOURCE_DIR}/wls/ring_reduction.inp
+     DESTINATION ${CMAKE_BINARY_DIR}/bin)
+
+file(COPY ${CMAKE_SOURCE_DIR}/group_specs.inp
+     DESTINATION ${CMAKE_BINARY_DIR}/bin)
+
+file(COPY ${CMAKE_SOURCE_DIR}/wls/ring_reduction.inp
+DESTINATION ${CMAKE_BINARY_DIR})
+
+file(COPY ${CMAKE_SOURCE_DIR}/group_specs.inp
      DESTINATION ${CMAKE_BINARY_DIR})
 
 #---------------------------------------------------------------------#

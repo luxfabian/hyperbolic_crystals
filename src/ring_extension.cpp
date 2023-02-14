@@ -11,21 +11,93 @@
 #include "ring_extension.h"
 #include <stdexcept>
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+
 using namespace std;
 
-// Initialize as zero
+vector<int> read_numberfield_reduction(const int &p, const int &q)
+{
+  string line;
+  ifstream file("ring_reduction.inp");
+
+  int n = 2 * p * q;
+
+  // cout << "Searching ring_reduction.inp for n=2pq=" << n << endl;
+
+  vector<int> reduction;
+  int buffer;
+  int d = 0;
+
+  bool listening = false;
+  
+  if (file.is_open())
+  {
+    while (getline(file, line))
+    {
+      //--start analysing after keyword is found
+      if (line.find("BEGIN") != string::npos)
+      {
+        listening = true;
+      }
+
+      //--stop analysing after keyword is found
+      if (line.find("END") != string::npos)
+      {
+        break;
+      }
+
+      if (listening)
+      {
+        istringstream iss(line);
+
+        if (iss >> buffer && iss >> d && buffer == n)
+        {
+          while (iss >> buffer)
+          {
+            reduction.push_back(buffer);
+          }
+          //--no need to keep listening
+          break;
+        }
+      }
+    }
+  }
+  else
+  {
+    throw runtime_error("The file ring_reduction.inp was not found!");
+  }
+  file.close();
+
+  // cout << "Dimension of ring extension is d=" << d << endl;
+
+  return reduction;
+}
+
 Ring::Ring(void)
 {
+}
+
+// Initialize as zero
+Ring::Ring(const vector<int> &reduction)
+{
+  this->dim = reduction.size();
   vector<int> empty(this->dim,0);
   this->representation = empty;
+  this->reduction = reduction;
 }
 
 // Initialize with a given representation
-Ring::Ring(const vector<int> &coeffs)
+Ring::Ring(const vector<int> &coeffs, const vector<int> &reduction)
 {
-  if(coeffs.size()==this->dim)
+  if(coeffs.size()==reduction.size())
   {
+    this->dim = reduction.size();
     this->representation = coeffs;
+    this->reduction = reduction;
   }
   else
   {
@@ -36,7 +108,14 @@ Ring::Ring(const vector<int> &coeffs)
 // Ring addition
 Ring Ring::operator+(const Ring &other)
 {
-  return Ring(this->representation + other.representation);
+  vector<int> add;
+
+  for(vector<int>::size_type i=0; i< ( this-> representation.size() ); i++)
+  {
+    add.push_back(this->representation[i] + other.representation[i] );
+  }
+
+  return Ring(add);
 }
 
 // Ring multiplication
@@ -59,25 +138,27 @@ Ring Ring::operator*(const Ring &other)
   }
 
   // -- folding back
-  int b=0;
+  int b_id=0;
+  int id;
   for(int k=0; k<d-1; k++)
   {
     // -- store buffer element temporarily
-    b=buffer[2*d-2-k]
-    buffer[2*d-2-k]=0;
+    id = 2*d-2-k;
+    b_id=buffer[id];
+    buffer[id]=0;
 
     // -- fold this deleted index back onto the buffer
     for(int l=0; l<d-1; l++)
     {
       // -- index runs from id - (d-1) until id-1
-      buffer[d-2-k+l] += b * this->reduction[l]
+      buffer[id-d+1+l] += b_id *  this->reduction[l] ;
     }
   }
 
   vector<int> c;
   for(int l=0; l<d-1; l++)
   {
-    c.push_back(buffer[l])  
+    c.push_back(buffer[l]);
   }
 
   return Ring(c);
@@ -107,5 +188,5 @@ void Ring::operator=(const Ring other)
 //Check if two field values are the same
 bool Ring::operator==(const Ring &other) const
 {
-  return this->representation == other.representation
+  return this->representation == other.representation;
 }

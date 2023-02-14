@@ -14,6 +14,8 @@
 
 using namespace std;
 
+extern vector<int> read_numberfield_reduction(const int &p, const int &q);
+
 class Ring
 {
 public:
@@ -21,24 +23,21 @@ public:
   vector<int> reduction;
   int dim;
 
-  //-- constructor
+  // Default constructor
   Ring(void);
 
+  //-- initializes zero
+  Ring(const vector<int> &reduction);
+
   //-- constructor with initialization
-  Ring(const vector<int> &coeffs);
+  Ring(const vector<int> &coeffs, const vector<int> &reduction);
 
   //-- ring operations
   Ring operator+(const Ring &other);
   Ring operator*(const Ring &other);
-
-  //-- modulo operator
   Ring operator%(const int &m);
-
-  //-- assignment
-  void operator=(const Field other);
-
-  //-- equality
-  bool operator==(const Field &other) const;
+  void operator=(const Ring other);
+  bool operator==(const Ring &other) const;
 };
 
 #endif
