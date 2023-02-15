@@ -34,9 +34,6 @@ G::G(const vector<int> reduction)
   this->reduction = reduction;
   this->word = "";
 
-  // vector<int> unity(reduction.size(), 0);
-  // unity[0] = 1;
-
   for (int i = 0; i < 3; i++)
   {
     for (int j = 0; j < 3; j++)
@@ -68,6 +65,7 @@ G G::operator%(const int &m)
 void G::operator=(const G &other)
 {
   this->word = other.word;
+  this->reduction = other.reduction;
 
   for (int i = 0; i < 3; i++)
   {
@@ -83,6 +81,7 @@ G G::operator*(const G &other)
   G result=G(this->reduction);
 
   result.word = this->word + other.word;
+  // result.reduction = other.reduction;
 
   for (int i = 0; i < 3; i++)
   {
@@ -90,7 +89,7 @@ G G::operator*(const G &other)
     {
       for (int k = 0; k < 3; k++)
       {
-	result.mat[i][j] = result.mat[i][j] + this->mat[i][k] * other.mat[k][j];
+	      result.mat[i][j] = result.mat[i][j] + this->mat[i][k] * other.mat[k][j];
       }
     }
   }

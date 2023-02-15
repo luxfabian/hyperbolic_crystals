@@ -20,7 +20,7 @@ int main(){
 
   G A=T.A;
 
-  C = A*A;
+  C = A*A*A*A*A;
 
   cout << "A^p" << endl;
 

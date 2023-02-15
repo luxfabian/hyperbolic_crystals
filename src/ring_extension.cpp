@@ -85,6 +85,7 @@ vector<int> read_numberfield_reduction(const int &p, const int &q)
 
 Ring::Ring(void)
 {
+  this->dim = 0;
 }
 
 // Initialize as zero
@@ -121,7 +122,7 @@ Ring Ring::operator+(const Ring &other)
     add.push_back(this->representation[i] + other.representation[i] );
   }
 
-  return Ring(add);
+  return Ring(add, this->reduction);
 }
 
 // Ring multiplication
@@ -149,25 +150,27 @@ Ring Ring::operator*(const Ring &other)
   for(int k=0; k<d-1; k++)
   {
     // -- store buffer element temporarily
-    id = 2*d-2-k;
+    id = 2*d - 2 - k;
     b_id=buffer[id];
     buffer[id]=0;
 
     // -- fold this deleted index back onto the buffer
-    for(int l=0; l<d-1; l++)
+    for(int l=0; l<d; l++)
     {
       // -- index runs from id - (d-1) until id-1
-      buffer[id-d+1+l] += b_id *  this->reduction[l] ;
+      buffer.at(d-2+l-k) += b_id *  this->reduction[l] ;
+      // cout << b_id << " | " << this->reduction[l] << endl;
     }
   }
 
   vector<int> c;
-  for(int l=0; l<d-1; l++)
+  c.clear();
+  for(int l=0; l<d; l++)
   {
     c.push_back(buffer[l]);
   }
 
-  return Ring(c);
+  return Ring(c, this->reduction);
 }
 
 //Take modulus of the ring w.r.t to m
@@ -189,6 +192,8 @@ Ring Ring::operator%(const int &m)
 void Ring::operator=(const Ring other)
 {
   this->representation = other.representation;
+  this->reduction = other.reduction;
+  this->dim = other.dim;
 }
 
 //Check if two field values are the same
