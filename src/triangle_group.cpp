@@ -45,6 +45,35 @@ G::G(const vector<int> reduction)
   }
 }
 
+void G::identity(void)
+{
+  this->word="";
+
+  vector<int> c(this->reduction.size(), 0);
+
+  Ring zero = Ring(c, reduction);
+  
+  c[0]=1;
+
+  Ring id = Ring(c,this->reduction);
+  
+
+  for (int i = 0; i < 3; i++)
+  {
+    for (int j = 0; j < 3; j++)
+    {
+      if(i==j)
+      {
+        this->mat[i][i] = id;
+      }
+      else
+      {
+        this->mat[i][j] = zero;
+      }
+    }
+  }
+}
+
 G G::operator%(const int &m)
 {
   G result = G(this->reduction);
@@ -337,4 +366,12 @@ void TriangleGroup::read_generators(void)
   this->X.word = "X";
   this->Y.word = "Y";
   this->Z.word = "Z";
+
+  // Construct generator of proper triangle group
+  this->A = X*Y;
+  this->B = Y*Z;
+
+  // Overwrite the word
+  this->A.word = "A";
+  this->B.word = "B";
 }

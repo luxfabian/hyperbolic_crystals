@@ -55,6 +55,9 @@ public:
 
     // Pretty string representation
     string repr(void);
+
+    // Set G to be equal to the identity element
+    void identity(void);
 };
 
 extern size_t hash_combine(size_t lhs, size_t rhs);
@@ -79,12 +82,14 @@ public:
     // Polynomimal reduction for ring extension
     vector<int> reduction;
 
-    // Generators A=xy and B=yz
-    G A;
-    G B;
+    // Generators of the triangle group
     G X;
     G Y;
     G Z;
+
+    // Generators of the proper triangle group
+    G A;
+    G B;
 
     // Encoding of the group relations
     vector<string> relations;

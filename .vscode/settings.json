@@ -6,6 +6,7 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "iosfwd": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "string": "cpp"
     }
 }
