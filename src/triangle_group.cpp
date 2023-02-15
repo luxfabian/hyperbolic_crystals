@@ -20,8 +20,8 @@
 
 #include <vector>
 
-
-
+#include <cstdlib>
+ 
 
 using namespace std;
 
@@ -151,8 +151,13 @@ void TriangleGroup::reduce(string &word)
 
 void TriangleGroup::read_generators(void)
 {
-  string file_name_A = "./generators/"+to_string(this->p)+"_"+to_string(this->q)+".A";
-  string file_name_B = "./generators/"+to_string(this->p)+"_"+to_string(this->q)+".B";
+
+
+  const char* env = std::getenv("HYPERBOLIC_BUILD");
+  string build_dir = env;
+
+  string file_name_A = build_dir +"/generators/"+to_string(this->p)+"_"+to_string(this->q)+".A";
+  string file_name_B = build_dir +"/generators/"+to_string(this->p)+"_"+to_string(this->q)+".B";
   ifstream file_A(file_name_A);
   ifstream file_B(file_name_B);
 

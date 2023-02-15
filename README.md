@@ -36,3 +36,5 @@ To test if the code works as expected, one can run
 ```bash
 make test
 ```
+
+Finally one needs to set the environment variable `HYPERBOLIC_BUILD` with the absolute path of the build directory that was just created.

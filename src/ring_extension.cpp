@@ -17,12 +17,18 @@
 #include <string>
 #include <vector>
 
+#include <cstdlib>
+
 using namespace std;
 
 vector<int> read_numberfield_reduction(const int &p, const int &q)
 {
   string line;
-  ifstream file("ring_reduction.inp");
+
+  const char* env = std::getenv("HYPERBOLIC_BUILD");
+  string build_dir = env;
+
+  ifstream file(build_dir+"/ring_reduction.inp");
 
   int n = 2 * p * q;
 

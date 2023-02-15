@@ -24,15 +24,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 #---------------------------------------------------------------------#
 
 file(COPY ${CMAKE_SOURCE_DIR}/wls/ring_reduction.inp
-     DESTINATION ${CMAKE_BINARY_DIR}/bin)
-
-file(COPY ${CMAKE_SOURCE_DIR}/group_specs.inp
-     DESTINATION ${CMAKE_BINARY_DIR}/bin)
-
-file(COPY ${CMAKE_SOURCE_DIR}/wls/generators
-DESTINATION ${CMAKE_BINARY_DIR}/bin)
-
-file(COPY ${CMAKE_SOURCE_DIR}/wls/ring_reduction.inp
      DESTINATION ${CMAKE_BINARY_DIR})
 
 file(COPY ${CMAKE_SOURCE_DIR}/group_specs.inp
