@@ -220,9 +220,21 @@ string Ring::repr(void)
       rep += to_string(c) + x;
     }
     else if(c>0)
-    {
-      rep += "+" + to_string(c) + x;
+    { 
+      if(i==0)
+      {
+        rep += to_string(c) + x;
+      }
+      else
+      {
+        rep += "+" + to_string(c) + x;
+      } 
     }
+  }
+
+  if(rep=="")
+  {
+    rep = "0";
   }
 
   return rep;

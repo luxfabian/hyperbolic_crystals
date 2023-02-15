@@ -34,18 +34,13 @@ G::G(const vector<int> reduction)
   this->reduction = reduction;
   this->word = "";
 
-  vector<int> unity(reduction.size(), 0);
-  unity[0] = 1;
+  // vector<int> unity(reduction.size(), 0);
+  // unity[0] = 1;
 
   for (int i = 0; i < 3; i++)
   {
     for (int j = 0; j < 3; j++)
     {
-      if (i == j)
-      {
-        this->mat[i][i] = unity;
-      }
-      else
       {
         this->mat[i][j] = Ring(reduction);
       }
@@ -130,7 +125,7 @@ string G::repr(void)
 
   for (int i=0; i<3; i++)
   {
-    for (int j=0; i<3; j++)
+    for (int j=0; j<3; j++)
     {
       rep += this->mat[i][j].repr() + "  ";
     }
@@ -257,6 +252,9 @@ void TriangleGroup::read_generators(void)
   int buffer;
   vector<int> c;
 
+  this->A = G(this->reduction);
+  this->B = G(this->reduction);
+
   // 1D representation of the matrix; needs to be re-shaped at the end
   vector<vector<int>> A_flat;
   vector<vector<int>> B_flat;
@@ -307,6 +305,7 @@ void TriangleGroup::read_generators(void)
     for(int j=0; j<3; j++)
     {
       this->A.mat[i][j] = Ring(A_flat[k], this->reduction);
+      // cout << (this->A.mat[i][j].repr()) << endl;
       this->B.mat[i][j] = Ring(B_flat[k], this->reduction);
       k++;
     }

@@ -15,6 +15,15 @@ int main(){
 
   cout << "A is given by: " << endl;
 
+  G C=G(T.reduction);
   cout << T.A.repr() << endl;
+
+  G A=T.A;
+
+  C = A*A;
+
+  cout << "A^p" << endl;
+
+  cout << C.repr() << endl;
   return 0;
 }
