@@ -83,6 +83,26 @@ void G::operator=(const G &other)
   }
 }
 
+G G::operator*(const G &other)
+{
+  G result=G(this->reduction);
+
+  result.word = this->word + other.word;
+
+  for (int i = 0; i < 3; i++)
+  {
+    for (int j = 0; j < 3; j++)
+    {
+      for (int k = 0; k < 3; k++)
+      {
+	result.mat[i][j] = result.mat[i][j] + this->mat[i][k] * other.mat[k][j];
+      }
+    }
+  }
+
+  return result;
+}
+
 bool G::operator==(const G &other) const
 {
 
@@ -220,6 +240,6 @@ void TriangleGroup::read_generators(void)
     }
   }
 
-  this->A.word +"A";
-  this->B.word +"B";
+  this->A.word = "A";
+  this->B.word = "B";
 }
