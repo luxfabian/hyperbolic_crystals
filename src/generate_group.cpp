@@ -103,6 +103,12 @@ int main()
   G B = T.B;
   G E = G(T.reduction);
 
+  if(periodic_boundary)
+  {
+    A = A % modulo;
+    B = B % modulo;
+  }
+  
   E.identity();
 
   // -- found elements are stored here
@@ -126,12 +132,12 @@ int main()
   {
     if(generation%2==0)
     {
-      generator = T.A;
+      generator = A;
       order = p;
     }
     else
     {
-      generator = T.B;
+      generator = B;
       order = q;
     }
 
@@ -165,19 +171,6 @@ int main()
     prev_generation = next_generation;
     next_generation.clear();
   }
-
-  // cout << "The following words have been found:" << endl;
-  // for(G elem: unordered_basis)
-  // {
-  //   if(elem.word=="")
-  //   {
-  //     cout << "E" << endl;  
-  //   }
-  //   else
-  //   {
-  //     cout << elem.word << endl;
-  //   }
-  // }
 
   string output_file_name;
   if(periodic_boundary)

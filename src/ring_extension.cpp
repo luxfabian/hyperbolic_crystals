@@ -182,10 +182,10 @@ Ring Ring::operator%(const int &m)
 
   for(int i=0; i<(this->dim); i++)
   {
-    mod.push_back( m + ((this->representation)[i] % m) % m);
+    mod.push_back( (m + ((this->representation)[i] % m) )% m);
   }
 
-  return mod;
+  return Ring(mod, this->reduction);
 }
 
 //Copy one field value to another

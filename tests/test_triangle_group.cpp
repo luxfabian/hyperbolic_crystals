@@ -73,5 +73,15 @@ int main(){
   cout << "C^2 is given by: " << endl;
   cout << (C*C).repr() << endl;
 
+
+  cout << "A is given by: " << endl;
+  cout << A.repr() << endl; 
+  
+  cout << "A mod 4 is given by " << endl;
+
+  G A4 = A % 4;
+  cout << A4.repr() << endl;
+
+
   return 0;
 }
