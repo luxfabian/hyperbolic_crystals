@@ -1,5 +1,6 @@
 
 #include "ring_extension.h"
+#include <iostream>
 #include <vector>
 
 int main(){
@@ -20,6 +21,8 @@ int main(){
 
   a = Ring(reduction,reduction);
   b = a*a;
+
+  cout << "a = " << a.repr() << endl;
 
   return 0;
 }

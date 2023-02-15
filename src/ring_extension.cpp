@@ -196,3 +196,34 @@ bool Ring::operator==(const Ring &other) const
 {
   return this->representation == other.representation;
 }
+
+string Ring::repr(void)
+{
+  string rep="";
+  int c;
+  string x;
+  for(vector<int>::size_type i=0; i<this->representation.size(); i++)
+  {
+    c = this->representation[i];
+	
+    if(i==0)
+    {
+      x = "";
+    }
+    else
+    {
+      x = "x^" + to_string(i);
+    }
+
+    if(c<0)
+    {
+      rep += to_string(c) + x;
+    }
+    else if(c>0)
+    {
+      rep += "+" + to_string(c) + x;
+    }
+  }
+
+  return rep;
+}

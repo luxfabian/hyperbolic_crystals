@@ -10,6 +10,7 @@
 #ifndef RING_EXTENSION_H
 #define RING_EXTENSION_H
 
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -26,18 +27,21 @@ public:
   // Default constructor
   Ring(void);
 
-  //-- initializes zero
+  // Initializes zero
   Ring(const vector<int> &reduction);
 
-  //-- constructor with initialization
+  // Constructor with initialization
   Ring(const vector<int> &coeffs, const vector<int> &reduction);
 
-  //-- ring operations
+  // Ring operations
   Ring operator+(const Ring &other);
   Ring operator*(const Ring &other);
   Ring operator%(const int &m);
   void operator=(const Ring other);
   bool operator==(const Ring &other) const;
+
+  // Pretty string representation
+  string repr(void);
 };
 
 #endif
