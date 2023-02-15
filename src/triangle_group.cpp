@@ -124,6 +124,38 @@ bool G::operator==(const G &other) const
   return equal;
 }
 
+/*
+ * Generate a new hash from two known hashes lhs and rhs.
+ *
+ * The constants which are added represent
+ * 
+ *      1. 0x517cc1b727220a95 = inverse of pi 
+ *      2. 0x9e3779b9 = inverse golden ratio
+ * 
+ * Their bit representations consist of a random sequence of
+ * 0's and 1's which is ideal for scrambling up the hashes.
+ * 
+ * Together, the bit-shifts and the addition of the constant above
+ * break the symmetry of the XOR operator ^ and lead to a reasonable
+ * way of combining to hashes.
+*/
+size_t hash_combine(size_t lhs, size_t rhs)
+{
+    // https://stackoverflow.com/a/27952689/7236657
+    if constexpr (sizeof(size_t) >= 8)
+    {
+        // 64-bit architecture
+        lhs ^= rhs + 0x517cc1b727220a95 + (lhs << 6) + (lhs >> 2);
+    }
+    else
+    {
+        // 32-bit architecture
+        lhs ^= rhs + 0x9e3779b9 + (lhs << 6) + (lhs >> 2);
+    }
+    return lhs;
+}
+
+
 // concatenate n copies of a word
 string word_power(const string &word, const int &n)
 {

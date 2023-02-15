@@ -54,7 +54,7 @@ public:
     bool operator==(const G &other) const;
 };
 
-// extern size_t hash_combine(size_t lhs, size_t rhs);
+extern size_t hash_combine(size_t lhs, size_t rhs);
 
 // class GHash
 // {
@@ -93,8 +93,5 @@ private:
     // Reads A and B for given p and q. Is called by constructor
     void read_generators(void);
 };
-
-
-
 
 #endif
