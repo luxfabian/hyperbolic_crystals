@@ -82,6 +82,9 @@ public:
     // Generators A=xy and B=yz
     G A;
     G B;
+    G X;
+    G Y;
+    G Z;
 
     // Encoding of the group relations
     vector<string> relations;

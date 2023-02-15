@@ -238,30 +238,34 @@ void TriangleGroup::reduce(string &word)
 void TriangleGroup::read_generators(void)
 {
 
-
   const char* env = std::getenv("HYPERBOLIC_BUILD");
   string build_dir = env;
 
-  string file_name_A = build_dir +"/generators/"+to_string(this->p)+"_"+to_string(this->q)+".A";
-  string file_name_B = build_dir +"/generators/"+to_string(this->p)+"_"+to_string(this->q)+".B";
-  ifstream file_A(file_name_A);
-  ifstream file_B(file_name_B);
+  string file_name_X = build_dir +"/generators/"+to_string(this->p)+"_"+to_string(this->q)+".X";
+  string file_name_Y = build_dir +"/generators/"+to_string(this->p)+"_"+to_string(this->q)+".Y";
+  string file_name_Z = build_dir +"/generators/"+to_string(this->p)+"_"+to_string(this->q)+".Z";
+
+  ifstream file_X(file_name_X);
+  ifstream file_Y(file_name_Y);
+  ifstream file_Z(file_name_Z);
 
   string line;
   int buffer;
   vector<int> c;
 
-  this->A = G(this->reduction);
-  this->B = G(this->reduction);
+  this->X = G(this->reduction);
+  this->Y = G(this->reduction);
+  this->Z = G(this->reduction);
 
   // 1D representation of the matrix; needs to be re-shaped at the end
-  vector<vector<int>> A_flat;
-  vector<vector<int>> B_flat;
+  vector<vector<int>> X_flat;
+  vector<vector<int>> Y_flat;
+  vector<vector<int>> Z_flat;
 
-  // Read in A
-  if(file_A.is_open())
+  // -- Read in X -----------------------------------------------------
+  if(file_X.is_open())
   {
-    while(getline(file_A, line))
+    while(getline(file_X, line))
     {
       istringstream iss(line);
       c.clear();
@@ -269,19 +273,19 @@ void TriangleGroup::read_generators(void)
       {
         c.push_back(buffer);
       }
-      A_flat.push_back(c);
+      X_flat.push_back(c);
     }
   }
   else
   {
-    throw runtime_error(file_name_A+" not found!");
+    throw runtime_error(file_name_X+" not found!");
   }
-  file_A.close();
+  file_X.close();
 
-  // Read in B
-  if(file_B.is_open())
+  // -- Read in Y -----------------------------------------------------
+  if(file_Y.is_open())
   {
-    while(getline(file_B, line))
+    while(getline(file_Y, line))
     {
       istringstream iss(line);
       c.clear();
@@ -289,27 +293,48 @@ void TriangleGroup::read_generators(void)
       {
         c.push_back(buffer);
       }
-      B_flat.push_back(c);
+      Y_flat.push_back(c);
     }
   }
   else
   {
-    throw runtime_error(file_name_B+" not found!");
+    throw runtime_error(file_name_Y+" not found!");
   }
-  file_B.close();
+  file_Y.close();
+
+  // -- Read in Z -----------------------------------------------------
+  if(file_Z.is_open())
+  {
+    while(getline(file_Z, line))
+    {
+      istringstream iss(line);
+      c.clear();
+      while(iss>>buffer)
+      {
+        c.push_back(buffer);
+      }
+      Z_flat.push_back(c);
+    }
+  }
+  else
+  {
+    throw runtime_error(file_name_Z+" not found!");
+  }
+  file_Z.close();
 
   int k=0;
   for(int i=0; i<3; i++)
   {
     for(int j=0; j<3; j++)
     {
-      this->A.mat[i][j] = Ring(A_flat[k], this->reduction);
-      // cout << (this->A.mat[i][j].repr()) << endl;
-      this->B.mat[i][j] = Ring(B_flat[k], this->reduction);
+      this->X.mat[i][j] = Ring(X_flat[k], this->reduction);
+      this->Y.mat[i][j] = Ring(Y_flat[k], this->reduction);
+      this->Z.mat[i][j] = Ring(Z_flat[k], this->reduction);
       k++;
     }
   }
 
-  this->A.word = "A";
-  this->B.word = "B";
+  this->X.word = "X";
+  this->Y.word = "Y";
+  this->Z.word = "Z";
 }
