@@ -13,5 +13,8 @@ int main(){
   T.reduce(word);
   cout << "Its reduction in the {5,4,2} van Dyck triangle group: " << word << endl;
 
+  cout << "A is given by: " << endl;
+
+  cout << T.A.repr() << endl;
   return 0;
 }

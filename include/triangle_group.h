@@ -52,6 +52,9 @@ public:
 
     // Equality operator
     bool operator==(const G &other) const;
+
+    // Pretty string representation
+    string repr(void);
 };
 
 extern size_t hash_combine(size_t lhs, size_t rhs);

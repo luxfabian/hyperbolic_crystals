@@ -124,6 +124,22 @@ bool G::operator==(const G &other) const
   return equal;
 }
 
+string G::repr(void)
+{
+  string rep;
+
+  for (int i=0; i<3; i++)
+  {
+    for (int j=0; i<3; j++)
+    {
+      rep += this->mat[i][j].repr() + "  ";
+    }
+    rep += "\n";
+  }
+
+  return rep;
+}
+
 /*
  * Generate a new hash from two known hashes lhs and rhs.
  *
