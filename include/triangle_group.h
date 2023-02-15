@@ -56,12 +56,11 @@ public:
 
 extern size_t hash_combine(size_t lhs, size_t rhs);
 
-// class GHash
-// {
-//     public:
-
-//     size_t operator()(constG &fuchs) const;
-// };
+class GHash
+{
+public:
+  size_t operator()(const G &obj) const;
+};
 
 
 // concatenate n copies of a word

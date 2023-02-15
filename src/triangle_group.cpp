@@ -155,6 +155,30 @@ size_t hash_combine(size_t lhs, size_t rhs)
     return lhs;
 }
 
+size_t GHash::operator()(const G &obj) const
+{
+    // https://stackoverflow.com/a/2595226/7236657
+
+    std::hash<int> hasher;
+    size_t seed = 0;
+
+    vector<int> vals;
+
+    for (int i = 0; i < 3; i++)
+    {
+      for(int j = 0; j < 3; j++)
+      {
+	for(int c: obj.mat[i][j].representation)
+	{
+          seed = hash_combine(seed, hasher(c));
+	}
+      }
+    }
+
+    return seed;
+}
+
+
 
 // concatenate n copies of a word
 string word_power(const string &word, const int &n)
