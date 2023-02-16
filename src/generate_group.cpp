@@ -141,6 +141,8 @@ int main()
       order = q;
     }
 
+    if(periodic_boundary) generator = generator % modulo;
+
     for(G elem: prev_generation)
     {
       candidate = elem;
@@ -175,11 +177,11 @@ int main()
   string output_file_name;
   if(periodic_boundary)
   {
-    output_file_name = "./{"+to_string(p)+","+to_string(q)+"}_modulo_"+to_string(modulo)+".words";
+    output_file_name = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_modulo_"+to_string(modulo)+".words";
   }
   else
   {
-    output_file_name = "./{"+to_string(p)+","+to_string(q)+"}_open_"+to_string(N+1)+".words";
+    output_file_name = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_open_"+to_string(N+1)+".words";
   }
   
   ofstream output_file; 
@@ -187,7 +189,14 @@ int main()
 
   for(G elem: unordered_basis)
   {
-    output_file << elem.word << endl;
+    if(elem.word=="")
+    {
+      output_file << "E"<< endl;
+    }
+    else
+    {
+      output_file << elem.word << endl;
+    }
   }
 
   output_file.close();

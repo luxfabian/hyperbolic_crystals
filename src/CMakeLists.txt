@@ -6,8 +6,14 @@
 #-- generate_group.cpp
 
 include_directories(../include ${Boost_INCLUDE_DIR} ${Eigen3_INCLUDE_DIR})
-set(SOURCES generate_group.cpp ../src/generate_group.cpp ../src/triangle_group.cpp ../src/ring_extension.cpp)
-add_executable(generate_group.x ${SOURCES})
+set(SOURCES generate_group.cpp ../src/triangle_group.cpp ../src/ring_extension.cpp)
+add_executable(generate_group ${SOURCES})
+
+#-- generate_laplacian.cpp
+
+include_directories(../include ${Boost_INCLUDE_DIR} ${Eigen3_INCLUDE_DIR})
+set(SOURCES generate_laplacian.cpp ../src/triangle_group.cpp ../src/ring_extension.cpp)
+add_executable(generate_laplacian ${SOURCES})
 
 
 # include_directories(../include ${Boost_INCLUDE_DIR})

@@ -199,7 +199,13 @@ void Ring::operator=(const Ring other)
 //Check if two field values are the same
 bool Ring::operator==(const Ring &other) const
 {
-  return this->representation == other.representation;
+  bool equality = true;
+
+  equality &= (this->representation == other.representation);
+  equality &= (this->reduction == other.reduction);
+  equality &= (this->dim == other.dim);
+
+  return equality;
 }
 
 string Ring::repr(void)
