@@ -91,9 +91,9 @@ int main()
     cout << "Periodic boundary conditions are used." << endl;
 
     periodic_boundary = true;
-    modulo = pow(2,N);
+    modulo = N;//pow(2,N);
 
-    cout << "The matrix representation is treated modulo 2**N, with N=" << N << endl;
+    cout << "The matrix representation is treated modulo " << N << endl;
   }
 
 
