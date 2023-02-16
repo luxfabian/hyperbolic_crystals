@@ -182,15 +182,15 @@ int main()
     output_file_name = "./{"+to_string(p)+","+to_string(q)+"}_open_"+to_string(N+1)+".words";
   }
   
-	ofstream output_file;
-	output_file.open(output_file_name, ofstream::out | ofstream::trunc);
-	
-	for(G elem: unordered_basis)
-	{
-		output_file << elem.word << endl;
-	}
+  ofstream output_file; 
+  output_file.open(output_file_name, ofstream::out | ofstream::trunc);
 
-	output_file.close();
+  for(G elem: unordered_basis)
+  {
+    output_file << elem.word << endl;
+  }
+
+  output_file.close();
 
   return 0;
 }
