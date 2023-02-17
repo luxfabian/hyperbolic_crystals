@@ -19,3 +19,6 @@ add_executable(generate_laplacian ${SOURCES})
 # include_directories(../include ${Boost_INCLUDE_DIR})
 # set(SOURCES generate_group_open.cpp)
 # add_executable(generate_group_open.x ${SOURCES})
+
+set(SOURCES exact_diagonalization.f90)
+add_executable(exact_diagonalization ${SOURCES})

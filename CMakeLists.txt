@@ -8,6 +8,7 @@ enable_testing()
 #---------------------------------------------------------------------#
 
 enable_language(CXX)
+enable_language(Fortran)
 set (CMAKE_CXX_STANDARD 17)
 
 if(NOT CMAKE_BUILD_TYPE)
