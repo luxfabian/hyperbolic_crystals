@@ -112,22 +112,23 @@ int main()
   E.identity();
 
   // -- found elements are stored here
-	std::unordered_set<G, GHash> unordered_basis;
+  std::unordered_set<G, GHash> unordered_basis;
   // vector<G> basis;
 
   // -- keep track of the iterative process
-	vector<G> prev_generation;
-	vector<G> next_generation;
+  vector<G> prev_generation;
+  vector<G> next_generation;
 
   // -- initialize identity element
   // unordered_basis.insert(E);
-	prev_generation.push_back(E);
+  prev_generation.push_back(E);
 
   int generation=0;
 
   G generator = G(T.reduction);
   G candidate = G(T.reduction);
   int order;
+  bool checked_twice = false;
   while(true)
   {
     if(generation%2==0)
@@ -163,15 +164,22 @@ int main()
     
     if(periodic_boundary)
     {
-      if (next_generation.size() == 0) break;
+      if (next_generation.size() == 0)
+      {
+	if(checked_twice) break;
+	checked_twice= true;
+      }
     }
     else
     {
       if(generation>N) break;
     }
 
-    prev_generation = next_generation;
-    next_generation.clear();
+    if(next_generation.size() != 0)
+    {
+      prev_generation = next_generation;
+      next_generation.clear();
+    }
   }
 
   string output_file_name;

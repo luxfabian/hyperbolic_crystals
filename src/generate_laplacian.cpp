@@ -200,8 +200,24 @@ int main()
     }
     output_file.close();
   }
-  
-  // output_file.open(output_file_name, oddddddddfstream::out | ofstream::trunc);
+
+  string spec_info_fname(build_dir+"/bin/");  
+  if(periodic_boundary)
+  {
+    spec_info_fname = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_modulo_"+to_string(modulo)+".info";
+  }
+  else
+  {
+    spec_info_fname  = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_open_"+to_string(N+1)+".info";
+  }
+
+
+  ofstream spec_info_file; 
+  spec_info_file.open(spec_info_fname, ofstream::out | ofstream::trunc); 
+
+  spec_info_file << basis.size() << endl;
+
+  spec_info_file.close();
 
   // for(G elem: unordered_basis)
   // {

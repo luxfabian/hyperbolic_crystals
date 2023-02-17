@@ -51,7 +51,7 @@ void G::identity(void)
 
   vector<int> c(this->reduction.size(), 0);
 
-  Ring zero = Ring(c, reduction);
+  Ring zero = Ring(c, this->reduction);
   
   c[0]=1;
 
