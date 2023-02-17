@@ -193,7 +193,8 @@ int main()
         if(periodic_boundary)
         {
           // -- must not happen for periodic boundary conditions
-          throw runtime_error("Right regular representation failed.");
+	  cout << i << " " << j << " " << action.word << endl;
+          throw runtime_error("Right regular representation failed for the word "+op.word);
         }     
       }
       j += 1;
