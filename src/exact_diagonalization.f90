@@ -7,6 +7,7 @@ program exact_diagonalization
   character(len=1023) :: group_specs_fname
   character(len=1023) :: spec_info_fname
   character(len=1023) :: hamiltonian_fname
+  character(len=1023) :: eigen_fname
   character(len=1023) :: fname_prefix
   character(1) :: char_buffer
   integer :: iostatus
@@ -82,16 +83,17 @@ program exact_diagonalization
   write(*,*) "Loading: ", trim(hamiltonian_fname)
 
   allocate(hamiltonian(hdim,hdim))
-  print *, "Hello World!"
   
   !-- loop over file until EOF
   
   iostatus = 0
   
+  open(unit=10, file=trim(hamiltonian_fname))
   do while(.TRUE.)
     read(10, *, iostat=iostatus) i, j!, val
     if(iostatus==0) then
-      hamiltonian(i,j) = 1
+      hamiltonian(i+1,j+1) = 1
+      hamiltonian(j+1,i+1) = 1
     else if(iostatus>0) then
       write(*, *) "A horrible error has occured!"
     else
@@ -99,6 +101,7 @@ program exact_diagonalization
       exit
     endif    
   enddo 
+  close(10)
 
   LDA = max(1, hdim)
   JOBZ = 'N'
@@ -111,10 +114,24 @@ program exact_diagonalization
   call DSYEV(JOBZ, UPLO, hdim, hamiltonian, LDA, W, WORK, LWORK, INFO)
 
   deallocate(WORK)
-  deallocate(W)
   deallocate(hamiltonian)
 
   if(INFO==0) then
     write(*,*) "Diagonalization succesful!"
-  endif 
+  endif
+ 
+  !#####################################################################
+  ! Writing the eigenvalues to file
+  !#####################################################################
+
+  eigen_fname = trim(fname_prefix) // ".eig"
+
+  open(unit=10, file=trim(eigen_fname))
+
+  do i = 1, hdim 
+    write(10, '(4D20.14)') W(i)
+  enddo
+  close(10)
+
+  deallocate(W)
 end program
