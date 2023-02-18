@@ -22,3 +22,5 @@ add_executable(generate_laplacian ${SOURCES})
 
 set(SOURCES exact_diagonalization.f90)
 add_executable(exact_diagonalization ${SOURCES})
+target_link_libraries(exact_diagonalization LAPACK::LAPACK)
+target_include_directories(exact_diagonalization PRIVATE ${LAPACK_INCLUDE_DIRS})

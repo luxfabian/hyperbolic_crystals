@@ -47,6 +47,8 @@ set(INCLUDE_PATH ${CMAKE_BINARY_DIR}/include)
 
 find_package(Boost REQUIRED)
 find_package(Eigen3 REQUIRED)
+#set(BLA_VENDOR Intel10_64lp)
+find_package(LAPACK REQUIRED)
 
 #---------------------------------------------------------------------#
 # Source directories
