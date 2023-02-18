@@ -156,6 +156,33 @@ int main()
   operators.push_back(B);
   operators.push_back(AB);
 
+  G iA=G(T.reduction);
+  iA.identity();
+  G iB=G(T.reduction);
+  iB.identity();
+
+  for(int k=0; k<p-1; k++)
+  {
+    iA = iA *A;
+  }
+  
+  for(int k=0; k<q-1; k++)
+  {
+    iB = iB *B;
+  }
+
+  if(periodic_boundary)
+  {
+    iA = iA % modulo;
+    iB = iB % modulo;
+  }
+
+  iA.word = "iA";
+  iB.word = "iB";
+
+  operators.push_back(iA);
+  operators.push_back(iB);
+
   int i,j;
   G action=G(T.reduction);
 
