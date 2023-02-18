@@ -90,10 +90,9 @@ program exact_diagonalization
   
   open(unit=10, file=trim(hamiltonian_fname))
   do while(.TRUE.)
-    read(10, *, iostat=iostatus) i, j!, val
+    read(10, *, iostat=iostatus) i, j, val
     if(iostatus==0) then
-      hamiltonian(i+1,j+1) = 1
-      hamiltonian(j+1,i+1) = 1
+      hamiltonian(i+1,j+1) = val
     else if(iostatus>0) then
       write(*, *) "A horrible error has occured!"
     else
