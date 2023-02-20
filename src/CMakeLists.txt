@@ -20,7 +20,9 @@ add_executable(generate_laplacian ${SOURCES})
 # set(SOURCES generate_group_open.cpp)
 # add_executable(generate_group_open.x ${SOURCES})
 
-set(SOURCES exact_diagonalization.f90)
-add_executable(exact_diagonalization ${SOURCES})
-target_link_libraries(exact_diagonalization LAPACK::LAPACK)
-target_include_directories(exact_diagonalization PRIVATE ${LAPACK_INCLUDE_DIRS})
+add_library (m_npy npy.f90)
+
+set(SOURCES dsyev_hamiltonian.f90)
+add_executable(dsyev_hamiltonian ${SOURCES})
+target_link_libraries(dsyev_hamiltonian LAPACK::LAPACK m_npy)
+target_include_directories(dsyev_hamiltonian PRIVATE ${LAPACK_INCLUDE_DIRS})

@@ -26,11 +26,6 @@ def get_access_point(silent=True):
             - 'q': q parameter of triangle group
             - 'N': finite approximation control parameter
             - 'd': dimension of the Hilbert space
-            - 'A': path to regular representation of A
-            - 'B': path to regular representation of B
-            - 'AB': path to regular representation of AB
-            - 'iA': path to regular representation of the inverse of A
-            - 'iB': path to regular representation of the inverse of B
             - 'fprefix': the prefix which should be used to ensure uniform file names
     """
     
@@ -48,8 +43,13 @@ def get_access_point(silent=True):
     group_specs_lines = [ int(re.sub("[^0-9]", "", line)) for line in group_specs_lines]
     p,q,N = group_specs_lines
 
+    access_point['p'] = p
+    access_point['q'] = q
+    access_point['N'] = N
+    
     if not silent:
         print("Group specs: ", p, q, N) 
+
     group_specs_file.close()
 
     periodic_boundary = not (N<0)
@@ -60,6 +60,8 @@ def get_access_point(silent=True):
     else:
         fname_prefix += "open_"+str(-N) 
 
+    access_point['fprefix'] = fname_prefix
+
     #######################################################################
     # Read spectral information                                           #
     #######################################################################
@@ -69,32 +71,40 @@ def get_access_point(silent=True):
     spec_info_lines = spec_info_file.readlines()
     spec_info_lines = [ re.sub("[^0-9]", "", line) for line in spec_info_lines]
     d = int(spec_info_lines[0])
-    print("Hilber space dimension: ", d) 
+
+    access_point['d'] = d
+
+    if not silent:
+        print("Hilber space dimension: ", d) 
+    
     spec_info_file.close()
+
+    return access_point
+
 
     #######################################################################
     # Read regular represntation                                          #
     #######################################################################
 
-    generators = [ "A", "iA", "B", "iB" ]
-    H = lil_matrix((d,d))
-    for g in generators:
-        reg_fname = fname_prefix + "_" + g + ".reg" 
-        reg_data  = np.loadtxt(reg_fname, dtype=int, delimiter=" ")
-
-        for [i,j] in reg_data:
-            H[i,j] += 1.0
-
-
-    H_fname = fname_prefix + ".hamiltonian"
-
-    with open(H_fname, 'w') as H_file:
-      for i in range(d):
-        for j in H.rows[i]:
-          line = str(i) + " " + str(j) + " " + str(H[i,j]) + "\n"
-          H_file.write(line)
-
-    return access_point
+#    generators = [ "A", "iA", "B", "iB" ]
+#    H = lil_matrix((d,d))
+#    for g in generators:
+#        reg_fname = fname_prefix + "_" + g + ".reg" 
+#        reg_data  = np.loadtxt(reg_fname, dtype=int, delimiter=" ")
+#
+#        for [i,j] in reg_data:
+#            H[i,j] += 1.0
+#
+#
+#    H_fname = fname_prefix + ".hamiltonian"
+#
+#    with open(H_fname, 'w') as H_file:
+#      for i in range(d):
+#        for j in H.rows[i]:
+#          line = str(i) + " " + str(j) + " " + str(H[i,j]) + "\n"
+#          H_file.write(line)
+#
+#    return access_point
 
 if __name__=='__main__':
 

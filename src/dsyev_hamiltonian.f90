@@ -1,9 +1,10 @@
 program exact_diagonalization
 
+  use m_npy  
   implicit none
   
   ! -- file names and IO
-  character(len=1023) :: build_dir
+  character(len=1023) :: project_dir
   character(len=1023) :: group_specs_fname
   character(len=1023) :: spec_info_fname
   character(len=1023) :: hamiltonian_fname
@@ -31,14 +32,14 @@ program exact_diagonalization
   real(dp), dimension(:), allocatable :: W, WORK 
 
   !-- location of files is relative to this path
-  call get_environment_variable("HYPERBOLIC_BUILD", build_dir)
+  call get_environment_variable("HYPERBOLIC_DIR", project_dir)
 
 
   !#####################################################################
   ! Reading of group_specs.inp                                         # 
   !#####################################################################
   
-  group_specs_fname = trim(trim(build_dir) // trim("/bin/group_specs.inp"))
+  group_specs_fname = trim(trim(project_dir) // trim("/group_specs.inp"))
 
   write(*,*) "Loading: ", trim(group_specs_fname)
   open(unit=10, file=trim(group_specs_fname))
@@ -58,9 +59,9 @@ program exact_diagonalization
   endif
 
   if(periodic_boundary) then
-    write(fname_prefix, "(A,A,I0,A,I0,A,I0)") trim(build_dir), "/bin/{", p,",",q,"}_modulo_", N
+    write(fname_prefix, "(A,A,I0,A,I0,A,I0)") trim(project_dir), "/", p,"_",q,"_modulo_", N
   else
-    write(fname_prefix, "(A,A,I0,A,I0,A,I0)") trim(build_dir), "/bin/{", p,",",q,"}_open_", -N
+    write(fname_prefix, "(A,A,I0,A,I0,A,I0)") trim(project_dir), "/", p,"_",q,"_open_", -N
   endif
 
   !#####################################################################

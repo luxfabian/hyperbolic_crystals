@@ -36,10 +36,10 @@ int main()
 
   // -- reading group secifications -----------------------------------
 
-  const char* env = std::getenv("HYPERBOLIC_BUILD");
-  string build_dir = env;
+  const char* env = std::getenv("HYPERBOLIC_DIR");
+  string project_dir = env;
 
-  ifstream input_file(build_dir+"/bin/group_specs.inp");
+  ifstream input_file(project_dir+"/group_specs.inp");
   char char_buffer;
   int int_buffer;
   int p, q, N;
@@ -185,11 +185,11 @@ int main()
   string output_file_name;
   if(periodic_boundary)
   {
-    output_file_name = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_modulo_"+to_string(modulo)+".words";
+    output_file_name = project_dir+"/"+to_string(p)+","+to_string(q)+"_modulo_"+to_string(modulo)+".words";
   }
   else
   {
-    output_file_name = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_open_"+to_string(N+1)+".words";
+    output_file_name = project_dir+"/"+to_string(p)+","+to_string(q)+"_open_"+to_string(N+1)+".words";
   }
   
   ofstream output_file; 

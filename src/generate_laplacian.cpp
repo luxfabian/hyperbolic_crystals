@@ -26,10 +26,10 @@ int main()
 
   // -- reading group secifications -----------------------------------
 
-  const char* env = std::getenv("HYPERBOLIC_BUILD");
-  string build_dir = env;
+  const char* env = std::getenv("HYPERBOLIC_DIR");
+  string project_dir = env;
 
-  ifstream input_file(build_dir+"/bin/group_specs.inp");
+  ifstream input_file(project_dir+"/group_specs.inp");
   char char_buffer;
   int int_buffer;
   int p, q, N;
@@ -91,11 +91,11 @@ int main()
   string basis_file_name;
   if(periodic_boundary)
   {
-    basis_file_name = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_modulo_"+to_string(modulo)+".words";
+    basis_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_modulo_"+to_string(modulo)+".words";
   }
   else
   {
-    basis_file_name = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_open_"+to_string(N+1)+".words";
+    basis_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_open_"+to_string(N+1)+".words";
   }
 
   TriangleGroup T=TriangleGroup(p, q);
@@ -189,11 +189,11 @@ int main()
   string output_file_name;
   if(periodic_boundary)
   {
-    output_file_name = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_modulo_"+to_string(modulo)+"_";
+    output_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_modulo_"+to_string(modulo)+"_";
   }
   else
   {
-    output_file_name = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_open_"+to_string(N+1)+"_";
+    output_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_open_"+to_string(N+1)+"_";
   }
 
   for(G op: operators)
@@ -229,14 +229,14 @@ int main()
     output_file.close();
   }
 
-  string spec_info_fname(build_dir+"/bin/");  
+  string spec_info_fname = "";  
   if(periodic_boundary)
   {
-    spec_info_fname = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_modulo_"+to_string(modulo)+".info";
+    spec_info_fname = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_modulo_"+to_string(modulo)+".info";
   }
   else
   {
-    spec_info_fname  = build_dir+"/bin/{"+to_string(p)+","+to_string(q)+"}_open_"+to_string(N+1)+".info";
+    spec_info_fname  = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_open_"+to_string(N+1)+".info";
   }
 
 
