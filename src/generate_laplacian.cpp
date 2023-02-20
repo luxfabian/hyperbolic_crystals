@@ -143,7 +143,7 @@ int main()
   }
   else
   {
-    throw runtime_error("Basis file not found! It needs to be generated first using bin/generate_group");
+    throw runtime_error("Basis file not found! It needs to be generated first the generate_group command");
   }
 
   cout << "Basis file loaded succesfully! Basis dimension: " << basis.size() << endl;

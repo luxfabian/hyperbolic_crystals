@@ -185,11 +185,11 @@ int main()
   string output_file_name;
   if(periodic_boundary)
   {
-    output_file_name = project_dir+"/"+to_string(p)+","+to_string(q)+"_modulo_"+to_string(modulo)+".words";
+    output_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_modulo_"+to_string(modulo)+".words";
   }
   else
   {
-    output_file_name = project_dir+"/"+to_string(p)+","+to_string(q)+"_open_"+to_string(N+1)+".words";
+    output_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_open_"+to_string(N+1)+".words";
   }
   
   ofstream output_file; 

@@ -30,7 +30,7 @@ program exact_diagonalization
   integer :: LDA, LWORK, INFO
   character :: JOBZ, UPLO 
   real(dp), dimension(:), allocatable :: W, WORK 
-
+  real(dp), dimension(1) :: WORK_QUERY
   !-- location of files is relative to this path
   call get_environment_variable("HYPERBOLIC_DIR", project_dir)
 
@@ -103,14 +103,23 @@ program exact_diagonalization
   enddo 
   close(10)
 
+  ! -- allocating space for eigenvalues
+  allocate(W(hdim))
+
+  ! -- LAPACK vars
   LDA = max(1, hdim)
   JOBZ = 'N'
   UPLO = 'U'
-  LWORK = max(1,3*hdim-1)
-  
-  allocate(W(hdim))
+
+  ! -- automatically determine optimal size of work memory
+  LWORK = -1
+  call DSYEV(JOBZ, UPLO, hdim, hamiltonian, LDA, W, WORK_QUERY, LWORK, INFO)
+  LWORK = min(hdim*hdim, INT(WORK_QUERY(1)))
+
+  ! -- allocate work memory
   allocate(WORK(LWORK))
 
+  ! -- calculate all eigenvalues
   call DSYEV(JOBZ, UPLO, hdim, hamiltonian, LDA, W, WORK, LWORK, INFO)
 
   deallocate(WORK)
@@ -125,13 +134,16 @@ program exact_diagonalization
   !#####################################################################
 
   eigen_fname = trim(fname_prefix) // ".eig"
+  
+  ! -- store as binary 
+  call save_npy(trim(eigen_fname), W)
 
-  open(unit=10, file=trim(eigen_fname))
-
-  do i = 1, hdim 
-    write(10, '(4D20.14)') W(i)
-  enddo
-  close(10)
-
+!  open(unit=10, file=trim(eigen_fname))
+!
+!   do i = 1, hdim 
+!     write(10, '(4D20.14)') W(i)
+!   enddo
+!   close(10)
+!
   deallocate(W)
 end program
