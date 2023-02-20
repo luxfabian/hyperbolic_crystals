@@ -91,7 +91,7 @@ program exact_diagonalization
   
   open(unit=10, file=trim(hamiltonian_fname))
   do while(.TRUE.)
-    read(10, *, iostat=iostatus) i, j, val
+    read(10, '(I10, A1, I10, A1, EN15.6)', iostat=iostatus) i, char_buffer, j, char_buffer, val
     if(iostatus==0) then
       hamiltonian(i+1,j+1) = val
     else if(iostatus>0) then
