@@ -114,7 +114,9 @@ program exact_diagonalization
   ! -- automatically determine optimal size of work memory
   LWORK = -1
   call DSYEV(JOBZ, UPLO, hdim, hamiltonian, LDA, W, WORK_QUERY, LWORK, INFO)
-  LWORK = max(min(hdim*hdim, INT(WORK_QUERY(1))), 3*hdim-1)
+  LWORK = min(INT8(hdim)*INT8(hdim), INT8(WORK_QUERY(1)))
+
+  ! write(*,*) "LWORK: ", LWORK, WORK_QUERY(1), hdim
 
   ! -- allocate work memory
   allocate(WORK(LWORK))
