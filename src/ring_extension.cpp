@@ -25,10 +25,10 @@ vector<int> read_numberfield_reduction(const int &p, const int &q)
 {
   string line;
 
-  const char* env = std::getenv("HYPERBOLIC_BUILD");
+  const char *env = std::getenv("HYPERBOLIC_BUILD");
   string build_dir = env;
 
-  ifstream file(build_dir+"/ring_reduction.inp");
+  ifstream file(build_dir + "/ring_reduction.inp");
 
   int n = 2 * p * q;
 
@@ -39,7 +39,7 @@ vector<int> read_numberfield_reduction(const int &p, const int &q)
   int d = 0;
 
   bool listening = false;
-  
+
   if (file.is_open())
   {
     while (getline(file, line))
@@ -88,19 +88,17 @@ Ring::Ring(void)
   this->dim = 0;
 }
 
-// Initialize as zero
 Ring::Ring(const vector<int> &reduction)
 {
   this->dim = reduction.size();
-  vector<int> empty(this->dim,0);
+  vector<int> empty(this->dim, 0);
   this->representation = empty;
   this->reduction = reduction;
 }
 
-// Initialize with a given representation
 Ring::Ring(const vector<int> &coeffs, const vector<int> &reduction)
 {
-  if(coeffs.size()==reduction.size())
+  if (coeffs.size() == reduction.size())
   {
     this->dim = reduction.size();
     this->representation = coeffs;
@@ -112,20 +110,18 @@ Ring::Ring(const vector<int> &coeffs, const vector<int> &reduction)
   }
 }
 
-// Ring addition
 Ring Ring::operator+(const Ring &other)
 {
   vector<int> add;
 
-  for(vector<int>::size_type i=0; i< ( this-> representation.size() ); i++)
+  for (vector<int>::size_type i = 0; i < (this->representation.size()); i++)
   {
-    add.push_back(this->representation[i] + other.representation[i] );
+    add.push_back(this->representation[i] + other.representation[i]);
   }
 
   return Ring(add, this->reduction);
 }
 
-// Ring multiplication
 Ring Ring::operator*(const Ring &other)
 {
   const vector<int> &a = this->representation;
@@ -133,39 +129,39 @@ Ring Ring::operator*(const Ring &other)
 
   const int &d = this->dim;
 
-  vector<int> buffer(2*d-1,0);
+  vector<int> buffer(2 * d - 1, 0);
 
   // -- unreduced product of polynomials
-  for(int i=0; i<d; i++)
+  for (int i = 0; i < d; i++)
   {
-    for(int j=0; j<d; j++)
+    for (int j = 0; j < d; j++)
     {
-      buffer[i+j] += a[i]*b[j];
+      buffer[i + j] += a[i] * b[j];
     }
   }
 
   // -- folding back
-  int b_id=0;
+  int b_id = 0;
   int id;
-  for(int k=0; k<d-1; k++)
+  for (int k = 0; k < d - 1; k++)
   {
     // -- store buffer element temporarily
-    id = 2*d - 2 - k;
-    b_id=buffer[id];
-    buffer[id]=0;
+    id = 2 * d - 2 - k;
+    b_id = buffer[id];
+    buffer[id] = 0;
 
     // -- fold this deleted index back onto the buffer
-    for(int l=0; l<d; l++)
+    for (int l = 0; l < d; l++)
     {
       // -- index runs from id - (d-1) until id-1
-      buffer.at(d-2+l-k) += b_id *  this->reduction[l] ;
+      buffer.at(d - 2 + l - k) += b_id * this->reduction[l];
       // cout << b_id << " | " << this->reduction[l] << endl;
     }
   }
 
   vector<int> c;
   c.clear();
-  for(int l=0; l<d; l++)
+  for (int l = 0; l < d; l++)
   {
     c.push_back(buffer[l]);
   }
@@ -173,22 +169,20 @@ Ring Ring::operator*(const Ring &other)
   return Ring(c, this->reduction);
 }
 
-//Take modulus of the ring w.r.t to m
 Ring Ring::operator%(const int &m)
 {
-  //https://stackoverflow.com/a/44197900/7236657
+  // https://stackoverflow.com/a/44197900/7236657
 
-  vector <int> mod;
+  vector<int> mod;
 
-  for(int i=0; i<(this->dim); i++)
+  for (int i = 0; i < (this->dim); i++)
   {
-    mod.push_back( (m + ((this->representation)[i] % m) )% m);
+    mod.push_back((m + ((this->representation)[i] % m)) % m);
   }
 
   return Ring(mod, this->reduction);
 }
 
-//Copy one field value to another
 void Ring::operator=(const Ring other)
 {
   this->representation = other.representation;
@@ -196,7 +190,6 @@ void Ring::operator=(const Ring other)
   this->dim = other.dim;
 }
 
-//Check if two field values are the same
 bool Ring::operator==(const Ring &other) const
 {
   bool equality = true;
@@ -210,14 +203,14 @@ bool Ring::operator==(const Ring &other) const
 
 string Ring::repr(void)
 {
-  string rep="";
+  string rep = "";
   int c;
   string x;
-  for(vector<int>::size_type i=0; i<this->representation.size(); i++)
+  for (vector<int>::size_type i = 0; i < this->representation.size(); i++)
   {
     c = this->representation[i];
-	
-    if(i==0)
+
+    if (i == 0)
     {
       x = "";
     }
@@ -226,24 +219,24 @@ string Ring::repr(void)
       x = "x^" + to_string(i);
     }
 
-    if(c<0)
+    if (c < 0)
     {
       rep += to_string(c) + x;
     }
-    else if(c>0)
-    { 
-      if(i==0)
+    else if (c > 0)
+    {
+      if (i == 0)
       {
         rep += to_string(c) + x;
       }
       else
       {
         rep += "+" + to_string(c) + x;
-      } 
+      }
     }
   }
 
-  if(rep=="")
+  if (rep == "")
   {
     rep = "0";
   }

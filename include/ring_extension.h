@@ -33,11 +33,19 @@ public:
   // Constructor with initialization
   Ring(const vector<int> &coeffs, const vector<int> &reduction);
 
-  // Ring operations
+  // Ring addition
   Ring operator+(const Ring &other);
+
+  // Ring multiplication
   Ring operator*(const Ring &other);
+
+  // Take modulus w.r.t to integer m
   Ring operator%(const int &m);
+
+  // Copy one Ring object to another
   void operator=(const Ring other);
+
+  // Check if two ring objects are the same
   bool operator==(const Ring &other) const;
 
   // Pretty string representation
