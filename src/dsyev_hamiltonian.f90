@@ -114,7 +114,8 @@ program exact_diagonalization
   ! -- automatically determine optimal size of work memory
   LWORK = -1
   call DSYEV(JOBZ, UPLO, hdim, hamiltonian, LDA, W, WORK_QUERY, LWORK, INFO)
-  LWORK = max(hdim*hdim, INT8(WORK_QUERY(1)))
+  LWORK = max(1, 3*hdim-1)
+  LWORK = max(LWORK, WORK_QUERY(1))
 
   ! write(*,*) "LWORK: ", LWORK, WORK_QUERY(1), hdim
 
@@ -140,12 +141,5 @@ program exact_diagonalization
   ! -- store as binary 
   call save_npy(trim(eigen_fname), W)
 
-!  open(unit=10, file=trim(eigen_fname))
-!
-!   do i = 1, hdim 
-!     write(10, '(4D20.14)') W(i)
-!   enddo
-!   close(10)
-!
   deallocate(W)
 end program
