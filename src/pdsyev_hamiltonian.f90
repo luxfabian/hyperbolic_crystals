@@ -35,40 +35,11 @@ program exact_diagonalization
   real(dp) :: MONE
 
   character :: JOBZ, UPLO 
-  real(dp), dimension(:), allocatable :: W, WORK 
+  real(dp), dimension(:), allocatable :: W, WORK, Z
+  integer, dimension(:), allocatable :: DESCA, DESCZ
   real(dp), dimension(1) :: WORK_QUERY
   !-- location of files is relative to this path
   call get_environment_variable("HYPERBOLIC_DIR", project_dir)
-
-  !#####################################################################
-  ! Initialize BLACS                                                   # 
-  !#####################################################################
-
-  ! -- Returns the number of processes available for use
-  call BLACS_PINFO(IAM, NPROCS)
-  if ( NPROCS.LT.1 ) then
-    ! -- Allocates virtual machine and spawns processes
-    call BLACS_SETUP( IAM, NPROW*NPCOL )
-  endif
-
-  ! -- No idea what this does
-  call BLACS_GET( -1, 0, CONTEXT )
-
-  ! -- Assigns available processes into BLACS process grid.
-  call BLACS_GRIDINIT( CONTEXT, 'R', NPROW, NPCOL )
-
-  ! -- Assigns a grid position to the calling rank
-  call BLACS_GRIDINFO( CONTEXT, NPROW, NPCOL, MYROW, MYCOL )
-
-
-  bailing_out = MYROW.EQ.-1
-
-  if(not(bailing_out)) then
-
-  endif
-
-  ! --  release all BLACS context and memory allocated by the BLACS
-  call BLACS_EXIT( 0 )
 
   !#####################################################################
   ! Reading of group_specs.inp                                         # 
@@ -138,13 +109,59 @@ program exact_diagonalization
   enddo 
   close(10)
 
+  !#####################################################################
+  ! Initialize BLACS                                                   # 
+  !#####################################################################
+
+  ! -- Returns the number of processes available for use
+  call BLACS_PINFO(IAM, NPROCS)
+  if ( NPROCS.LT.1 ) then
+    ! -- Allocates virtual machine and spawns processes
+    call BLACS_SETUP( IAM, NPROW*NPCOL )
+  endif
+
+  ! -- No idea what this does
+  call BLACS_GET( -1, 0, CONTEXT )
+
+  ! -- Assigns available processes into BLACS process grid.
+  call BLACS_GRIDINIT( CONTEXT, 'R', NPROW, NPCOL )
+
+  ! -- Assigns a grid position to the calling rank
+  call BLACS_GRIDINFO( CONTEXT, NPROW, NPCOL, MYROW, MYCOL )
+
+
+  bailing_out = MYROW.EQ.-1
+
+  if(not(bailing_out)) then
+
+    ! -- LAPACK vars
+    LDA = max(1, hdim)
+    JOBZ = 'N'
+    UPLO = 'U'
+    
+    ! -- array descriptors
+    CALL DESCINIT( DESCA, hdim, hdim, NB, NB, 0, 0, CONTEXT, LDA, INFO )
+    CALL DESCINIT( DESCZ, hdim, hdim, NB, NB, 0, 0, CONTEXT, LDA, INFO )
+
+    ! --  distribute matrix to process grid
+
+    !CALL PDLAMODHILB( N, A, 1, 1, DESCA, INFO )
+
+    CALL PDSYEV( JOBZ, UPLO, hdim, hamiltonian, 1, 1, DESCA, W, Z, 1, 1,
+                 DESCZ, WORK, LWORK, INFO )
+
+    CALL BLACS_GRIDEXIT( CONTEXT )
+  endif
+
+  ! --  release all BLACS context and memory allocated by the BLACS
+  call BLACS_EXIT( 0 )
+
+  
+
   ! -- allocating space for eigenvalues
   allocate(W(hdim))
 
-  ! -- LAPACK vars
-  LDA = max(1, hdim)
-  JOBZ = 'N'
-  UPLO = 'U'
+  
 
   ! -- automatically determine optimal size of work memory
   LWORK = -1
