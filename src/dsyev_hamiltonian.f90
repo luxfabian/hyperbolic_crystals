@@ -27,7 +27,7 @@ program exact_diagonalization
   real(dp) :: val
 
   !-- LAPACK
-  integer(8) :: LDA, LWORK, INFO
+  integer :: LDA, LWORK, INFO
   character :: JOBZ, UPLO 
   real(dp), dimension(:), allocatable :: W, WORK 
   real(dp), dimension(1) :: WORK_QUERY
@@ -114,7 +114,7 @@ program exact_diagonalization
   ! -- automatically determine optimal size of work memory
   LWORK = -1
   call DSYEV(JOBZ, UPLO, hdim, hamiltonian, LDA, W, WORK_QUERY, LWORK, INFO)
-  LWORK = min(INT8(hdim)*INT8(hdim), INT8(WORK_QUERY(1)))
+  LWORK = max(hdim*hdim, INT8(WORK_QUERY(1)))
 
   ! write(*,*) "LWORK: ", LWORK, WORK_QUERY(1), hdim
 
