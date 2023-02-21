@@ -27,7 +27,7 @@ program exact_diagonalization
   real(dp) :: val
 
   !-- LAPACK
-  integer :: LDA, LWORK, INFO
+  integer(8) :: LDA, LWORK, INFO
   character :: JOBZ, UPLO 
   real(dp), dimension(:), allocatable :: W, WORK 
   real(dp), dimension(1) :: WORK_QUERY
