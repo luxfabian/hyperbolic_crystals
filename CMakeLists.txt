@@ -33,6 +33,8 @@ file(COPY ${CMAKE_SOURCE_DIR}/group_specs.inp
 file(COPY ${CMAKE_SOURCE_DIR}/wls/generators
 DESTINATION ${CMAKE_BINARY_DIR})
 
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)
+
 #---------------------------------------------------------------------#
 # Directory setup
 #---------------------------------------------------------------------#
