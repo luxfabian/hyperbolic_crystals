@@ -32,7 +32,9 @@ int main()
   ifstream input_file(project_dir+"/group_specs.inp");
   char char_buffer;
   int int_buffer;
-  int p, q, N;
+  int p=5;
+  int q= 4;
+  int N = 2;
   int modulo;
 
   // Read the input files
@@ -67,7 +69,7 @@ int main()
   cout << "p=" << p << endl;
   cout << "q=" << q << endl;
 
-  bool periodic_boundary;
+  bool periodic_boundary=false;
   if (N < 0)
   {
     cout << "Open boundary conditions are used." << endl;
@@ -202,7 +204,9 @@ int main()
     ofstream output_file; 
     output_file.open(output_file_name+op.word+".reg", ofstream::out | ofstream::trunc); 
 
-    #pragma omp parallel for
+    vector<int> j_map(basis.size(), 0);
+
+    #pragma omp parallel for default(private) shared(basis, j_map, periodic_boundary)
     for(G b: basis)
     {
       action = b * op;
@@ -214,18 +218,23 @@ int main()
       if (it != basis.end()) 
       {
         i = it - basis.begin();
-        output_file << i << " " << j << endl;
+        j_map[j] = i;
       } 
       else
       {
         if(periodic_boundary)
         {
           // -- must not happen for periodic boundary conditions
-	  cout << i << " " << j << " " << action.word << endl;
           throw runtime_error("Right regular representation failed for the word "+op.word);
         }     
       }
       j += 1;
+    }
+
+    // -- write result to file
+    for(vector<int>::size_type j=0; j<basis.size(); j++)
+    {
+      output_file << j_map[j] << " " << j << endl;
     }
     output_file.close();
   }
