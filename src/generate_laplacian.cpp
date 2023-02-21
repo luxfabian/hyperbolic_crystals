@@ -206,7 +206,7 @@ int main()
 
     vector<int> j_map(basis.size(), 0);
 
-    #pragma omp parallel for default(private) shared(basis, j_map, periodic_boundary)
+    #pragma omp parallel for private(action) shared(basis, j_map, periodic_boundary)
     for(G b: basis)
     {
       action = b * op;
