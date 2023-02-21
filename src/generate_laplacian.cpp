@@ -202,6 +202,7 @@ int main()
     ofstream output_file; 
     output_file.open(output_file_name+op.word+".reg", ofstream::out | ofstream::trunc); 
 
+    #pragma omp parallel for
     for(G b: basis)
     {
       action = b * op;

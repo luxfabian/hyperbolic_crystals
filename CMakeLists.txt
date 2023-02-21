@@ -51,6 +51,7 @@ find_package(Boost REQUIRED)
 find_package(Eigen3 REQUIRED)
 #set(BLA_VENDOR Intel10_64lp)
 find_package(LAPACK REQUIRED)
+find_package(OpenMP REQUIRED)
 
 #---------------------------------------------------------------------#
 # Source directories
