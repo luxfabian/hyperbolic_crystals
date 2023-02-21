@@ -47,6 +47,9 @@ public:
     // Multiplication operator
     G operator*(const G &other);
 
+    // Multiplication modulo m
+    G mod_mul(const G &left, const G &right, const int &m);
+
     // Assignment operator
     void operator=(const G &other);
 
