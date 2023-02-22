@@ -115,7 +115,7 @@ program exact_diagonalization
   LWORK = -1
   call DSYEV(JOBZ, UPLO, hdim, hamiltonian, LDA, W, WORK_QUERY, LWORK, INFO)
   LWORK = max(1, 3*hdim-1)
-  LWORK = max(LWORK, WORK_QUERY(1))
+  LWORK = max(LWORK, INT(WORK_QUERY(1)))
 
   ! write(*,*) "LWORK: ", LWORK, WORK_QUERY(1), hdim
 

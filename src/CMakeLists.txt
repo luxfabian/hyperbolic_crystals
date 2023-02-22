@@ -25,6 +25,6 @@ add_library (m_npy npy.f90)
 
 set(SOURCES dsyev_hamiltonian.f90)
 add_executable(dsyev_hamiltonian ${SOURCES})
-target_link_libraries(dsyev_hamiltonian LAPACK::LAPACK m_npy OpenMP::OpenMP_Fortran)
+target_link_libraries(dsyev_hamiltonian lapack64 m_npy OpenMP::OpenMP_Fortran)
 target_include_directories(dsyev_hamiltonian PRIVATE ${LAPACK_INCLUDE_DIRS})
-# target_compile_options(dsyev_hamiltonian PRIVATE -finteger-4-integer-8)
+target_compile_options(dsyev_hamiltonian PRIVATE -finteger-4-integer-8)

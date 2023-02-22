@@ -39,13 +39,13 @@ public:
   // Ring multiplication
   Ring operator*(const Ring &other);
 
-  // Take modulus w.r.t to integer m
+  //Take modulus w.r.t to integer m
   Ring operator%(const int &m);
 
-  // Copy one Ring object to another
+  //Copy one Ring object to another
   void operator=(const Ring other);
 
-  // Check if two ring objects are the same
+  //Check if two ring objects are the same
   bool operator==(const Ring &other) const;
 
   // Pretty string representation
