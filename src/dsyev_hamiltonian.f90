@@ -1,6 +1,7 @@
 program exact_diagonalization
 
   use m_npy  
+  
   implicit none
   
   ! -- file names and IO
