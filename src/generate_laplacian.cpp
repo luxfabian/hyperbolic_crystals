@@ -226,7 +226,10 @@ int main()
         {
           // -- must not happen for periodic boundary conditions
           throw runtime_error("Right regular representation failed for the word "+op.word);
-        }     
+        } 
+
+        // -- intercept boundary
+        j_map[j] = -1;    
       }
       j += 1;
     }

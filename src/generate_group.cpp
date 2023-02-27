@@ -166,8 +166,8 @@ int main()
     {
       if (next_generation.size() == 0)
       {
-	if(checked_twice) break;
-	checked_twice= true;
+	    if(checked_twice) break;
+	      checked_twice= true;
       }
     }
     else
