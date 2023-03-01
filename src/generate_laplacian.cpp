@@ -20,6 +20,10 @@
 
 #include "triangle_group.h"
 
+#pragma omp declare reduction(vec_int_plus : std::vector<int> : \
+        std::transform(omp_out.begin(), omp_out.end(), omp_in.begin(), omp_out.begin(), std::plus<int>())) \
+        initializer(omp_priv = decltype(omp_orig)(omp_orig.size()))
+
 int main()
 {
   using namespace std;
@@ -188,7 +192,7 @@ int main()
   operators.push_back(iA);
   operators.push_back(iB);
 
-  int i, j;
+  int i;
   G action = G(T.reduction);
 
   string output_file_name;
@@ -201,42 +205,48 @@ int main()
     output_file_name = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_open_" + to_string(N + 1) + "_";
   }
 
+  vector<int> j_map(basis.size(), 0);
+
   for (G op : operators)
   {
-    j = 0;
+    #pragma omp parallel default(none) private(action, i) shared(op, modulo, basis, periodic_boundary, j_map) 
+    {
+      // j = 0;
+      i = 0;
+      vector<int> zero(basis.size(), 0);
+      j_map = zero;
+
+      #pragma omp parallel for 
+      for(vector<int>::size_type j=0; j<basis.size(); j++) // (G b : basis)
+      {
+        action = basis[j] * op;
+
+        if (periodic_boundary)
+          action = action % modulo;
+
+        auto it = find(basis.begin(), basis.end(), action);
+
+        if (it != basis.end())
+        {
+          i = it - basis.begin();
+          j_map[j] = i;
+        }
+        else
+        {
+          if (periodic_boundary)
+          {
+            // -- must not happen for periodic boundary conditions
+            throw runtime_error("Right regular representation failed for the word " + op.word);
+          }
+
+          // -- intercept boundary
+          j_map[j] = -1;
+        }
+      }
+    }
+
     ofstream output_file;
     output_file.open(output_file_name + op.word + ".reg", ofstream::out | ofstream::trunc);
-
-    vector<int> j_map(basis.size(), 0);
-
-#pragma omp parallel for private(action) shared(basis, j_map, periodic_boundary)
-    for (G b : basis)
-    {
-      action = b * op;
-
-      if (periodic_boundary)
-        action = action % modulo;
-
-      auto it = find(basis.begin(), basis.end(), action);
-
-      if (it != basis.end())
-      {
-        i = it - basis.begin();
-        j_map[j] = i;
-      }
-      else
-      {
-        if (periodic_boundary)
-        {
-          // -- must not happen for periodic boundary conditions
-          throw runtime_error("Right regular representation failed for the word " + op.word);
-        }
-
-        // -- intercept boundary
-        j_map[j] = -1;
-      }
-      j += 1;
-    }
 
     // -- write result to file
     for (vector<int>::size_type j = 0; j < basis.size(); j++)
