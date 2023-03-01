@@ -26,14 +26,14 @@ int main()
 
   // -- reading group secifications -----------------------------------
 
-  const char* env = std::getenv("HYPERBOLIC_DIR");
+  const char *env = std::getenv("HYPERBOLIC_DIR");
   string project_dir = env;
 
-  ifstream input_file(project_dir+"/group_specs.inp");
+  ifstream input_file(project_dir + "/group_specs.inp");
   char char_buffer;
   int int_buffer;
-  int p=5;
-  int q= 4;
+  int p = 5;
+  int q = 4;
   int N = 2;
   int modulo;
 
@@ -50,7 +50,7 @@ int main()
       {
         q = int_buffer;
       }
-        else if (char_buffer == 'N')
+      else if (char_buffer == 'N')
       {
         N = int_buffer;
       }
@@ -58,18 +58,18 @@ int main()
   }
   else
   {
-   throw runtime_error("The file group_spec.inp was not found!");
+    throw runtime_error("The file group_spec.inp was not found!");
   }
-  input_file.close(); 
-  
-   cout << "#------------------------------------------------#" << endl;
+  input_file.close();
+
+  cout << "#------------------------------------------------#" << endl;
   cout << "# C++ Spectra of Hyperbolic Cayley Crystals v0.1 #" << endl;
   cout << "#------------------------------------------------#" << endl;
   cout << "The construction of the proper triangle group Delta+(p,q,2) commences for:" << endl;
   cout << "p=" << p << endl;
   cout << "q=" << q << endl;
 
-  bool periodic_boundary=false;
+  bool periodic_boundary = false;
   if (N < 0)
   {
     cout << "Open boundary conditions are used." << endl;
@@ -77,71 +77,74 @@ int main()
     periodic_boundary = false;
     N = -N - 1;
 
-    cout << "Max. number of generations = " << N+1 << endl;
+    cout << "Max. number of generations = " << N + 1 << endl;
   }
   else
   {
     cout << "Periodic boundary conditions are used." << endl;
 
     periodic_boundary = true;
-    modulo = N;//pow(2,N);
+    modulo = N; // pow(2,N);
 
     cout << "The matrix representation is treated modulo " << N << endl;
   }
 
-  // Read the basis file 
+  // Read the basis file
   string basis_file_name;
-  if(periodic_boundary)
+  if (periodic_boundary)
   {
-    basis_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_modulo_"+to_string(modulo)+".words";
+    basis_file_name = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_modulo_" + to_string(modulo) + ".words";
   }
   else
   {
-    basis_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_open_"+to_string(N+1)+".words";
+    basis_file_name = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_open_" + to_string(N + 1) + ".words";
   }
 
-  TriangleGroup T=TriangleGroup(p, q);
-  
-  ifstream basis_file(basis_file_name); 
+  TriangleGroup T = TriangleGroup(p, q);
+
+  ifstream basis_file(basis_file_name);
   string line;
 
-  G word=G(T.reduction);
+  G word = G(T.reduction);
 
   vector<G> basis;
 
   // Construct unit element
   G A = T.A;
   G B = T.B;
-  G AB = A*B;
+  G AB = A * B;
 
-  if(periodic_boundary){
+  if (periodic_boundary)
+  {
     A = A % modulo;
     B = B % modulo;
     AB = AB % modulo;
-  } 
-  
-  if(basis_file.is_open())
+  }
+
+  if (basis_file.is_open())
   {
-    while(getline(basis_file, line))
+    while (getline(basis_file, line))
+    {
+      word = G(T.reduction);
+      word.identity();
+      for (char &c : line)
       {
-        word=G(T.reduction);
-        word.identity();
-        for(char& c : line) {
-          if(c=='A')
-          {
-            word = word * A;
-          }
-          else if(c=='B')
-          {
-            word = word * B;
-          }
-          else if(c=='E')
-          {
-          }
+        if (c == 'A')
+        {
+          word = word * A;
         }
-        if(periodic_boundary) word = word % modulo;
-        basis.push_back(word);
+        else if (c == 'B')
+        {
+          word = word * B;
+        }
+        else if (c == 'E')
+        {
+        }
+        if (periodic_boundary)
+          word = word % modulo;
       }
+      basis.push_back(word);
+    }
   }
   else
   {
@@ -153,27 +156,27 @@ int main()
   cout << "Generating the right regular representation." << endl;
 
   vector<G> operators;
-  
+
   operators.push_back(A);
   operators.push_back(B);
   operators.push_back(AB);
 
-  G iA=G(T.reduction);
+  G iA = G(T.reduction);
   iA.identity();
-  G iB=G(T.reduction);
+  G iB = G(T.reduction);
   iB.identity();
 
-  for(int k=0; k<p-1; k++)
+  for (int k = 0; k < p - 1; k++)
   {
-    iA = iA *A;
-  }
-  
-  for(int k=0; k<q-1; k++)
-  {
-    iB = iB *B;
+    iA = iA * A;
   }
 
-  if(periodic_boundary)
+  for (int k = 0; k < q - 1; k++)
+  {
+    iB = iB * B;
+  }
+
+  if (periodic_boundary)
   {
     iA = iA % modulo;
     iB = iB % modulo;
@@ -185,91 +188,78 @@ int main()
   operators.push_back(iA);
   operators.push_back(iB);
 
-  int i,j;
-  G action=G(T.reduction);
+  int i, j;
+  G action = G(T.reduction);
 
   string output_file_name;
-  if(periodic_boundary)
+  if (periodic_boundary)
   {
-    output_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_modulo_"+to_string(modulo)+"_";
+    output_file_name = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_modulo_" + to_string(modulo) + "_";
   }
   else
   {
-    output_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_open_"+to_string(N+1)+"_";
+    output_file_name = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_open_" + to_string(N + 1) + "_";
   }
 
-  for(G op: operators)
+  for (G op : operators)
   {
-    j=0;
-    ofstream output_file; 
-    output_file.open(output_file_name+op.word+".reg", ofstream::out | ofstream::trunc); 
+    j = 0;
+    ofstream output_file;
+    output_file.open(output_file_name + op.word + ".reg", ofstream::out | ofstream::trunc);
 
     vector<int> j_map(basis.size(), 0);
 
-    #pragma omp parallel for private(action) shared(basis, j_map, periodic_boundary)
-    for(G b: basis)
+#pragma omp parallel for private(action) shared(basis, j_map, periodic_boundary)
+    for (G b : basis)
     {
       action = b * op;
 
-      if(periodic_boundary) action = action % modulo;
+      if (periodic_boundary)
+        action = action % modulo;
 
       auto it = find(basis.begin(), basis.end(), action);
-  
-      if (it != basis.end()) 
+
+      if (it != basis.end())
       {
         i = it - basis.begin();
         j_map[j] = i;
-      } 
+      }
       else
       {
-        if(periodic_boundary)
+        if (periodic_boundary)
         {
           // -- must not happen for periodic boundary conditions
-          throw runtime_error("Right regular representation failed for the word "+op.word);
-        } 
+          throw runtime_error("Right regular representation failed for the word " + op.word);
+        }
 
         // -- intercept boundary
-        j_map[j] = -1;    
+        j_map[j] = -1;
       }
       j += 1;
     }
 
     // -- write result to file
-    for(vector<int>::size_type j=0; j<basis.size(); j++)
+    for (vector<int>::size_type j = 0; j < basis.size(); j++)
     {
       output_file << j_map[j] << " " << j << endl;
     }
     output_file.close();
   }
 
-  string spec_info_fname = "";  
-  if(periodic_boundary)
+  string spec_info_fname = "";
+  if (periodic_boundary)
   {
-    spec_info_fname = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_modulo_"+to_string(modulo)+".info";
+    spec_info_fname = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_modulo_" + to_string(modulo) + ".info";
   }
   else
   {
-    spec_info_fname  = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_open_"+to_string(N+1)+".info";
+    spec_info_fname = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_open_" + to_string(N + 1) + ".info";
   }
 
-
-  ofstream spec_info_file; 
-  spec_info_file.open(spec_info_fname, ofstream::out | ofstream::trunc); 
-
+  ofstream spec_info_file;
+  spec_info_file.open(spec_info_fname, ofstream::out | ofstream::trunc);
   spec_info_file << basis.size() << endl;
-
   spec_info_file.close();
-
-  // for(G elem: unordered_basis)
-  // {
-  //   output_file << elem.word << endl;
-  // }
-
-  // output_file.close();
-  
-  // Set-up the Laplacians for A,B and AB
-  
-  // Store the Laplacians to file
 
   return 0;
 }
