@@ -5,52 +5,49 @@ dir = If[$Notebooks, NotebookDirectory[], Directory[] ];
 SetDirectory[dir];
 
 
-p=5;
-q=4;
-
-
-fname = ToString[p]<>"_"<>ToString[q]<>"_A.reg"
-
-
 Aname = "../data/5_4_modulo_2_A.reg";
 Bname = "../data/5_4_modulo_2_B.reg";
 ABname = "../data/5_4_modulo_2_AB.reg";
-
-
-Aname = "../data/5_4_open_5_A.reg";
-Bname = "../data/5_4_open_5_B.reg";
-ABname = "../data/5_4_open_5_AB.reg";
-
 
 Adata = Import[Aname,"Table"];
 Bdata = Import[Bname,"Table"];
 ABdata = Import[ABname,"Table"];
 
-
-Style[ DirectedEdge[i , ctab[[i]]],colors[op]]
-
-
-Agraph = Flatten[ Style[DirectedEdge[ #[[1]] ,#[[2]]],  Blue] &/@ Adata ];
-Bgraph = Flatten[Style[DirectedEdge[ #[[1]] ,#[[2]]],  Red] &/@ Bdata ];
-Cgraph = Flatten[Style[DirectedEdge[ #[[1]] ,#[[2]]],  Green] &/@ ABdata ];
+Acolor = RGBColor["#4472c4"]
+Bcolor = RGBColor["#ffc000"]
+Ccolor = RGBColor["#d42525"]
 
 
-graph = Agraph ~ Join ~ Bgraph ~ Join ~ Cgraph;
+Agraph = Flatten[ Style[DirectedEdge[ #[[1]] ,#[[2]]],  Acolor] &/@ Adata ];
+Bgraph = Flatten[Style[DirectedEdge[ #[[1]] ,#[[2]]],  Bcolor] &/@ Bdata ];
+Cgraph = DeleteCases[Flatten[ If[ #[[1]] <#[[2]],Style[UndirectedEdge[ #[[1]] ,#[[2]]],  Ccolor]] &/@ ABdata ],Null];
+graph = Graph[Agraph ~ Join ~ Bgraph ];
 
 
-GraphPlot3D[graph]
+GraphPlot[Agraph,VertexStyle->Black]
 
 
-Jopi
+GraphPlot[Bgraph,VertexStyle->Black]
 
 
-graph =Graph[Flatten[ Agraph]];
+GraphPlot[Cgraph,VertexStyle->Black]
 
 
-Agraph[[4]]
+graph =  Graph[ Agraph ~ Join ~ Bgraph ~ Join ~ Cgraph];
 
 
-GraphPlot[Flatten[Bgraph]]
+opts = GraphLayout->{"SpringElectricalEmbedding", "SpringConstant"-> 1,"RepulsiveForcePower"->-1, "Tolerance"->10^-18,"MaxIteration"->10^6};
 
 
-GraphPlot3D[]
+GraphPlot[graph, VertexStyle->Black, opts]
+
+
+Aname = "../data/5_4_modulo_2_A.reg";
+Adata = Import[Aname,"Table"];
+Agraph = Flatten[ Style[DirectedEdge[ #[[1]] ,#[[2]]],  color[1]] &/@ Adata ];
+Show[Graph[Agraph]]
+
+
+Aname = "../data/5_4_open_5_A.reg";
+Bname = "../data/5_4_open_5_B.reg";
+ABname = "../data/5_4_open_5_AB.reg";

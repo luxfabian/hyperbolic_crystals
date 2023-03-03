@@ -57,7 +57,7 @@ def get_access_point(silent=True):
     group_specs_fname = HYPERBOLIC_DIR + "/group_specs.inp"
     group_specs_file = open(group_specs_fname, 'r')
     group_specs_lines = group_specs_file.readlines()
-    group_specs_lines = [ int(re.sub("[^0-9]", "", line)) for line in group_specs_lines]
+    group_specs_lines = [ int(re.sub('[^-\d]', "", line)) for line in group_specs_lines]
     p,q,N = group_specs_lines
 
     access_point['p'] = p
