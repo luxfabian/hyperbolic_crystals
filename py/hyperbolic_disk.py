@@ -8,6 +8,92 @@
 """
 import numpy as np
 
+def ahlfors(z1,z2):
+    """
+        Defines the Ahlfors bracket
+    """
+    return (1-abs(z1)**2) * (1- abs(z2)**2)  + abs(z1-z2)**2
+
+def midpoint(z1,z2):
+    """
+        Calculate the geodesic midpoint between z1 and z2 
+        in the hyperbolic disk.
+    """
+    
+    nom  = z1 * (1-abs(z2)**2) + z2 * (1-abs(z1)**2)
+    denom = 1 - abs(z1)**2 * abs(z2)**2 + ahlfors(z1,z2)* np.sqrt( (1-abs(z1)**2)*(1-abs(z2)**2))
+
+    return nom/denom
+
+def phase(z, phi):
+    """
+	Determines the phase of z
+    """
+
+    arg = np.arctan2(z.imag, z.real) % (2*np.pi)
+
+    p1 = phi
+    p2 = phi + 2*np.pi/3
+    p3 = phi + 4*np.pi/3
+
+    phase = 2
+    if p1 <= arg and arg < p2:
+        phase = 0
+    if p2 <= arg and arg < p3:
+        phase = 1
+
+    return phase 
+
+def sigmoid(x):
+    return 1/(1+np.exp(x))
+
+def smooth_phase(z,l,phi,region):
+    chiz = chi(z,l,phi)
+  
+    return chiz[region] 
+
+def get_d(z,alpha):
+    dist = hyperbolic_distance(0,z)
+    if abs(alpha) >= np.pi/2:
+        return(dist)
+    else:
+        return np.arcsinh( abs(np.sin(alpha)) * np.sinh(dist))
+
+def chi(z,l,phi):
+    
+    # -- determine in which phase I am in
+    this_phase = phase(z, phi)
+    
+    # -- initialize phase boundaries
+    dphi = 2*np.pi/3
+    Y = np.zeros(3, dtype=complex)
+    Y[0] = np.exp(1j*phi)
+    Y[1] = np.exp(1j*dphi) * Y[0]
+    Y[2] = np.exp(1j*dphi) * Y[1]
+
+    # -- calculate angles
+    def arg(z):
+        return np.arctan2(z.imag,z.real)
+
+    ds = np.zeros(3)
+    if this_phase == 0:
+        ds[1] = get_d(z, arg(Y[1]*z.conj()))
+        ds[2] = get_d(z, arg(Y[0]*z.conj()))
+        ds[0] = - min(ds[1],ds[2]) 
+    if this_phase == 1:
+        ds[0] = get_d(z, arg(Y[1]*z.conj()))
+        ds[2] = get_d(z, arg(Y[2]*z.conj()))
+        ds[1] = - min(ds[2],ds[0]) 
+    if this_phase == 2:
+        ds[0] = get_d(z, arg(Y[0]*z.conj()))
+        ds[1] = get_d(z, arg(Y[2]*z.conj()))
+        ds[2] = - min(ds[0],ds[1]) 
+        
+    sigma  = [ sigmoid(d/l) for d in ds]
+  
+    norm = sigma[0] + sigma[1] + sigma[2]
+
+    return sigma/norm
 
 def get_A(p, q):
     """
@@ -90,13 +176,38 @@ def parse_word(word, A, B, seed):
 
 
 if __name__=="__main__":
+    import matplotlib.pyplot as plt
 
-    p=5
-    q=4
+    n_phi = 301
+    n_r = 100
 
-    A = get_A(p,q)
-    B = get_B(p,q)
+    phis = np.linspace(0, 2*np.pi, n_phi)
+    rs = np.linspace(0,0.99999,n_r)
 
-    seed = 0.4 + 0.1j
+    chis = np.zeros((3,n_r, n_phi))
+ 
+    phi = np.pi/5
+    for i in range(n_r):
+        for j in range(n_phi):
+            z = rs[i] * np.exp(1j*phis[j])
+            for region in range(3):
+                chis[region,i,j] = smooth_phase(z,0.5,phi=phi,region=region)
 
-    print( parse_word("BBBB", A,B, seed) )
+    fig, axs = plt.subplots(1,3, subplot_kw=dict(projection="polar"))
+    deg = 180 / np.pi
+  
+    titles = [r"$\chi_1(z)$", r"$\chi_2(z)$" , r"$\chi_3(z)$"]
+    for region in range(3):
+        ax = axs[region]
+       	ax.set_xticklabels([])
+       	ax.set_yticklabels([])
+        ax.set_thetagrids([phi*deg, phi*deg+120, phi*deg+240])
+        ax.set_rticks([])
+        ax.set_title(titles[region])
+        ctf = ax.contourf(phis,rs,chis[region], levels=400, cmap='viridis')
+    plt.tight_layout()
+    
+    sk = 0.4
+    fig.colorbar(ctf, ax=axs.ravel().tolist(), orientation='vertical', ticks=[0,0.5,1], shrink=sk, aspect=20*sk)
+    plt.savefig("Y_junction.png", dpi=300) 
+    plt.show()
