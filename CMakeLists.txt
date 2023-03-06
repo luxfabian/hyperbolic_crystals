@@ -50,7 +50,7 @@ set(INCLUDE_PATH ${CMAKE_BINARY_DIR}/include)
 find_package(Boost REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(Threads REQUIRED)
-find_package(OpenBLAS64 REQUIRED)
+find_package(OpenBLAS64)
 
 #find_package(Eigen3 REQUIRED)
 #set(BLA_VENDOR Intel10_64lp)
