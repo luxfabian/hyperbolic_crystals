@@ -105,7 +105,7 @@ void G::operator=(const G &other)
   }
 }
 
-G G::operator*(const G &other)
+G G::operator*(const G &other) const
 {
   G result=G(this->reduction);
 

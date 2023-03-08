@@ -37,7 +37,7 @@ public:
   Ring operator+(const Ring &other);
 
   // Ring multiplication
-  Ring operator*(const Ring &other);
+  Ring operator*(const Ring &other) const;
 
   //Take modulus w.r.t to integer m
   Ring operator%(const int &m);

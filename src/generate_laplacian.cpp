@@ -13,6 +13,7 @@
 #include <string>
 
 #include <vector>
+#include <unordered_map>
 #include <algorithm>
 
 #include <cstdlib>
@@ -111,7 +112,7 @@ int main()
 
   G word = G(T.reduction);
 
-  vector<G> basis;
+  unordered_map<G,int,GHash> basis;
 
   // Construct unit element
   G A = T.A;
@@ -125,6 +126,7 @@ int main()
     AB = AB % modulo;
   }
 
+  int word_count = 0;
   if (basis_file.is_open())
   {
     while (getline(basis_file, line))
@@ -147,7 +149,8 @@ int main()
         if (periodic_boundary)
           word = word % modulo;
       }
-      basis.push_back(word);
+      // basis.push_back(word);
+	  basis.insert( {word, word_count++} );
     }
   }
   else
@@ -209,27 +212,24 @@ int main()
 
   for (G op : operators)
   {
-    #pragma omp parallel default(none) private(action, i) shared(op, modulo, basis, periodic_boundary, j_map) 
     {
       // j = 0;
       i = 0;
       vector<int> zero(basis.size(), 0);
       j_map = zero;
 
-      #pragma omp parallel for 
-      for(vector<int>::size_type j=0; j<basis.size(); j++) // (G b : basis)
+      unordered_map<G,int,GHash>::iterator basis_iterator = basis.begin();
+      while(basis_iterator!=basis.end())
       {
-        action = basis[j] * op;
+        action = (basis_iterator->first)*op;
 
-        if (periodic_boundary)
-          action = action % modulo;
+        if (periodic_boundary) action = action % modulo;
 
-        auto it = find(basis.begin(), basis.end(), action);
+        unordered_map<G,int, GHash>::const_iterator it = basis.find(action);
 
-        if (it != basis.end())
+	if (it != basis.end())
         {
-          i = it - basis.begin();
-          j_map[j] = i;
+          j_map[basis_iterator->second] = it->second;
         }
         else
         {
@@ -240,8 +240,9 @@ int main()
           }
 
           // -- intercept boundary
-          j_map[j] = -1;
+          j_map[basis_iterator->second] = -1;
         }
+        basis_iterator++;
       }
     }
 

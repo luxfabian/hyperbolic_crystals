@@ -12,7 +12,7 @@
 n_x = 100
 n_energies = 200
 n_moments = n_energies
-n_random_states = 30
+n_random_states = 10
 
 # ----------------------------------------
 

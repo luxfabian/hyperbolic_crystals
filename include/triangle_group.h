@@ -45,7 +45,7 @@ public:
     G operator%(const int &m);
 
     // Multiplication operator
-    G operator*(const G &other);
+    G operator*(const G &other) const;
 
     // Multiplication modulo m
     G mod_mul(const G &left, const G &right, const int &m);

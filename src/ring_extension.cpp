@@ -122,7 +122,7 @@ Ring Ring::operator+(const Ring &other)
   return Ring(add, this->reduction);
 }
 
-Ring Ring::operator*(const Ring &other)
+Ring Ring::operator*(const Ring &other) const
 {
   const vector<int> &a = this->representation;
   const vector<int> &b = other.representation;
