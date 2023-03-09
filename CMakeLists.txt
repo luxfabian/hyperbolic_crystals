@@ -47,6 +47,8 @@ set(INCLUDE_PATH ${CMAKE_BINARY_DIR}/include)
 # Find the C++ boost library
 #---------------------------------------------------------------------#
 
+set(OpenBLAS64_DIR /home/fox/Git/OpenBLAS/OpenBLAS64)
+
 find_package(Boost REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(Threads REQUIRED)
