@@ -21,7 +21,7 @@
 
 using namespace std;
 
-vector<int> read_numberfield_reduction(const int &p, const int &q)
+vector<long> read_numberfield_reduction(const long &p, const long &q)
 {
   string line;
 
@@ -30,13 +30,13 @@ vector<int> read_numberfield_reduction(const int &p, const int &q)
 
   ifstream file(build_dir + "/ring_reduction.inp");
 
-  int n = 2 * p * q;
+  long n = 2 * p * q;
 
   // cout << "Searching ring_reduction.inp for n=2pq=" << n << endl;
 
-  vector<int> reduction;
-  int buffer;
-  int d = 0;
+  vector<long> reduction;
+  long buffer;
+  long d = 0;
 
   bool listening = false;
 
@@ -88,15 +88,15 @@ Ring::Ring(void)
   this->dim = 0;
 }
 
-Ring::Ring(const vector<int> &reduction)
+Ring::Ring(const vector<long> &reduction)
 {
   this->dim = reduction.size();
-  vector<int> empty(this->dim, 0);
+  vector<long> empty(this->dim, 0);
   this->representation = empty;
   this->reduction = reduction;
 }
 
-Ring::Ring(const vector<int> &coeffs, const vector<int> &reduction)
+Ring::Ring(const vector<long> &coeffs, const vector<long> &reduction)
 {
   if (coeffs.size() == reduction.size())
   {
@@ -112,9 +112,9 @@ Ring::Ring(const vector<int> &coeffs, const vector<int> &reduction)
 
 Ring Ring::operator+(const Ring &other) const
 {
-  vector<int> add;
+  vector<long> add;
 
-  for (vector<int>::size_type i = 0; i < (this->representation.size()); i++)
+  for (vector<long>::size_type i = 0; i < (this->representation.size()); i++)
   {
     add.push_back(this->representation[i] + other.representation[i]);
   }
@@ -124,26 +124,26 @@ Ring Ring::operator+(const Ring &other) const
 
 Ring Ring::operator*(const Ring &other) const
 {
-  const vector<int> &a = this->representation;
-  const vector<int> &b = other.representation;
+  const vector<long> &a = this->representation;
+  const vector<long> &b = other.representation;
 
-  const int &d = this->dim;
+  const long &d = this->dim;
 
-  vector<int> buffer(2 * d - 1, 0);
+  vector<long> buffer(2 * d - 1, 0);
 
   // -- unreduced product of polynomials
-  for (int i = 0; i < d; i++)
+  for (long i = 0; i < d; i++)
   {
-    for (int j = 0; j < d; j++)
+    for (long j = 0; j < d; j++)
     {
       buffer[i + j] += a[i] * b[j];
     }
   }
 
   // -- folding back
-  int b_id = 0;
-  int id;
-  for (int k = 0; k < d - 1; k++)
+  long b_id = 0;
+  long id;
+  for (long k = 0; k < d - 1; k++)
   {
     // -- store buffer element temporarily
     id = 2 * d - 2 - k;
@@ -151,7 +151,7 @@ Ring Ring::operator*(const Ring &other) const
     buffer[id] = 0;
 
     // -- fold this deleted index back onto the buffer
-    for (int l = 0; l < d; l++)
+    for (long l = 0; l < d; l++)
     {
       // -- index runs from id - (d-1) until id-1
       buffer.at(d - 2 + l - k) += b_id * this->reduction[l];
@@ -159,9 +159,9 @@ Ring Ring::operator*(const Ring &other) const
     }
   }
 
-  vector<int> c;
+  vector<long> c;
   c.clear();
-  for (int l = 0; l < d; l++)
+  for (long l = 0; l < d; l++)
   {
     c.push_back(buffer[l]);
   }
@@ -169,13 +169,13 @@ Ring Ring::operator*(const Ring &other) const
   return Ring(c, this->reduction);
 }
 
-Ring Ring::operator%(const int &m) const
+Ring Ring::operator%(const long &m) const
 {
   // https://stackoverflow.com/a/44197900/7236657
 
-  vector<int> mod;
+  vector<long> mod;
 
-  for (int i = 0; i < (this->dim); i++)
+  for (long i = 0; i < (this->dim); i++)
   {
     mod.push_back((m + ((this->representation)[i] % m)) % m);
   }
@@ -204,9 +204,9 @@ bool Ring::operator==(const Ring &other) const
 string Ring::repr(void) const
 {
   string rep = "";
-  int c;
+  long c;
   string x;
-  for (vector<int>::size_type i = 0; i < this->representation.size(); i++)
+  for (vector<long>::size_type i = 0; i < this->representation.size(); i++)
   {
     c = this->representation[i];
 

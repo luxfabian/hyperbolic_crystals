@@ -30,7 +30,7 @@ class G
 {
 public:
     string word = "";
-    vector<int> reduction;
+    vector<long> reduction;
 
     // -- matrix representation of the word
     Ring mat[3][3];
@@ -39,10 +39,10 @@ public:
     G(void);
 
     // Initialize with known field specs
-    G(const vector<int> reduction);
+    G(const vector<long> reduction);
 
     // Modulo operator
-    G operator%(const int &m) const;
+    G operator%(const long &m) const;
 
     // Multiplication operator
     G operator*(const G &other) const;
@@ -70,17 +70,17 @@ public:
 
 
 // concatenate n copies of a word
-string word_power(const string &word, const int &n);
+string word_power(const string &word, const long &n);
 
 class TriangleGroup
 {
 public:
     // Signature of the triangle group
-    int p, q;
-    const int r = 2;
+    long p, q;
+    const long r = 2;
 
     // Polynomimal reduction for ring extension
-    vector<int> reduction;
+    vector<long> reduction;
 
     // Generators of the triangle group
     G X;
@@ -95,7 +95,7 @@ public:
     vector<string> relations;
 
     // Constructor
-    TriangleGroup(const int &p, const int &q);
+    TriangleGroup(const long &p, const long &q);
 
     // Uses relations of the group to reduce the given word
     void reduce(string &word);

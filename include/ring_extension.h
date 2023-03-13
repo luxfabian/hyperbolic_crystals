@@ -15,23 +15,23 @@
 
 using namespace std;
 
-extern vector<int> read_numberfield_reduction(const int &p, const int &q);
+extern vector<long> read_numberfield_reduction(const long &p, const long &q);
 
 class Ring
 {
 public:
-  vector<int> representation;
-  vector<int> reduction;
-  int dim;
+  vector<long> representation;
+  vector<long> reduction;
+  long dim;
 
   // Default constructor
   Ring(void);
 
   // Initializes zero
-  Ring(const vector<int> &reduction);
+  Ring(const vector<long> &reduction);
 
   // Constructor with initialization
-  Ring(const vector<int> &coeffs, const vector<int> &reduction);
+  Ring(const vector<long> &coeffs, const vector<long> &reduction);
 
   // Ring addition
   Ring operator+(const Ring &other) const;
@@ -39,8 +39,8 @@ public:
   // Ring multiplication
   Ring operator*(const Ring &other) const;
 
-  //Take modulus w.r.t to integer m
-  Ring operator%(const int &m) const;
+  //Take modulus w.r.t to longeger m
+  Ring operator%(const long &m) const;
 
   //Copy one Ring object to another
   void operator=(const Ring other);

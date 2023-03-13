@@ -15,6 +15,7 @@ include_directories(../include ${Boost_INCLUDE_DIR} ${Eigen3_INCLUDE_DIR})
 set(SOURCES generate_laplacian.cpp ../src/triangle_group.cpp ../src/ring_extension.cpp)
 add_executable(generate_laplacian ${SOURCES})
 target_link_libraries(generate_laplacian OpenMP::OpenMP_CXX)
+target_compile_options(generate_laplacian PRIVATE -ftrapv)
 #target_include_directories(generate_laplacian PRIVATE ${OpenMP_INCLUDE_DIRS})
 
 # include_directories(../include ${Boost_INCLUDE_DIR})
