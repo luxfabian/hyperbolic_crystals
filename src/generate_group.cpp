@@ -12,7 +12,7 @@
 #include <sstream>
 #include <string>
 
-#include <unordered_set>
+#include <unordered_map>
 #include <vector>
 
 #include <cmath>
@@ -21,10 +21,10 @@
 
 #include "triangle_group.h"
 
-void add_to_basis(G &candidate,  unordered_set<G, GHash> &unordered_basis,  vector<G> &next_generation){
+void add_to_basis(int &count, G &candidate,   unordered_map<G,int,GHash> &unordered_basis,  vector<G> &next_generation){
   if (unordered_basis.find(candidate) == unordered_basis.end())
   {
-    unordered_basis.insert(candidate);
+    unordered_basis.insert( {candidate, count++});
     next_generation.push_back(candidate);
   }
 }
@@ -112,7 +112,7 @@ int main()
   E.identity();
 
   // -- found elements are stored here
-  std::unordered_set<G, GHash> unordered_basis;
+  unordered_map<G,int,GHash> unordered_basis;
   // vector<G> basis;
 
   // -- keep track of the iterative process
@@ -123,6 +123,7 @@ int main()
   // unordered_basis.insert(E);
   prev_generation.push_back(E);
 
+  int count = 0;
   int generation=0;
 
   G generator = G(T.reduction);
@@ -154,7 +155,7 @@ int main()
 
         if(periodic_boundary) candidate = candidate % modulo;
 
-        add_to_basis(candidate, unordered_basis, next_generation);
+        add_to_basis(count, candidate, unordered_basis, next_generation);
       }
     }
 
@@ -195,15 +196,16 @@ int main()
   ofstream output_file; 
   output_file.open(output_file_name, ofstream::out | ofstream::trunc);
 
-  for(G elem: unordered_basis)
+  for(auto elem: unordered_basis)
   {
-    if(elem.word=="")
+    output_file << to_string(elem.second) << " " ;
+    if(elem.first.word=="")
     {
-      output_file << "E"<< endl;
+      output_file << "E"  << endl;
     }
     else
     {
-      output_file << elem.word << endl;
+      output_file << elem.first.word  << endl;
     }
   }
 

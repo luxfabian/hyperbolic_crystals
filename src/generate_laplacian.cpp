@@ -144,13 +144,21 @@ int main()
   }
 
   int word_count = 0;
+  string word_rep;
   if (basis_file.is_open())
   {
     while (getline(basis_file, line))
     {
       word = G(T.reduction);
       word.identity();
-      for (char &c : line)
+      word_rep = "";
+
+      stringstream ss(line);
+
+      ss >> word_count;
+      ss >> word_rep;
+
+      for (char &c : word_rep)
       {
         if (c == 'A')
         {
@@ -167,7 +175,7 @@ int main()
           word = word % modulo;
       }
       // basis.push_back(word);
-	  basis.insert( {word, word_count++} );
+	  basis.insert( {word, word_count} );
     }
   }
   else
