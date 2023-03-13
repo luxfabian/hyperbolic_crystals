@@ -16,8 +16,8 @@ TODO
 
 The main code base relies on `C++17` and the libraries
 
-- `Boost`, https://www.boost.org/
-- `Eigen3`, https://eigen.tuxfamily.org/index.php?title=Main_Page
+- (optional) `Boost`, https://www.boost.org/ 
+- (optional) `Eigen3`, https://eigen.tuxfamily.org/index.php?title=Main_Page
 
 The environment variables `Boost_DIR` and `Eigen3_DIR` need to point to the root directory of the respective libaries. For this one can modify and use the configure scripts `./configure.bat` on Windows and `./configure.sh` on Linux or Mac.
 
