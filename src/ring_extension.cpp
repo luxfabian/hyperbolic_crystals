@@ -110,7 +110,7 @@ Ring::Ring(const vector<int> &coeffs, const vector<int> &reduction)
   }
 }
 
-Ring Ring::operator+(const Ring &other)
+Ring Ring::operator+(const Ring &other) const
 {
   vector<int> add;
 
@@ -169,7 +169,7 @@ Ring Ring::operator*(const Ring &other) const
   return Ring(c, this->reduction);
 }
 
-Ring Ring::operator%(const int &m)
+Ring Ring::operator%(const int &m) const
 {
   // https://stackoverflow.com/a/44197900/7236657
 
@@ -201,7 +201,7 @@ bool Ring::operator==(const Ring &other) const
   return equality;
 }
 
-string Ring::repr(void)
+string Ring::repr(void) const
 {
   string rep = "";
   int c;

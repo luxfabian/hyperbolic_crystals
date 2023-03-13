@@ -34,13 +34,13 @@ public:
   Ring(const vector<int> &coeffs, const vector<int> &reduction);
 
   // Ring addition
-  Ring operator+(const Ring &other);
+  Ring operator+(const Ring &other) const;
 
   // Ring multiplication
   Ring operator*(const Ring &other) const;
 
   //Take modulus w.r.t to integer m
-  Ring operator%(const int &m);
+  Ring operator%(const int &m) const;
 
   //Copy one Ring object to another
   void operator=(const Ring other);
@@ -49,7 +49,7 @@ public:
   bool operator==(const Ring &other) const;
 
   // Pretty string representation
-  string repr(void);
+  string repr(void) const;
 };
 
 #endif
