@@ -9,6 +9,7 @@ include_directories(../include ${Boost_INCLUDE_DIR})
 set(SOURCES test_triangle_group.cpp ../src/triangle_group.cpp ../src/ring_extension.cpp )
 add_executable(test_triangle_group ${SOURCES})
 add_test(NAME test_triangle_group COMMAND test_triangle_group)
+target_compile_options(test_triangle_group PRIVATE -ftrapv)
 
 include_directories(../include ${Boost_INCLUDE_DIR})
 set(SOURCES test_ring_extension.cpp ../src/ring_extension.cpp)
