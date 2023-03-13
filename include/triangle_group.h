@@ -42,13 +42,10 @@ public:
     G(const vector<int> reduction);
 
     // Modulo operator
-    G operator%(const int &m);
+    G operator%(const int &m) const;
 
     // Multiplication operator
     G operator*(const G &other) const;
-
-    // Multiplication modulo m
-    G mod_mul(const G &left, const G &right, const int &m);
 
     // Assignment operator
     void operator=(const G &other);
@@ -57,7 +54,7 @@ public:
     bool operator==(const G &other) const;
 
     // Pretty string representation
-    string repr(void);
+    string repr(void) const;
 
     // Set G to be equal to the identity element
     void identity(void);

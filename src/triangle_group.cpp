@@ -74,7 +74,7 @@ void G::identity(void)
   }
 }
 
-G G::operator%(const int &m)
+G G::operator%(const int &m) const
 {
   G result = G(this->reduction);
 
@@ -147,7 +147,7 @@ bool G::operator==(const G &other) const
   return equal;
 }
 
-string G::repr(void)
+string G::repr(void) const
 {
   string rep;
 
