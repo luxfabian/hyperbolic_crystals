@@ -156,11 +156,16 @@ for i in range(len(labels)):
         dosmat[i] = dos
 
     np.save(fname+"energy.npy", energy)
-    np.save(fname+"dos.npy", dosmat)       
+    np.save(fname+"dos.npy", dosmat)    
+
+    fig = plt.figure()
+    ax=plt.gca()
+    ax.set_ylim((-1.2,1.2))
+    ax.set_xticks([0,0.25, 0.50, 0.75, 1.00])   
 
     plt.imshow(
         dosmat.transpose(), 
-        extent=(0,1, np.amin(energy), np.amax(energy)), 
+        extent=(0,1, -1.2, 1.2), 
         origin='lower', aspect='auto',cmap='Blues', interpolation='spline16', 
         norm=colors.SymLogNorm(
             linthresh=0.1, linscale=0.6, vmin=0, vmax=np.amax(dosmat), base=10
@@ -168,8 +173,7 @@ for i in range(len(labels)):
         ) 
     
     plt.colorbar()
-    ax=plt.gca()
-    ax.set_ylim((-1.2,1.2))
+   
     plt.tight_layout()
     plt.savefig(fname+'dos.png',dpi=200)
     plt.clf()
