@@ -5,6 +5,8 @@
 # Prerequisites
 *.d
 
+py/dos_8
+py/out
 data
 
 # Compiled Object files
