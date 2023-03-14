@@ -38,20 +38,21 @@ P[n_]:=2 ChebyshevT[n, x/2]
 pqlist = #[[1]]&/@DeleteCases[ ArrayFlatten[ Table[ { {p,q}, 1/p+1/q+1/2<1}, {p,1,pmax},{q,1,qmax}],1], {{p_,q_}, False}] ;
 
 
+Clear[n]
 n[p_,q_]:=(
 	res = 2 p q  ;
 	
-	If[ p==q , res = p; ];
+	If[ p==q , res = 2p; ];
 	
-	If[ q==3 , res = p ;  ];
+	If[ q==3 , res = 2p ;  ];
 	
-	If[ p==3 , res = q ; ];
+	If[ p==3 , res =2 q ; ];
 	
 	Return[res];
 )
 
 
-ExpandPoly[poly_,p_, q_]:=PadRight[CoefficientList[Expand[ poly ],x],EulerPhi[2 n[p,q]]/2]
+ExpandPoly[poly_,p_, q_]:=PadRight[CoefficientList[Expand[ poly ],x],EulerPhi[n[p,q]]/2]
 
 
 X[p_,q_]:=(
@@ -104,45 +105,6 @@ YExport[{p_,q_}]:=Export["./generators/"<>ToString[p]<>"_"<>ToString[q]<>".Y", Y
 ZExport[{p_,q_}]:=Export["./generators/"<>ToString[p]<>"_"<>ToString[q]<>".Z", ZFormat[p,q], "Table", "FieldSeparators" -> " "]
 
 
-YFormat[7,3]
-
-
-Flatten[ Expand[ Y[7,3] ] ]
-
-
-ExpandPoly[ ]
-
-
 XExport[#]&/@ pqlist;
 YExport[#]&/@ pqlist;
 ZExport[#]&/@ pqlist;
-
-
-\[Sigma]x = X[7,3]/.{x-> 2 Cos[\[Pi]/(7 3)]} //FullSimplify
-
-
-\[Sigma]y = Y[7,3]/.{x-> 2 Cos[\[Pi]/(7 3)]} //FullSimplify
-
-
-\[Sigma]z = Z[7,3]/.{x->2 Cos[ \[Pi]/(7 3)]} //FullSimplify
-
-
-P[7]/.{x-> 2 Cos[\[Pi]/(7 3)]} //FullSimplify
-
-
-P[7]
-
-
-P[3]/.{x-> 2 Cos[\[Pi]/(7 3)]} //FullSimplify
-
-
-P[5]/.{x-> 2 Cos[\[Pi]/(5 4)]} //FullSimplify
-
-
-2 Cos[\[Pi]/5]
-
-
-P[4]/.{x-> 2 Cos[\[Pi]/(5 4)]}//FullSimplify
-
-
-Cos[\[Pi]/3]
