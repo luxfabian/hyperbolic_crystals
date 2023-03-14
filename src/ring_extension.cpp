@@ -32,7 +32,20 @@ vector<long> read_numberfield_reduction(const long &p, const long &q)
 
   long n = 2 * p * q;
 
-  // cout << "Searching ring_reduction.inp for n=2pq=" << n << endl;
+  if(p==q)
+  {
+    n = 2*p;
+  }
+  else if (p==3)
+  {
+    n = 2*q;
+  }
+  else if (q==3)
+  {
+    n = 2*p;
+  }
+
+  cout << "Searching ring_reduction.inp for n=" << n << endl;
 
   vector<long> reduction;
   long buffer;
@@ -78,7 +91,7 @@ vector<long> read_numberfield_reduction(const long &p, const long &q)
   }
   file.close();
 
-  // cout << "Dimension of ring extension is d=" << d << endl;
+  cout << "Found ring extension, dimension is " << d << endl;
 
   return reduction;
 }

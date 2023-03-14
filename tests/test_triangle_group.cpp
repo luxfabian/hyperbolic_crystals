@@ -5,82 +5,53 @@ int main(){
 
   using namespace std;
 
-  TriangleGroup T = TriangleGroup(5,4);
+  TriangleGroup T = TriangleGroup(7,3);
 
-  string word("ABABAAAABABBBBBB");
+  G X = T.X;
+  G Y = T.Y;
+  G Z = T.Z;
 
-  cout << "Some generic word: " << word << endl;
-  T.reduce(word);
-  cout << "Its reduction in the {5,4,2} van Dyck triangle group: " << word << endl;
-
-  
-
-  G X=T.X;
-  G Y=T.Y;
-  G Z=T.Z;
-
-  cout << "X is given by: " << endl;
+  cout << "X" << endl;
   cout << X.repr() << endl;
 
-  cout << "X^2 is given by: " << endl;
+  cout << "X^2" << endl;
   cout << (X*X).repr() << endl;
-  
-  cout << "Y is given by: " << endl;
+
+  cout << "Y" << endl;
   cout << Y.repr() << endl;
 
-  cout << "Y^2 is given by: " << endl;
+  cout << "Y^2" << endl;
   cout << (Y*Y).repr() << endl;
 
-  cout << "Z is given by: " << endl;
+  cout << "Z" << endl;
   cout << Z.repr() << endl;
 
-  cout << "Z^2 is given by: " << endl;
+  cout << "Z^2" << endl;
   cout << (Z*Z).repr() << endl;
 
-  cout << "A is given by: " << endl;
   G A = X*Y;
+
+  G B = Y*Z;
+
+  G C = X*Z;
+  
+  // G A = T.A;
+  // G A7 = T.A;
+
+  cout << "A" << endl;
   cout << A.repr() << endl;
 
-  cout << "A^2 is given by: " << endl;
-  cout << (A*A).repr() << endl;
+  cout << "A^7" << endl;
+  cout << (A*A*A*A*A*A*A).repr() << endl;
 
-  cout << "A^3 is given by: " << endl;
-  cout << (A*A*A).repr() << endl;
-
-  cout << "A^4 is given by: " << endl;
-  cout << (A*A*A*A).repr() << endl;
-
-  cout << "A^5 is given by: " << endl;
-  cout << (A*A*A*A*A).repr() << endl;
-
-  cout << "B is given by: " << endl;
-  G B = Y*Z;
-  cout << B.repr() << endl;
-
-  cout << "B^2 is given by: " << endl;
-  cout << (B*B).repr() << endl;
-
-  cout << "B^3 is given by: " << endl;
-  cout << (B*B*B).repr() << endl;
-
-  cout << "B^4 is given by: " << endl;
-  cout << (B*B*B*B).repr() << endl;
-
-  cout << "C is given by: " << endl;
-  G C = A*B;
+  cout << "C" << endl;
   cout << C.repr() << endl;
 
-  cout << "C^2 is given by: " << endl;
+  cout << "C^2" << endl;
   cout << (C*C).repr() << endl;
 
-
-  cout << "A is given by: " << endl;
-  cout << A.repr() << endl; 
-  
-  cout << "A mod 4 is given by " << endl;
-
-  G A4 = A % 4;
-  cout << A4.repr() << endl;
+  cout << "B^3" << endl;
+  cout << (B*B*B).repr() << endl;
 
 
   return 0;

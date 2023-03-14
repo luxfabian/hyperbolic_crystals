@@ -10,11 +10,11 @@ int main(){
   const int p=5;
   const int q=4;
 
-  vector<int> reduction;
+  vector<long> reduction;
 
   reduction = read_numberfield_reduction(p,q);
 
-  int d = reduction.size();
+  long d = reduction.size();
 
   Ring a(reduction);
   Ring b(reduction);
