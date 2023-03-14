@@ -4,7 +4,7 @@
     Author: Fabian R. Lux
     Date:   2023-03-08
 
-    Sets up - and diagonalizes the Y-junction Hamiltonian. Only works with open boundary conditions as of now.
+    Sets up and diagonalizes the Y-junction Hamiltonian. Only works with open boundary conditions as of now.
 """
 import numpy as np
 
@@ -22,4 +22,4 @@ phi = alpha /2
 # -- length scale of domain wall
 l = 0.25
 
-# -- import
+# -- import basis
