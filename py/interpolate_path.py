@@ -11,7 +11,7 @@
 
 n_x = 100
 n_energies = 200
-n_moments = n_energies
+n_moments = 80
 n_random_states = 10
 
 # ----------------------------------------
@@ -130,10 +130,10 @@ PC0 = lam *  ( PC1 @ g['AB'] )
 
 PC_1 = ( PC0 + PC1 ) / 2
 
-epsilon = 0.2
-HA = (1-epsilon)*(id - 2 * PA_1) + epsilon * Delta
-HB = (1-epsilon)*(id - 2 * PB_1) + epsilon * Delta
-HC = (1-epsilon)*(id - 2 * PC_1) + epsilon * Delta
+epsilon = 0.8
+HA = epsilon*(id - 2 * PA_1) + (1-epsilon) * Delta
+HB = epsilon*(id - 2 * PB_1) + (1-epsilon) * Delta
+HC = epsilon*(id - 2 * PC_1) + (1-epsilon) * Delta
 
 xs = np.linspace(0,1,n_x)
 
