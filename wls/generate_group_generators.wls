@@ -24,6 +24,10 @@
 (**)
 
 
+dir = If[$Notebooks, NotebookDirectory[], Directory[] ];
+SetDirectory[dir];
+
+
 pmax= 20;
 qmax = 20;
 
@@ -34,21 +38,65 @@ P[n_]:=2 ChebyshevT[n, x/2]
 pqlist = #[[1]]&/@DeleteCases[ ArrayFlatten[ Table[ { {p,q}, 1/p+1/q+1/2<1}, {p,1,pmax},{q,1,qmax}],1], {{p_,q_}, False}] ;
 
 
-ExpandPoly[poly_,n_]:=PadRight[CoefficientList[Expand[ poly ],x],EulerPhi[n]/2]
+n[p_,q_]:=(
+	res = 2 p q  ;
+	
+	If[ p==q , res = p; ];
+	
+	If[ q==3 , res = p ;  ];
+	
+	If[ p==3 , res = q ; ];
+	
+	Return[res];
+)
 
 
-X[p_,q_]:={{-1, P[q],0},{0, 1, 0 },{0,0,1}};
-Y[p_,q_]:={{1, 0,0},{P[q], -1, P[p] },{0,0,1}};
-Z[p_,q_]:={{1, 0,0},{0, 1, 0 },{0,P[p],-1}};
+ExpandPoly[poly_,p_, q_]:=PadRight[CoefficientList[Expand[ poly ],x],EulerPhi[2 n[p,q]]/2]
 
 
-XFormat[p_,q_]:= ExpandPoly[#,2 p q] &/@ Flatten[ Expand[ X[p,q] ]]
-YFormat[p_,q_]:= ExpandPoly[#,2 p q] &/@ Flatten[ Expand[ Y[p,q] ]]
-ZFormat[p_,q_]:= ExpandPoly[#,2 p q] &/@ Flatten[ Expand[ Z[p,q] ]]
+X[p_,q_]:=(
+	
+	res = {{-1, P[q],0},{0, 1, 0 },{0,0,1}}; 
+	
+	If[ p==q , res = {{-1, x,0},{0, 1, 0 },{0,0,1}};  ];
+	
+	If[ q==3 , res = {{-1, x,0},{0, 1, 0 },{0,0,1}};  ];
+	
+	If[ p==3 , res = {{-1, 1,0},{0, 1, 0 },{0,0,1}};  ];
+
+	Return[res];
+)
+
+Y[p_,q_]:=(
+	
+	res = {{1, 0,0},{P[q], -1, P[p] },{0,0,1}};
+	
+	If[ p==q , res = {{1, 0,0},{x, -1, x },{0,0,1}}; ];
+	
+	If[ q==3 , res = {{1, 0,0},{x, -1, 1 },{0,0,1}}; ];
+	
+	If[ p==3 , res = {{1, 0,0},{1, -1, x },{0,0,1}};];
+
+	Return[res];
+)
+
+Z[p_,q_]:=(
+	
+	res = {{1, 0,0},{0, 1, 0 },{0,P[p],-1}};
+	
+	If[ p==q , res = {{1, 0,0},{0, 1, 0 },{0,x,-1}};];
+	
+	If[ q==3 , res = {{1, 0,0},{0, 1, 0 },{0,1,-1}}; ];
+	
+	If[ p==3 , res = {{1, 0,0},{0, 1, 0 },{0,x,-1}};];
+
+	Return[res];
+)
 
 
-dir = If[$Notebooks, NotebookDirectory[], Directory[] ];
-SetDirectory[dir];
+XFormat[p_,q_]:= ExpandPoly[#, p, q] &/@ Flatten[ Expand[ X[p,q] ]]
+YFormat[p_,q_]:= ExpandPoly[#, p, q] &/@ Flatten[ Expand[ Y[p,q] ]]
+ZFormat[p_,q_]:= ExpandPoly[#, p, q] &/@ Flatten[ Expand[ Z[p,q] ]]
 
 
 XExport[{p_,q_}]:=Export["./generators/"<>ToString[p]<>"_"<>ToString[q]<>".X", XFormat[p,q], "Table", "FieldSeparators" -> " "]
@@ -56,6 +104,45 @@ YExport[{p_,q_}]:=Export["./generators/"<>ToString[p]<>"_"<>ToString[q]<>".Y", Y
 ZExport[{p_,q_}]:=Export["./generators/"<>ToString[p]<>"_"<>ToString[q]<>".Z", ZFormat[p,q], "Table", "FieldSeparators" -> " "]
 
 
+YFormat[7,3]
+
+
+Flatten[ Expand[ Y[7,3] ] ]
+
+
+ExpandPoly[ ]
+
+
 XExport[#]&/@ pqlist;
 YExport[#]&/@ pqlist;
 ZExport[#]&/@ pqlist;
+
+
+\[Sigma]x = X[7,3]/.{x-> 2 Cos[\[Pi]/(7 3)]} //FullSimplify
+
+
+\[Sigma]y = Y[7,3]/.{x-> 2 Cos[\[Pi]/(7 3)]} //FullSimplify
+
+
+\[Sigma]z = Z[7,3]/.{x->2 Cos[ \[Pi]/(7 3)]} //FullSimplify
+
+
+P[7]/.{x-> 2 Cos[\[Pi]/(7 3)]} //FullSimplify
+
+
+P[7]
+
+
+P[3]/.{x-> 2 Cos[\[Pi]/(7 3)]} //FullSimplify
+
+
+P[5]/.{x-> 2 Cos[\[Pi]/(5 4)]} //FullSimplify
+
+
+2 Cos[\[Pi]/5]
+
+
+P[4]/.{x-> 2 Cos[\[Pi]/(5 4)]}//FullSimplify
+
+
+Cos[\[Pi]/3]
