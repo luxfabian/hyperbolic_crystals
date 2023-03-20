@@ -8,6 +8,21 @@
 """
 import numpy as np
 
+
+#--- junction angles
+
+def junction_angles(phi):
+
+    p1 = phi
+    p2 = phi + 2*np.pi/3
+    p3 = phi + 4*np.pi/3
+
+    # p1 = phi % (2*np.pi)
+    # p2 = ( phi + 2*2*np.pi/5 )  % (2*np.pi)
+    # p3 = (phi  - 2*2*np.pi/5  ) % (2*np.pi)
+
+    return p1,p2,p3
+
 def ahlfors(z1,z2):
     """
         Defines the Ahlfors bracket
@@ -32,9 +47,7 @@ def phase(z, phi):
 
     arg = np.arctan2(z.imag, z.real) % (2*np.pi)
 
-    p1 = phi
-    p2 = phi + 2*np.pi/3
-    p3 = phi + 4*np.pi/3
+    p1,p2,p3 = junction_angles(phi)
 
     phase = 2
     if p1 <= arg and arg < p2:
@@ -58,22 +71,25 @@ def get_d(z,alpha):
         return(dist)
     else:
         return np.arcsinh( abs(np.sin(alpha)) * np.sinh(dist))
+    
+# -- calculate angles
+def arg(z):
+    return np.arctan2(z.imag,z.real)
 
 def chi(z,l,phi):
     
     # -- determine in which phase I am in
     this_phase = phase(z, phi)
     
-    # -- initialize phase boundaries
-    dphi = 2*np.pi/3
+    # # -- initialize phase boundaries
     Y = np.zeros(3, dtype=complex)
-    Y[0] = np.exp(1j*phi)
-    Y[1] = np.exp(1j*dphi) * Y[0]
-    Y[2] = np.exp(1j*dphi) * Y[1]
 
-    # -- calculate angles
-    def arg(z):
-        return np.arctan2(z.imag,z.real)
+    p1,p2,p3 = junction_angles(phi)
+    Y[0] = np.exp(1j*p1)
+    Y[1] = np.exp(1j*p2) 
+    Y[2] = np.exp(1j*p3) 
+
+    
 
     ds = np.zeros(3)
     if this_phase == 0:
@@ -195,13 +211,15 @@ if __name__=="__main__":
 
     fig, axs = plt.subplots(1,3, subplot_kw=dict(projection="polar"))
     deg = 180 / np.pi
+
+    p1,p2,p3 = junction_angles(phi)
   
     titles = [r"$\chi_1(z)$", r"$\chi_2(z)$" , r"$\chi_3(z)$"]
     for region in range(3):
         ax = axs[region]
        	ax.set_xticklabels([r"$\Upsilon_1^\infty$", r"$\Upsilon_2^\infty$", r"$\Upsilon_3^\infty$"])
        	ax.set_yticklabels([])
-        ax.set_thetagrids([phi*deg, phi*deg+120, phi*deg+240])
+        ax.set_thetagrids([p1*deg, p2*deg, p3*deg])
         ax.set_rticks([])
         ax.set_title(titles[region])
         ctf = ax.contourf(phis,rs,chis[region], levels=400, cmap='viridis')
