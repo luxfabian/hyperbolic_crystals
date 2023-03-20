@@ -46,15 +46,12 @@ r0 = hyperbolic_disk.get_r0(p,q)
 
 seed = (r0-0.12) * np.exp(1j*alpha/2)
 
-
-
 # -- length scale of domain wall
-l = 1.0
+l = 0.3
 
 # -- import basis
 
 d = access_point['d']
-
 
 basis = np.empty(d, dtype=object)
 with open(fname_prefix+".words", "r") as basis_file:
@@ -160,6 +157,8 @@ eigenvalues, eigenvectors = np.linalg.eigh(H_dense)
 
 np.save("junction_eigenvalues.npy",eigenvalues)
 np.save("junction_eigenvectors.npy",eigenvectors)
+
+np.save("junction_zs.npy",zs)
 
 
 
