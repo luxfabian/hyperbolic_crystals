@@ -207,7 +207,7 @@ if __name__=="__main__":
         for j in range(n_phi):
             z = rs[i] * np.exp(1j*phis[j])
             for region in range(3):
-                chis[region,i,j] = smooth_phase(z,0.3,phi=phi,region=region)
+                chis[region,i,j] = smooth_phase(z,1.0,phi=phi,region=region)
 
     fig, axs = plt.subplots(1,3, subplot_kw=dict(projection="polar"))
     deg = 180 / np.pi
@@ -228,5 +228,5 @@ if __name__=="__main__":
     plt.tight_layout(w_pad=3)
     sk = 0.25
     fig.colorbar(ctf, ax=axs.ravel().tolist(), orientation='vertical', ticks=[0,0.5,1], shrink=sk, aspect=20*sk, pad=0.1)
-    plt.savefig("Y_junction_0.3.png", dpi=300) 
+    plt.savefig("Y_junction_1.0.png", dpi=300) 
     plt.show()

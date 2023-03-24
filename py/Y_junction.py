@@ -47,7 +47,7 @@ r0 = hyperbolic_disk.get_r0(p,q)
 seed = (r0-0.12) * np.exp(1j*alpha/2)
 
 # -- length scale of domain wall
-l = 0.3
+l = 1
 
 # -- import basis
 

@@ -9,9 +9,9 @@
 
 # -- options -----------------------------
 
-n_x = 100
-n_energies = 200
-n_moments = 200
+n_x = 200
+n_energies = 500
+n_moments = 500
 n_random_states = 10
 
 # ----------------------------------------
