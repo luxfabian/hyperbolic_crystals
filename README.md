@@ -39,3 +39,42 @@ make test
 ```
 
 Finally one needs to set the environment variable `HYPERBOLIC_BUILD` with the absolute path of the build directory that was just created and the variable `HYPERBOLIC_DIR` to the directory which contains the file `group_specs.inp`.
+
+
+### How to use the code
+
+#### The input file
+
+Create the text file `group_specs.inp` in the directory specified by `HYPERBOLIC_DIR`. A valid example could be the following:
+
+```
+p 5
+q 4
+N 2
+```
+
+If $N>0$, the proper {$p$,$q$}-triangle group will generated modulo $N$. If $N<0$, the first $N$ cycles of the of the triangle group are completed by starting with a $p$-cycle.
+
+There is a unique file name prefix corresponding to each set of $p$, $q$ and $N$. If $N>0$, outpot file names are of the form
+
+`$HYPERBOLIC_DIR/<p>_<q>_modulo_<N>.*`
+
+where `<x>` needs to be replaced with the actual value of `x` and `*` denotes a possible file name extension. If $N<0$, the corresponding string is
+
+`$HYPERBOLIC_DIR/<p>_<q>_open_<-N>.*`
+
+#### Generating the group
+
+The executable `generate_group` will read the `group_specs.inp` and generate the group. The result is stored in a `.words` file. For example, a typical `.words` file could look like the following:
+
+```
+159 AABBAABBAAB
+158 ABBAAABBAAAAB
+153 AAABBAABBAA
+152 AAABBAABBA
+150 AABBBAABBBA
+148 AABBBAABBA
+...
+```
+
+where the integer describes the index of the group element, keeping track of the order in which group elements where discovered. The integer is then followed by a string which describes a word in the proper-triangle group. `A` is the generator of `p`-cycles, while `B` is the generator of `q`-cycles. Once created, the matrix representation of the group elements can be reconstructed from the information in this file.
