@@ -30,9 +30,6 @@ file(COPY ${CMAKE_SOURCE_DIR}/wls/ring_reduction.inp
 file(COPY ${CMAKE_SOURCE_DIR}/wls/generators.tar.gz
      DESTINATION ${CMAKE_BINARY_DIR})
 
-file(COPY ${CMAKE_SOURCE_DIR}/group_specs.inp
-     DESTINATION ${CMAKE_BINARY_DIR}/bin)
-
 add_custom_target( UntarGenerators ALL)
 add_custom_command(TARGET UntarGenerators PRE_BUILD
      COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_BINARY_DIR}/generators.tar.gz
