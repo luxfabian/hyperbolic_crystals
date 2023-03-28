@@ -125,5 +125,3 @@ FormatRow[row_]:=StringRiffle[ "$"<>ToString[ TeXForm[#]]<>"$" &/@row, " & " ] <
 
 TeXTable = TeXPrefix <> StringJoin[ FormatRow[#]&/@pqcurated ] <> TeXPostFix
 
-
-
