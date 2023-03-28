@@ -5,6 +5,8 @@
 # Prerequisites
 *.d
 
+.vscode
+
 py/dos_8
 py/out
 data
