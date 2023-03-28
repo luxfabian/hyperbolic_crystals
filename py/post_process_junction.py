@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 
+from dos import density_of_states
+
 import hyperbolic_disk
 
 def gaussian(x, s, mu):
@@ -13,7 +15,7 @@ eigenvectors = np.load("junction_eigenvectors.npy")
 zs = np.load("junction_zs.npy")
 
 # -- find smallest eigenvalue
-s = 0.2
+s = 0.10
 mu = 0
 vec = np.zeros( len(eigenvalues ) , dtype=float)
 
@@ -24,6 +26,35 @@ for i in range(len(eigenvalues)):
 
 vmax = np.amax(vec)
 np.savetxt("ldos_abs_mag.dat", vec/vmax)
+
+
+# -- plot the spectrum
+
+# plt.plot(eigenvalues)
+# ax = plt.gca()
+# ax.set_ylim((-0.2,0.2))
+# ax.set_xlim((3000,3250))
+# plt.show()
+
+E_mesh, dos = density_of_states(eigenvalues, -1.2,1.2, n_E=200, gamma=0.01)
+
+gauss_dat_10 = np.array( [ gaussian(x, 0.1, mu) for x in E_mesh ]  )
+gauss_dat_15 = np.array( [ gaussian(x, 0.15, mu) for x in E_mesh ]  )
+gauss_dat_20 = np.array( [ gaussian(x, 0.20, mu) for x in E_mesh ]  )
+
+plt.plot(E_mesh, dos/np.amax(dos), label='DOS')
+plt.plot(E_mesh, 100*gauss_dat_10*dos/np.amax(dos), label=r'100xDOS, $s=0.10$')
+plt.plot(E_mesh, 100*gauss_dat_15*dos/np.amax(dos), label=r'100xDOS, $s=0.15$')
+plt.plot(E_mesh, 25*gauss_dat_20*dos/np.amax(dos), label=r'25xDOS, $s=0.20$')
+ax = plt.gca()
+ax.set_xlabel(r"Energy")
+ax.set_ylabel(r"Density of states")
+ax.set_ylim((0,1.2))
+ax.set_aspect(2)
+#plt.plot(E_mesh, gauss_dat)
+plt.legend(fontsize=10, loc='upper right')
+plt.savefig("./out/junction_dos.png", dpi=300)
+plt.show()
 
 # plt.plot(np.abs(vec))
 # # plt.show()

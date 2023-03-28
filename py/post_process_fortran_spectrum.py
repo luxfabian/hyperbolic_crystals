@@ -4,7 +4,8 @@
     Author: Fabian R. Lux
     Date:   2023-03-22
 
-    Load the spectrum which was computed in Fortran and post-process the result
+    Load the spectrum which was computed in Fortran and post-process the result. 
+    This will generate Fig. 2 of the manuscript
 """
 
 import iomodule
@@ -90,7 +91,7 @@ def multi_ids_plot():
     # ax.set_xlim((-0.1,0.1))
     # ax.set_ylim((0.4,0.6))
 
-    plt.savefig("ids_convergence.png",dpi=300)
+    plt.savefig("./out/ids_convergence.png",dpi=300)
     #plt.show()
     plt.close()
 
@@ -130,7 +131,7 @@ def multi_ids_plot():
     #ax.set_aspect(1.6)
     plt.grid()
     #plt.tight_layout()
-    plt.savefig("ids_convergence_mse.png",dpi=300, transparent=True)
+    plt.savefig("./out/ids_convergence_mse.png",dpi=300, transparent=True)
     #plt.show()
 
 def ground_state_convergence():
