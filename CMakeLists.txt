@@ -27,13 +27,20 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 file(COPY ${CMAKE_SOURCE_DIR}/wls/ring_reduction.inp
      DESTINATION ${CMAKE_BINARY_DIR})
 
+file(COPY ${CMAKE_SOURCE_DIR}/wls/generators.tar.gz
+     DESTINATION ${CMAKE_BINARY_DIR})
+
 file(COPY ${CMAKE_SOURCE_DIR}/group_specs.inp
      DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
-file(COPY ${CMAKE_SOURCE_DIR}/wls/generators
-DESTINATION ${CMAKE_BINARY_DIR})
-
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)
+add_custom_target( UntarGenerators ALL)
+add_custom_command(TARGET UntarGenerators PRE_BUILD
+     COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_BINARY_DIR}/generators.tar.gz
+     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+     DEPENDS ${CMAKE_BINARY_DIR}/generators.tar.gz
+     COMMENT "Extracting generators.tar.gz"
+     VERBATIM
+)
 
 #---------------------------------------------------------------------#
 # Directory setup
