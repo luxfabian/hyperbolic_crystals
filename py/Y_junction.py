@@ -82,7 +82,8 @@ for k in generators:
     reg_data  = np.loadtxt(reg_fname, dtype=int, delimiter=" ")
 
     for [i,j] in reg_data:
-        g[k][i,j] += 1.0
+        if i>=0 and j>=0:
+            g[k][i,j] += 1.0
 
 # -- Laplace operator
 Delta = (g['A'] + g['iA'] + g['B'] + g['iB'])/4
