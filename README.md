@@ -22,7 +22,7 @@ Since the group is infinite, some practial choices have to be made in order to s
 
 Both cases make use of a faithful representation
 
-$$ \sigma \colon \Delta_{\lbrace p, q \rbrace}^+ \to \mathrm{GL}(3, \mathbb{Z}[\xi_{2pq}]),$$
+$$\sigma \colon \Delta_{\lbrace p, q \rbrace}^+ \to \mathrm{GL}(3, \mathbb{Z}[\xi_{2pq}]),$$
 
 where $\xi_n = 2 \cos(2\pi/n)$ is an algebraic number and $\mathbb{Z}[\xi_{n}]$ is the ring of integer polynomials in $\xi_{n}$.
 There is a minimal, monic polynomial of degree $\varphi(n)/2$ which has $\xi_n$ as its root and where $\varphi(n)$ is Euler's totient function.
@@ -30,7 +30,7 @@ This means  $\xi_n^{\varphi(n)/2}$ can be expressed as a linear combination of l
 
 With open boundary conditions, we grow the group "outwards" by the alternating completion of A and B cycles up to a predefined order. We do so by using $\sigma$ to supply the group multiplication and use it as a means of distinguishes the group elements from each other. This is possible, since $\sigma$ is faithful.
 
-For periodic boundary conditions, $\sigma(\Delta_{\lbrace p, q \rbrace}^+) \mod N$ is a finite group, where the modulo operation acts on each individual coefficient of $ \mathbb{Z}[\xi_{2pq}]$. We then still generate the group elements as before, but there is in principal no need for truncating the process, since it will terminate automatically as soon as no new group elements are being generated anymore.
+For periodic boundary conditions, $\sigma(\Delta_{\lbrace p, q \rbrace}^+) \mod N$ is a finite group, where the modulo operation acts on each individual coefficient of $\mathbb{Z}[\xi_{2pq}]$. We then still generate the group elements as before, but there is in principal no need for truncating the process, since it will terminate automatically as soon as no new group elements are being generated anymore.
 
 This repository contains a code which implements this procedure. The group generation algorithm is very efficient and is capable of generating thousands of group elements in a fraction of a second using a modern CPU.
 
