@@ -26,7 +26,7 @@ $$ \sigma \colon \Delta_{\lbrace p, q \rbrace}^+ \to \mathrm{GL}(3, \mathbb{Z}[\
 
 where $\xi_n = 2 \cos(2\pi/n)$ is an algebraic number and $\mathbb{Z}[\xi_{n}]$ is the ring of integer polynomials in $\xi_{n}$.
 There is a minimal, monic polynomial of degree $\varphi(n)/2$ which has $\xi_n$ as its root and where $\varphi(n)$ is Euler's totient function.
-This means  $\xi_n^{\varphi(n)/2}$ can be expressed as a linear combination of lower order terms. We construct the minimal polynomial and realize $ \mathbb{Z}[\xi_{n}]$ as the vector space $\mathbb{Z}^{\varphi(n)/2}$. A rule of multiplication $\mathbb{Z}^{\varphi(n)/2}\times \mathbb{Z}^{\varphi(n)/2} \to \mathbb{Z}^{\varphi(n)/2}$ is inherited from $ \mathbb{Z}[\xi_{n}]$.
+This means  $\xi_n^{\varphi(n)/2}$ can be expressed as a linear combination of lower order terms. We construct the minimal polynomial and realize $\mathbb{Z}[\xi_{n}]$ as the vector space $\mathbb{Z}^{\varphi(n)/2}$. A rule of multiplication $\mathbb{Z}^{\varphi(n)/2}\times \mathbb{Z}^{\varphi(n)/2} \to \mathbb{Z}^{\varphi(n)/2}$ is inherited from $\mathbb{Z}[\xi_{n}]$.
 
 With open boundary conditions, we grow the group "outwards" by the alternating completion of A and B cycles up to a predefined order. We do so by using $\sigma$ to supply the group multiplication and use it as a means of distinguishes the group elements from each other. This is possible, since $\sigma$ is faithful.
 
