@@ -3,6 +3,19 @@
 # add_executable(triangle_group.x ${SOURCES})
 # target_include_directories(group_algebra.x PUBLIC ../include)
 
+# -- fuchsian generate group
+set(SOURCES fuchsian_generate_group.cpp ../src/fuchsian_group.cpp ../src/fuchsian_ring.cpp ../include/fuchsian_ring.h ../include/fuchsian_group.h )
+add_executable(fuchsian_generate_group ${SOURCES})
+target_include_directories(fuchsian_generate_group PRIVATE ../include)
+
+#-- fuchsian_generate_reg.cpp
+
+include_directories(../include ${Boost_INCLUDE_DIR} ${Eigen3_INCLUDE_DIR})
+set(SOURCES fuchsian_generate_reg.cpp ../src/fuchsian_group.cpp ../src/fuchsian_ring.cpp)
+add_executable(fuchsian_generate_reg ${SOURCES})
+target_link_libraries(fuchsian_generate_reg OpenMP::OpenMP_CXX)
+target_compile_options(fuchsian_generate_reg PRIVATE -ftrapv)
+
 #-- generate_group.cpp
 
 include_directories(../include ${Boost_INCLUDE_DIR} ${Eigen3_INCLUDE_DIR})
