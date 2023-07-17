@@ -4,7 +4,8 @@
     Author: Fabian R. Lux
     Date:   2023-03-22
 
-    Sets up the Laplace operator and saves it to file, such that it can be read in from Fortran.
+    Sets up the Laplace operator on a hyperbolic Cayley crystals and saves it to file, 
+    formatted such that it can be read in from Fortran.
 """
 
 import iomodule

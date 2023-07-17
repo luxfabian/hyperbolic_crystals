@@ -1,10 +1,11 @@
 """
-    ./scripts/projector_interpolation.py
+    ./py/interpolate_all.py
 
     Author: Fabian R. Lux
     Date:   2023-02-28
 
-    Interpolates between to projection operators and calculates the spectrum along the path
+    Interpolates between various topological Hamilton operators and 
+    calculates the spectrum along the path using the KPM method
 """
 
 # -- options -----------------------------

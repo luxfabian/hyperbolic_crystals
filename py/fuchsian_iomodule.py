@@ -1,5 +1,5 @@
 """
-    ./scripts/fuchsian_iomodule.py
+    ./py/fuchsian_iomodule.py
 
     Author: Fabian R. Lux
     Date:   2023-02-19
@@ -15,25 +15,6 @@
 import os
 import re
 import numpy as np
-
-
-def fortran_format(num):
-    """
-        Represent the number num (rea, complex or int) as a Fortran readable string
-        for E15.6 format.
-    """
-
-    fstring = ""
-    if isinstance(num, float):
-        fstring = '{:15.6E}'.format(num)
-    elif isinstance(num, complex):
-        fstring = '{:15.6E}'.format(
-            num.real) + " " + '{15.6E}'.format(num.imag)
-    elif isinstance(num, int):
-        fstring = '{:10}'.format(num)
-    if "+" in fstring:
-        fstring = fstring.replace("+", "") + " "
-    return fstring.replace("E", "D")
 
 
 def get_access_point(silent=True):

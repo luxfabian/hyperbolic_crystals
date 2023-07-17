@@ -1,5 +1,5 @@
 """
-    ./topological_abelianization/fuchsian.py
+    ./py/clifford_algebra.py
 
     Author: Fabian R. Lux
     Date:   6/27/2023

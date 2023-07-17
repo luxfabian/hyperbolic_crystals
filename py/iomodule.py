@@ -1,5 +1,5 @@
 """
-    ./scripts/iomodule.py
+    ./py/iomodule.py
 
     Author: Fabian R. Lux
     Date:   2023-02-19

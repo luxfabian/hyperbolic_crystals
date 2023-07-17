@@ -1,5 +1,5 @@
 """
-    ./fuchsian_group/kpm.py
+    ./py/kpm.py
 
     Author: Fabian R. Lux
     Date:   28/12/2022
