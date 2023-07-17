@@ -11,7 +11,8 @@ py/dos_8
 py/out
 wls/out
 data
-
+gapout
+gapout_14
 # Compiled Object files
 *.slo
 *.lo
