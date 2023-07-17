@@ -1,3 +1,11 @@
+"""
+    ./py/post_process_junction.py
+
+    Author: Fabian R. Lux
+    Date:   2023-03-08
+
+    Analyzes the spectrum of the Y-junction calculation
+"""
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -10,9 +18,9 @@ import hyperbolic_disk
 def gaussian(x, s, mu):
     return np.exp(-0.5*(x-mu)**2/s**2) / np.sqrt(2*np.pi*s**2)
 
-eigenvalues = np.load("junction_eigenvalues.npy")
-eigenvectors = np.load("junction_eigenvectors.npy")
-zs = np.load("junction_zs.npy")
+eigenvalues = np.load("./out/junction_eigenvalues.npy")
+eigenvectors = np.load("./out/junction_eigenvectors.npy")
+zs = np.load("./out/junction_zs.npy")
 
 # -- find smallest eigenvalue
 s = 0.10
@@ -25,7 +33,7 @@ for i in range(len(eigenvalues)):
 #print(eigenvalues[i])
 
 vmax = np.amax(vec)
-np.savetxt("ldos_abs_mag.dat", vec/vmax)
+np.savetxt("./out/ldos_abs_mag.dat", vec/vmax)
 
 
 # -- plot the spectrum

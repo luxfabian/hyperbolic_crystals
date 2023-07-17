@@ -1,10 +1,11 @@
 """
-    ./scripts/Y_junction.py
+    ./py/run_junction.py
 
     Author: Fabian R. Lux
     Date:   2023-03-08
 
-    Sets up and diagonalizes the Y-junction Hamiltonian. Only works with open boundary conditions as of now.
+    Sets up and diagonalizes the Y-junction Hamiltonian. 
+    Only works with open boundary conditions as of now.
 """
 import re
 import numpy as np

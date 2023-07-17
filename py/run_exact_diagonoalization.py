@@ -1,10 +1,10 @@
 """
-    ./py/open_boundary_conditions.py
+    ./py/run_exact_diagonalization.py
 
     Author: Fabian R. Lux
     Date:   2023-03-22
 
-    Sets up the Laplace operator for open bc.
+    Exact diagonalization of the Laplace operator
 """
 
 import iomodule
@@ -13,15 +13,10 @@ import numpy as np
 from scipy.sparse import lil_matrix
 
 
-
 access_point = iomodule.get_access_point()
-
 
 d = access_point['d']
 fname_prefix = access_point['fprefix']
-
-
-# -- read regular representation
 
 # -- initialize the matrices
 g = {}
@@ -33,6 +28,7 @@ g['AB'] = lil_matrix((d, d))
 
 generators = ["A", "iA", "B", "iB", "AB"]
 
+# -- read regular representation
 fname_prefix = access_point['fprefix']
 for k in generators:
     reg_fname = fname_prefix + "_" + k + ".reg"
@@ -44,20 +40,11 @@ for k in generators:
 
 # -- Laplace operator
 Delta = (g['A'] + g['iA'] + g['B'] + g['iB'])/4
-
-Delta_dense  = Delta.todense()
-
+Delta_dense = Delta.todense()
 
 eig = np.linalg.eigvalsh(Delta_dense)
-
-# eig = scipy.linalg.eigvalsh(H_dense)
-
-# H_dense = np.asfortranarray(H.toarray())
-# print("H constructed")
-
-# eig, _, _ = scipy.linalg.lapack.zheev(H_dense, compute_v=0)
 
 p = access_point['p']
 q = access_point['q']
 N = -access_point['N']
-np.save("./out/{}_{}_open_{}".format(p,q,N), eig)    
+np.save("./out/{}_{}_open_{}".format(p, q, N), eig)

@@ -1,5 +1,5 @@
 """
-    ./py/interpolate_path.py
+    ./py/run_interpolate_path.py
 
     Author: Fabian R. Lux
     Date:   2023-02-28

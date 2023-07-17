@@ -1,10 +1,15 @@
 """
-    ./py/post_process_bbh_model.py
+    ./py/post_process_fuchsian_insulator.py
 
     Author: Fabian R. Lux
     Date:   6/27/2023
 
-    Post process
+    We implement the model proposed in 
+
+    https://doi.org/10.1038/s41467-023-36767-8
+
+    for a hyperbolic Chern insulator with non-trivial second Chern number. We investigate,
+    whether the band gaps of the system remain open in the thermodynamic limit.
 """
 
 import numpy as np

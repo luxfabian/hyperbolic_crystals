@@ -1,5 +1,5 @@
 """
-    ./py/fortran_spec.py
+    ./py/post_process_fortran_spec.py
 
     Author: Fabian R. Lux
     Date:   2023-03-22

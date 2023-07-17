@@ -1,5 +1,5 @@
 """
-    ./scripts/projector_interpolation.py
+    ./py/projector_interpolation.py
 
     Author: Fabian R. Lux
     Date:   2023-02-28
