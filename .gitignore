@@ -12,7 +12,7 @@ py/out
 wls/out
 data
 gapout
-gapout_14
+gapout_*
 # Compiled Object files
 *.slo
 *.lo
