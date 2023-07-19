@@ -1,6 +1,17 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
+(* ::Title:: *)
+(*generate_graph.wls*)
+
+
+(* ::Text:: *)
+(*Author: Fabian R. Lux*)
+(*Date: 7/19/23*)
+(**)
+(*Reads the regular representation files and constructs the Cayley graph. Can be used to verify the validity of the generated datasets*)
+
+
 dir = If[$Notebooks, NotebookDirectory[], Directory[] ];
 SetDirectory[dir];
 
@@ -40,14 +51,3 @@ opts = GraphLayout->{"SpringElectricalEmbedding", "SpringConstant"-> 1,"Repulsiv
 
 
 GraphPlot[graph, VertexStyle->Black, opts]
-
-
-Aname = "../data/5_4_modulo_2_A.reg";
-Adata = Import[Aname,"Table"];
-Agraph = Flatten[ Style[DirectedEdge[ #[[1]] ,#[[2]]],  color[1]] &/@ Adata ];
-Show[Graph[Agraph]]
-
-
-Aname = "../data/5_4_open_5_A.reg";
-Bname = "../data/5_4_open_5_B.reg";
-ABname = "../data/5_4_open_5_AB.reg";
