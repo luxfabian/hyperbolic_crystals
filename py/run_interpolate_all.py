@@ -5,7 +5,7 @@
     Date:   2023-02-28
 
     Interpolates between various topological Hamilton operators and 
-    calculates the spectrum along the path using the KPM method
+    calculates the spectrum along the path using the KPM method.
 """
 
 # -- options -----------------------------

@@ -4,7 +4,7 @@
     Author: Fabian R. Lux
     Date:   2023-03-22
 
-    Exact diagonalization of the Laplace operator
+    Exact diagonalization of the Laplace operator with numpy.
 """
 
 import iomodule

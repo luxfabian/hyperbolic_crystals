@@ -1,11 +1,10 @@
 """
-    ./py/run_projector_interpolation.py
+    ./py/run_interpolate_pair.py
 
     Author: Fabian R. Lux
     Date:   2023-02-28
 
-    Interpolates between to projection operators 
-    and calculates the spectrum along the path
+    Interpolates between two operators and calculates the spectrum along the path.
 """
 
 import iomodule

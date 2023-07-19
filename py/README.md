@@ -2,42 +2,18 @@
 
 The scripts contained in this folder can be used to study the spectral properties of various hyperbolic lattices based on an existing `.words` file and the corresponding files for the regular representation of the group generators. We now give a brief overview of the files in this folder
 
-## Run scripts
+## Computation scripts
 
-## Post-processing scripts
+### `run_ABCpath.py`
 
-## Auxiliary modules
+Interpolates between two topological Hamilton operators and 
+calculates the spectrum along the path using the KPM method.
 
-### `clifford_algebra.py`
+### `run_exact_diagonalization.py`
 
-Definition of the Dirac gamma matrices
+Exact diagonalization of the Laplace operator with numpy.
 
-### `dos.py`
-
-Given a numpy array of eigenvalues, compute the density of states as sum of Gaussians.
-
-### `hyperbolic_disk.py`
-
-Basic routines which define how the triangle group acts on points in the hyperbolic plane. Contains routines for the construction of a Y-junction on the hyperbolic disk.
-
-### `iomodule.py`
-
-Extracts the information from `group_specs.inp` and collects the data into a dictionary `access_point` which can be used by other scripts as a gateway to load the `.words` and/or the regular representation. It further contains the routine `fortan_format` which can be used to convert a `float` into a Fortran-readable string of the pre-defined E15.6 format.
-
-### `kpm.py`
-
-Implementation of the kernel polynomial method. 
-Code is adapted and boiled down from:
-
-
-
-
-
-
-
-
-
-## `fuchsian_insulator.py`
+### `run_fuchsian_insulator.py`
 
 We want to take a look at a proposed model on the hyperbolic disk which might display nontrivial second Chern numbers and which has been proposed recently in 
 
@@ -86,24 +62,51 @@ d(k) = \left( t_1 \sin(k_1), t_2 \sin(k_2), t_3 \sin(k_3), m + \sum_{j=1}^d J_j 
 $$
 We only consider $t_j = J_j = 1$. For $m=0.7$ and $a=0.2$, the Dirac points in the spectrum are gapped for the abelianized Hamiltonian. But is this really the case for the hyperbolic lattice and the full Hamiltonian H?
 
+### `run_interpolate_all.py`
 
-## `fuchsian_module.py`
+Interpolates between various topological Hamilton operators and 
+calculates the spectrum along the path using the KPM method.
 
-Extracts the information from `fuchsian.inp` and collects the data into a dictionary `access_point` which can be used by other scripts as a gateway to load the `.words` and/or the regular representation. 
+### `run_interpolate_pair.py`
 
-
-
-
-## `interpolate_all.py`
-
-Interpolates between various topological Hamilton operators and calculates the spectrum along the path using the KPM method
-
-## `interpolate_path.py`
-
-Interpolates between two topological Hamilton operators and calculates the spectrum along the path using the KPM method
+Interpolates between two operators and calculates the spectrum along the path.
 
 
+### `run_junction.py`
 
+Sets up and diagonalizes the Y-junction Hamiltonian. 
+Only works with open boundary conditions as of now.
+
+### `run_laplace_to_fortran.py`
+
+Sets up the Laplace operator on a hyperbolic Cayley crystals and saves it to file, formatted such that it can be read in from Fortran.
+
+## Post-processing scripts
+
+Generate figures from the results of the computation scripts.
+
+## Auxiliary modules
+
+### `clifford_algebra.py`
+
+Definition of the Dirac gamma matrices
+
+### `dos.py`
+
+Given a numpy array of eigenvalues, compute the density of states as sum of Gaussians.
+
+### `hyperbolic_disk.py`
+
+Basic routines which define how the triangle group acts on points in the hyperbolic plane. Contains routines for the construction of a Y-junction on the hyperbolic disk.
+
+### `iomodule.py`
+
+Extracts the information from `group_specs.inp` and collects the data into a dictionary `access_point` which can be used by other scripts as a gateway to load the `.words` and/or the regular representation. It further contains the routine `fortan_format` which can be used to convert a `float` into a Fortran-readable string of the pre-defined E15.6 format.
+
+### `kpm.py`
+
+Implementation of the kernel polynomial method. 
+Code is adapted and boiled down from:
 
     https://github.com/joselado/kpmpy
 
@@ -112,7 +115,3 @@ compilation instead of Fortran.
 
 See DOI: 10.1103/RevModPhys.78.275 for a detailed description of 
 the method itself.
-
-## `laplace_operator.py`
-
-Sets up the Laplace operator on a hyperbolic Cayley crystals and saves it to file, formatted such that it can be read in from Fortran.
