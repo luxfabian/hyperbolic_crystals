@@ -50,7 +50,7 @@ The docstrings of the respective source files and the `README.md` files contain 
 
 #### Requirements
 
-The main code base relies on `C++17` and the libraries
+The main code base relies on `C++17`, `Fortran90` and the libraries
 
 - (optional) `OpenBLAS64`, http://www.openblas.net/ (with `long` datatype for array indexing instead of `int`)
 - (required) `OpenMP`, http://www.openmp.org/
