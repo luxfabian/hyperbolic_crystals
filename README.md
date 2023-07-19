@@ -53,10 +53,9 @@ The docstrings of the respective source files and the `README.md` files contain 
 The main code base relies on `C++17` and the libraries
 
 - (optional) `OpenBLAS64`, http://www.openblas.net/ (with `long` datatype for array indexing instead of `int`)
-- (optional) `Boost`, https://www.boost.org/ 
-- (optional) `Eigen3`, https://eigen.tuxfamily.org/index.php?title=Main_Page
+- (required) `OpenMP`
 
-The environment variables `Boost_DIR`, `Eigen3_DIR` and `OpenBLAS64_DIR` need to point to the root directory of the respective libraries. 
+The environment variable `OpenMP_DIR` and `OpenBLAS64_DIR` need to point to the root directory of the respective libraries if the library is not detected automatically by CMake. 
 
 #### Compilation
 
