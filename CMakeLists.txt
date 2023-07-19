@@ -51,9 +51,7 @@ set(INCLUDE_PATH ${CMAKE_BINARY_DIR}/include)
 # Find the C++ boost library
 #---------------------------------------------------------------------#
 
-find_package(Boost QUIET)
-find_package(OpenMP QUIET)
-find_package(Threads QUIET)
+find_package(OpenMP REQUIRED)
 find_package(OpenBLAS64 QUIET)
 
 #---------------------------------------------------------------------#
