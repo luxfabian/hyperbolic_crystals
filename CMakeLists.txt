@@ -51,17 +51,10 @@ set(INCLUDE_PATH ${CMAKE_BINARY_DIR}/include)
 # Find the C++ boost library
 #---------------------------------------------------------------------#
 
-set(OpenBLAS64_DIR /home/fox/Git/OpenBLAS/OpenBLAS64)
-
-find_package(Boost REQUIRED)
-find_package(OpenMP REQUIRED)
-find_package(Threads REQUIRED)
-find_package(OpenBLAS64)
-
-#find_package(Eigen3 REQUIRED)
-#set(BLA_VENDOR Intel10_64lp)
-#find_package(LAPACK REQUIRED)
-#find_package(lapack64 REQUIRED)
+find_package(Boost QUIET)
+find_package(OpenMP QUIET)
+find_package(Threads QUIET)
+find_package(OpenBLAS64 QUIET)
 
 #---------------------------------------------------------------------#
 # Source directories
@@ -69,4 +62,3 @@ find_package(OpenBLAS64)
 
 add_subdirectory(src)
 add_subdirectory(tests)
-
