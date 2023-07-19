@@ -2,13 +2,39 @@
 
 The scripts contained in this folder can be used to study the spectral properties of various hyperbolic lattices based on an existing `.words` file and the corresponding files for the regular representation of the group generators. We now give a brief overview of the files in this folder
 
-## `clifford_algebra.py`
+## Run scripts
+
+## Post-processing scripts
+
+## Auxiliary modules
+
+### `clifford_algebra.py`
 
 Definition of the Dirac gamma matrices
 
-## `dos.py`
+### `dos.py`
 
 Given a numpy array of eigenvalues, compute the density of states as sum of Gaussians.
+
+### `hyperbolic_disk.py`
+
+Basic routines which define how the triangle group acts on points in the hyperbolic plane. Contains routines for the construction of a Y-junction on the hyperbolic disk.
+
+### `iomodule.py`
+
+Extracts the information from `group_specs.inp` and collects the data into a dictionary `access_point` which can be used by other scripts as a gateway to load the `.words` and/or the regular representation. It further contains the routine `fortan_format` which can be used to convert a `float` into a Fortran-readable string of the pre-defined E15.6 format.
+
+### `kpm.py`
+
+Implementation of the kernel polynomial method. 
+Code is adapted and boiled down from:
+
+
+
+
+
+
+
 
 
 ## `fuchsian_insulator.py`
@@ -66,9 +92,7 @@ We only consider $t_j = J_j = 1$. For $m=0.7$ and $a=0.2$, the Dirac points in t
 Extracts the information from `fuchsian.inp` and collects the data into a dictionary `access_point` which can be used by other scripts as a gateway to load the `.words` and/or the regular representation. 
 
 
-## `hyperbolic_disk.py`
 
-Basic routines which define how the triangle group acts on points in the hyperbolic plane. Contains routines for the construction of a Y-junction on the hyperbolic disk.
 
 ## `interpolate_all.py`
 
@@ -78,14 +102,8 @@ Interpolates between various topological Hamilton operators and calculates the s
 
 Interpolates between two topological Hamilton operators and calculates the spectrum along the path using the KPM method
 
-## `iomodule.py`
 
-Extracts the information from `group_specs.inp` and collects the data into a dictionary `access_point` which can be used by other scripts as a gateway to load the `.words` and/or the regular representation. It further contains the routine `fortan_format` which can be used to convert a `float` into a Fortran-readable string of the pre-defined E15.6 format.
 
-## `kpm.py`
-
-Implementation of the kernel polynomial method. 
-Code is adapted and boiled down from:
 
     https://github.com/joselado/kpmpy
 
