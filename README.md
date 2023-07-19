@@ -53,7 +53,7 @@ The docstrings of the respective source files and the `README.md` files contain 
 The main code base relies on `C++17` and the libraries
 
 - (optional) `OpenBLAS64`, http://www.openblas.net/ (with `long` datatype for array indexing instead of `int`)
-- (required) `OpenMP`
+- (required) `OpenMP`, http://www.openmp.org/
 
 The environment variable `OpenMP_DIR` and `OpenBLAS64_DIR` need to point to the root directory of the respective libraries if the library is not detected automatically by CMake. 
 
