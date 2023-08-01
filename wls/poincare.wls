@@ -162,7 +162,7 @@ PDGeodesic[x_, y_, pts_]:=(
 	(*Linear interpolation*)
 	line = PDTranslation[x, # \[Phi]y] &/@ Subdivide[0,1, pts] // PDToXY;
 	
-	Return[ListLinePlot[line, PlotStyle->{Thin,PDGeodesicColor}]];
+	Return[ListLinePlot[line, PlotStyle->{Thin,PDGeodesicColor},PlotRange->Full]];
 
 );
 
