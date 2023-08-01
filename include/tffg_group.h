@@ -32,10 +32,6 @@ public:
     
     // Constructor
     TorsionFreeFuchsianGroup(const long &p, const long &q);
-
-private:
-    // Reads A and B for given p and q. Is called by constructor
-    void read_generators(void);
 };
 
 #endif
