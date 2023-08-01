@@ -27,7 +27,7 @@ def ahlfors(z1,z2):
     """
         Defines the Ahlfors bracket
     """
-    return (1-abs(z1)**2) * (1- abs(z2)**2)  + abs(z1-z2)**2
+    return np.sqrt((1-abs(z1)**2) * (1- abs(z2)**2)  + abs(z1-z2)**2)
 
 def midpoint(z1,z2):
     """
