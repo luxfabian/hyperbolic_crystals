@@ -154,7 +154,7 @@ PDToXY[list_]:= {Re[#],Im[#]}&/@ list ;
 PDToXY::usage = "Turns a list of complex values to a list of x and y Euclidean coordinates.";
 
 
-PDGeodesic[x_, y_, pts_]:=(
+PDGeodesic[x_, y_, pts_,style_:{Thin,PDGeodesicColor}]:=(
 
 	(*Translate point x to 0 (then the geodesic is a straight line)*)
 	\[Phi]y = PDTranslation[-x, y];
@@ -162,7 +162,7 @@ PDGeodesic[x_, y_, pts_]:=(
 	(*Linear interpolation*)
 	line = PDTranslation[x, # \[Phi]y] &/@ Subdivide[0,1, pts] // PDToXY;
 	
-	Return[ListLinePlot[line, PlotStyle->{Thin,PDGeodesicColor},PlotRange->Full]];
+	Return[ListLinePlot[line, PlotStyle->style,PlotRange->Full]];
 
 );
 
