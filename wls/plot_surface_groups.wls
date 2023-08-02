@@ -78,6 +78,12 @@ g["A"] =  { { Exp[I \[Alpha] /2],0},{0, Exp[-I \[Alpha]/2]}} ;
 g["B"] = 1/(1-r0^2) { { Exp[I \[Beta] /2]-r0^2 Exp[-I \[Beta]/2],r0 (1-Exp[I \[Beta]]) Exp[I (\[Alpha]-\[Beta])/2]},{r0 (1-Exp[-I \[Beta]]) Exp[-I (\[Alpha]-\[Beta])/2],Exp[-I \[Beta]/2]-r0^2 Exp[I \[Beta]/2]}} ;
 
 
+Ahlfors[z1_,z2_] := Sqrt[(1 - Abs[z1]^2)(1 - Abs[z2]^2) + Abs[z1-z2]^2]
+
+
+GeodesicMidpoint[z1_, z2_]:=(z2 (1- Abs[z1]^2)+z1 (1- Abs[z2]^2))/(1- Abs[z1]^2  Abs[z2]^2+Ahlfors[z1,z2] Sqrt[(1-Abs[z1]^2)(1-Abs[z2]^2)])
+
+
 (* ::Text:: *)
 (*Seed coordinate*)
 
@@ -86,7 +92,6 @@ z0 =  Exp[I \[Alpha]/2]r0;
 
 
 (* ::Text:: *)
-(**)
 (*Group elements act by Moebius transformations*)
 
 
@@ -139,7 +144,7 @@ fd = {0, z0, GeodesicMidpoint[z0, Moebius[g["A"],z0]] };
 ptsfd = PDHyperbolicPoint[#]&/@fd;
 
 style=Black;
-geofd = { PDGeo[fd[[1]], fd[[2]],30,style],PDGeo[fd[[2]], fd[[3]],30,style],PDGeo[fd[[3]], fd[[1]],30,style] };
+geofd = { PDGeodesic[fd[[1]], fd[[2]],30,style],PDGeodesic[fd[[2]], fd[[3]],30,style],PDGeodesic[fd[[3]], fd[[1]],30,style] };
 
 PDUpdateCanvas[#]&/@geofd;
 
@@ -221,12 +226,6 @@ polygonT
 
 
 Solve[ Moebius[g["A"],zx + I zy]==0, {zx,zy}]
-
-
-Ahlfors[z1_,z2_] := Sqrt[(1 - Abs[z1]^2)(1 - Abs[z2]^2) + Abs[z1-z2]^2]
-
-
-GeodesicMidpoint[z1_, z2_]:=(z2 (1- Abs[z1]^2)+z1 (1- Abs[z2]^2))/(1- Abs[z1]^2  Abs[z2]^2+Ahlfors[z1,z2] Sqrt[(1-Abs[z1]^2)(1-Abs[z2]^2)])
 
 
 (* ::Text:: *)
