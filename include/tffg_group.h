@@ -19,10 +19,7 @@ class TorsionFreeFuchsianGroup
 {
 public:
     // Signature of the triangle group
-    long p, q;
-
-    //Parent group
-    TriangleGroup Delta;
+    long g;
 
     // Polynomimal reduction for ring extension
     vector<long> reduction;
@@ -31,7 +28,7 @@ public:
     vector<G> gamma;
     
     // Constructor
-    TorsionFreeFuchsianGroup(const long &p, const long &q);
+    TorsionFreeFuchsianGroup(const long &g);
 };
 
 #endif
