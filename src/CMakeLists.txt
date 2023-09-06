@@ -26,6 +26,12 @@ add_executable(generate_reg ${SOURCES})
 target_link_libraries(generate_reg OpenMP::OpenMP_CXX)
 target_compile_options(generate_reg PRIVATE -ftrapv)
 
+#-- tffg_generate_group.cpp
+
+include_directories(../include)
+set(SOURCES tffg_generate_group.cpp ../src/tffg_group.cpp ../src/triangle_group.cpp ../src/ring_extension.cpp )
+add_executable(tffg_generate_group ${SOURCES})
+
 #-- dsyev_hamiltonian.cpp
 
 if(OpenBLAS64_FOUND)
