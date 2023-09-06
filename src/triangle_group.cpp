@@ -218,6 +218,32 @@ size_t GHash::operator()(const G &obj) const
 }
 
 
+G power(const G &groupelement, const long &n)
+{
+  G result;
+  result.identity();
+  
+  for(long i=0; i<n; i++)
+  {
+    result = result * groupelement;
+  }
+
+  return result;
+}
+
+G power(const G &groupelement, const long &n, const long &mod)
+{
+  G result;
+  result.identity();
+  
+  for(long i=0; i<n; i++)
+  {
+    result = (result * groupelement) % mod;
+  }
+
+  return result;
+}
+
 
 // concatenate n copies of a word
 string word_power(const string &word, const long &n)
@@ -370,8 +396,10 @@ void TriangleGroup::read_generators(void)
   // Construct generator of proper triangle group
   this->A = X*Y;
   this->B = Y*Z;
+  this->C = X*Z;
 
   // Overwrite the word
   this->A.word = "A";
   this->B.word = "B";
+  this->C.word = "C";
 }

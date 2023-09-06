@@ -68,6 +68,11 @@ public:
   size_t operator()(const G &obj) const;
 };
 
+// calculate the n-th power of a group element
+G power(const G &groupelement, const long &n);
+
+// calculate the n-th power of a group element
+G power(const G &groupelement, const long &n, const long &mod);
 
 // concatenate n copies of a word
 string word_power(const string &word, const long &n);
@@ -90,6 +95,7 @@ public:
     // Generators of the proper triangle group
     G A;
     G B;
+    G C;
 
     // Encoding of the group relations
     vector<string> relations;
