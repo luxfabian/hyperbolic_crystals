@@ -21,38 +21,30 @@
 
 using namespace std;
 
-TorsionFreeFuchsianGroup(const long &g)
+TorsionFreeFuchsianGroup::TorsionFreeFuchsianGroup(const long &g)
 {
+  TriangleGroup Delta = TriangleGroup(4*g, 4*g);
   // initialize parent group
-  this->Delta = TriangleGroup(4*g,4*g);
+
+  this->g = g;
 
   // first translation operator
   G gamma;
+  G buffer;
 
   // rotations
   G A = Delta.A;
-  G A_inverse =  Delta.A;
+  G A_inverse =  power(Delta.A, 4*g-1);
 
-  // inverse can be constructed algebraically
-  for(int i=0; i<4*g-1; i++)
-  {
-    A_inverse = A_inverse * Delta.A;
-  }
-
-  // initializing gamma
-  gamma = Delta.C;
-
-  for(int i=0; i<2*g; i++)
-  {
-    gamma = gamma * Delta.A;
-  }
+  // initializing first gamma
+  gamma = Delta.C * power(Delta.A, 2*g);
 
   // add first element to list of generators
   (this -> gamma).push_back(gamma);
 
-  for(int i=0; i<4*g-1; i++)
+  for(int n=1; n<4*g; n++)
   {
-    gamma = A_inverse * (this -> gamma).back() * A;
-    (this -> gamma).push_back(gamma);
+    buffer = ( power(A_inverse, (2*g-1) * n) * gamma ) * power(A, (2*g-1) * n);
+    (this -> gamma).push_back(buffer);
   }
 }
