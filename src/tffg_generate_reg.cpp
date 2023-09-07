@@ -114,6 +114,20 @@ int main()
   int index=0;
   vector<int> word_rep;
 
+  vector<G> generators;
+
+  if(periodic_boundary)
+  {
+    for(G gamma: T.gamma)
+    {
+      generators.push_back(gamma % modulo);
+    }
+  }
+  else
+  {
+    generators = T.gamma;
+  }
+
   if (basis_file.is_open())
   {
     while (getline(basis_file, line))
@@ -130,7 +144,7 @@ int main()
       {
         if(index>0)
         {
-          word = word * T.gamma[index-1];
+          word = word * generators[index-1];
           if (periodic_boundary)
             word = word % modulo;
         }
@@ -147,98 +161,86 @@ int main()
 
   cout << "Basis file loaded succesfully! Basis dimension: " << basis.size() << endl;
 
-  // cout << "Generating the right regular representation." << endl;
+  cout << "Generating the right regular representation." << endl;
 
-  // vector<G> operators;
-
-  // // Account for the inverse operation which appears in the right-regular representation
-  // A.word = "iA";
-  // B.word = "iB";
-  // iA.word = "A";
-  // iB.word = "B";
-
-  // operators.push_back(A);
-  // operators.push_back(B);
-  // operators.push_back(AB);
-  // operators.push_back(iA);
-  // operators.push_back(iB);
-
+  
   // // int i;
-  // G action = G(T.reduction);
+  G action = G(T.reduction);
 
-  // string output_file_name;
-  // if (periodic_boundary)
-  // {
-  //   output_file_name = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_modulo_" + to_string(modulo) + "_";
-  // }
-  // else
-  // {
-  //   output_file_name = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_open_" + to_string(N + 1) + "_";
-  // }
+  string output_file_name;
+  if (periodic_boundary)
+  {
+    output_file_name = project_dir + "/tffg_" + to_string(g) + "_modulo_" + to_string(modulo) + "_";
+  }
+  else
+  {
+    output_file_name = project_dir + "/tffg_" + to_string(g) + "_open_" + to_string(N + 1) + "_";
+  }
 
-  // vector<int> j_map(basis.size(), 0);
+  vector<int> j_map(basis.size(), 0);
 
-  // for (G op : operators)
-  // {
-  //   {
-  //     // j = 0;
-  //     // i = 0;
-  //     vector<int> zero(basis.size(), 0);
-  //     j_map = zero;
+  int op_number = 0;
+  for (G op : generators)
+  {
+    {
+      // j = 0;
+      // i = 0;
+      vector<int> zero(basis.size(), 0);
+      j_map = zero;
 
-  //     unordered_map<G,int,GHash>::iterator basis_iterator = basis.begin();
-  //     while(basis_iterator!=basis.end())
-  //     {
-  //       action = (basis_iterator->first)*op;
+      unordered_map<G,int,GHash>::iterator basis_iterator = basis.begin();
+      while(basis_iterator!=basis.end())
+      {
+        action = (basis_iterator->first)*op;
 
-  //       if (periodic_boundary) action = action % modulo;
+        if (periodic_boundary) action = action % modulo;
 
-  //       unordered_map<G,int, GHash>::const_iterator it = basis.find(action);
+        unordered_map<G,int, GHash>::const_iterator it = basis.find(action);
 
-	// if (it != basis.end())
-  //       {
-  //         j_map[basis_iterator->second] = it->second;
-  //       }
-  //       else
-  //       {
-  //         if (periodic_boundary)
-  //         {
-  //           // -- must not happen for periodic boundary conditions
-  //           throw runtime_error("Right regular representation failed for the word " + op.word);
-  //         }
+	if (it != basis.end())
+        {
+          j_map[basis_iterator->second] = it->second;
+        }
+        else
+        {
+          if (periodic_boundary)
+          {
+            // -- must not happen for periodic boundary conditions
+            throw runtime_error("Right regular representation failed for the word " + op.word);
+          }
 
-  //         // -- intercept boundary
-  //         j_map[basis_iterator->second] = -1;
-  //       }
-  //       basis_iterator++;
-  //     }
-  //   }
+          // -- intercept boundary
+          j_map[basis_iterator->second] = -1;
+        }
+        basis_iterator++;
+      }
+    }
 
-  //   ofstream output_file;
-  //   output_file.open(output_file_name + op.word + ".reg", ofstream::out | ofstream::trunc);
+    ofstream output_file;
+    output_file.open(output_file_name + to_string(op_number++) + ".reg", ofstream::out | ofstream::trunc);
 
-  //   // -- write result to file
-  //   for (vector<int>::size_type j = 0; j < basis.size(); j++)
-  //   {
-  //     output_file << j_map[j] << " " << j << endl;
-  //   }
-  //   output_file.close();
-  // }
+    // -- write result to file
+    for (vector<int>::size_type j = 0; j < basis.size(); j++)
+    {
+      output_file << j_map[j] << " " << j << endl;
+    }
+    output_file.close();
+  }
 
-  // string spec_info_fname = "";
-  // if (periodic_boundary)
-  // {
-  //   spec_info_fname = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_modulo_" + to_string(modulo) + ".info";
-  // }
-  // else
-  // {
-  //   spec_info_fname = project_dir + "/" + to_string(p) + "_" + to_string(q) + "_open_" + to_string(N + 1) + ".info";
-  // }
+  string spec_info_fname = "";
+  if (periodic_boundary)
+  {
+    spec_info_fname = project_dir + "/tffg_" + to_string(g) + "_modulo_" + to_string(modulo) + ".info";
+  }
+  else
+  {
+    spec_info_fname = project_dir + "/tffg_" + to_string(g) + "_open_" + to_string(N + 1) + ".info";
+  }
 
-  // ofstream spec_info_file;
-  // spec_info_file.open(spec_info_fname, ofstream::out | ofstream::trunc);
-  // spec_info_file << basis.size() << endl;
-  // spec_info_file.close();
+  ofstream spec_info_file;
+  spec_info_file.open(spec_info_fname, ofstream::out | ofstream::trunc);
+  spec_info_file << basis.size() << endl;
+  spec_info_file.close();
 
   return 0;
 }
