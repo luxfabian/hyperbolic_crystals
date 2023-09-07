@@ -220,7 +220,7 @@ size_t GHash::operator()(const G &obj) const
 
 G power(const G &groupelement, const long &n)
 {
-  G result;
+  G result = G(groupelement.reduction);
   result.identity();
   
   for(long i=0; i<n; i++)
@@ -233,7 +233,7 @@ G power(const G &groupelement, const long &n)
 
 G power(const G &groupelement, const long &n, const long &mod)
 {
-  G result;
+  G result = G(groupelement.reduction);
   result.identity();
   
   for(long i=0; i<n; i++)

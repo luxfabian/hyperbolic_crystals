@@ -27,6 +27,7 @@ TorsionFreeFuchsianGroup::TorsionFreeFuchsianGroup(const long &g)
   // initialize parent group
 
   this->g = g;
+  this->reduction = Delta.reduction;
 
   // first translation operator
   G gamma;
@@ -38,6 +39,7 @@ TorsionFreeFuchsianGroup::TorsionFreeFuchsianGroup(const long &g)
 
   // initializing first gamma
   gamma = Delta.C * power(Delta.A, 2*g);
+  gamma.word = to_string(1) + " ";
 
   // add first element to list of generators
   (this -> gamma).push_back(gamma);
@@ -45,6 +47,7 @@ TorsionFreeFuchsianGroup::TorsionFreeFuchsianGroup(const long &g)
   for(int n=1; n<4*g; n++)
   {
     buffer = ( power(A_inverse, (2*g-1) * n) * gamma ) * power(A, (2*g-1) * n);
+    buffer.word = to_string(n+1) + " ";
     (this -> gamma).push_back(buffer);
   }
 }

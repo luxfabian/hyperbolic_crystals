@@ -19,6 +19,7 @@
 #include <stdexcept>
 
 #include "triangle_group.h"
+#include "tffg_group.h"
 
 void add_to_basis(int &count, G &candidate,   unordered_map<G,int,GHash> &unordered_basis,  vector<G> &next_generation){
   if (unordered_basis.find(candidate) == unordered_basis.end())
@@ -38,23 +39,19 @@ int main()
   const char* env = std::getenv("HYPERBOLIC_DIR");
   string project_dir = env;
 
-  ifstream input_file(project_dir+"/group_specs.inp");
+  ifstream input_file(project_dir+"/tffg_group_specs.inp");
   char char_buffer;
   int int_buffer;
-  int p, q, N;
+  int g, N;
   int modulo;
 
   if (input_file.is_open())
   {
     while (input_file >> char_buffer >> int_buffer)
     {
-      if (char_buffer == 'p')
+      if (char_buffer == 'g')
       {
-        p = int_buffer;
-      }
-      else if (char_buffer == 'q')
-      {
-        q = int_buffer;
+        g = int_buffer;
       }
       else if (char_buffer == 'N')
       {
@@ -64,16 +61,15 @@ int main()
   }
   else
   {
-    throw runtime_error("The file group_spec.inp was not found!");
+    throw runtime_error("The file tffg_group_spec.inp was not found!");
   }
   input_file.close();
 
   cout << "#------------------------------------------------#" << endl;
   cout << "# C++ Spectra of Hyperbolic Cayley Crystals v0.1 #" << endl;
   cout << "#------------------------------------------------#" << endl;
-  cout << "The construction of the proper triangle group Delta+(p,q,2) commences for:" << endl;
-  cout << "p=" << p << endl;
-  cout << "q=" << q << endl;
+  cout << "The construction of the torsion-free Fuchsian group of genus " << endl;
+  cout << "g=" << g << endl;
 
   bool periodic_boundary;
   if (N < 0)
@@ -95,24 +91,33 @@ int main()
     cout << "The matrix representation is treated modulo " << N << endl;
   }
 
+  TorsionFreeFuchsianGroup T = TorsionFreeFuchsianGroup(g);
 
-  TriangleGroup T = TriangleGroup(p,q);
+  vector<G> generators;
 
-  G A = T.A;
-  G B = T.B;
+  // G A = T.A;
+  // G B = T.B;
   G E = G(T.reduction);
+  E.identity();
+  E.word = to_string(0) + " ";
+
 
   if(periodic_boundary)
   {
-    A = A % modulo;
-    B = B % modulo;
+    for(G gamma: T.gamma)
+    {
+      generators.push_back(gamma % modulo);
+    }
+  }
+  else
+  {
+    generators = T.gamma;
   }
   
-  E.identity();
-
+  
   // -- found elements are stored here
   unordered_map<G,int,GHash> unordered_basis;
-  // vector<G> basis;
+  vector<G> basis;
 
   // -- keep track of the iterative process
   vector<G> prev_generation;
@@ -120,42 +125,36 @@ int main()
 
   // -- initialize identity element
   // unordered_basis.insert(E);
-  prev_generation.push_back(E);
+  // prev_generation.push_back(E);
+
 
   int count = 0;
   int generation=0;
 
-  G generator = G(T.reduction);
+  // G generator = G(T.reduction);
   G candidate = G(T.reduction);
-  int order;
+
+  add_to_basis(count, E, unordered_basis, prev_generation);
+
+  cout << generation << "\t | \t" << unordered_basis.size() << endl;
+
   bool checked_twice = false;
   while(true)
   {
-    if(generation%2==0)
-    {
-      generator = A;
-      order = p;
-    }
-    else
-    {
-      generator = B;
-      order = q;
-    }
-
-    if(periodic_boundary) generator = generator % modulo;
-
+    
     for(G elem: prev_generation)
     {
-      candidate = elem;
-
-      for(int i=0; i<order; i++)
+      for(G gamma: generators)
       {
-        candidate = candidate * generator;
+        candidate = elem;
+        
+        candidate = candidate * gamma;
 
         if(periodic_boundary) candidate = candidate % modulo;
 
         add_to_basis(count, candidate, unordered_basis, next_generation);
       }
+      
     }
 
     generation += 1;
@@ -185,11 +184,11 @@ int main()
   string output_file_name;
   if(periodic_boundary)
   {
-    output_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_modulo_"+to_string(modulo)+".words";
+    output_file_name = project_dir+"/tffg_"+to_string(g)+"_modulo_"+to_string(modulo)+".words";
   }
   else
   {
-    output_file_name = project_dir+"/"+to_string(p)+"_"+to_string(q)+"_open_"+to_string(N+1)+".words";
+    output_file_name = project_dir+"/tffg_"+to_string(g)+"_open_"+to_string(N+1)+".words";
   }
   
   ofstream output_file; 
