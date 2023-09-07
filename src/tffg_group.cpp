@@ -23,16 +23,16 @@ using namespace std;
 
 TorsionFreeFuchsianGroup::TorsionFreeFuchsianGroup(const long &g)
 {
-  TriangleGroup Delta = TriangleGroup(4*g, 4*g);
   // initialize parent group
-
-  this->g = g;
+  TriangleGroup Delta = TriangleGroup(4*g, 4*g);
   this->reduction = Delta.reduction;
-
+  
+  // genus
+  this->g = g;
+  
   // first translation operator
-  G gamma;
-  G buffer;
-
+  G gamma = G(this->reduction);
+  
   // rotations
   G A = Delta.A;
   G A_inverse =  power(Delta.A, 4*g-1);
@@ -44,6 +44,7 @@ TorsionFreeFuchsianGroup::TorsionFreeFuchsianGroup(const long &g)
   // add first element to list of generators
   (this -> gamma).push_back(gamma);
 
+  G buffer;
   for(int n=1; n<4*g; n++)
   {
     buffer = ( power(A_inverse, (2*g-1) * n) * gamma ) * power(A, (2*g-1) * n);
