@@ -27,6 +27,6 @@ def density_of_states(spec, E_min, E_max, n_E=100, gamma=0.1):
         mu = E_mesh[i]
 
         for E in spec:
-            dos[i] += gaussian(E, gamma, mu)
+            dos[i] += gaussian(E, gamma, mu) / len(spec)
 
     return E_mesh, dos

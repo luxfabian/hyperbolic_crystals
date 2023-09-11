@@ -37,7 +37,7 @@ def get_access_point(silent=True):
     # Read group_specs.inp                                            #
     ###################################################################
 
-    group_specs_fname = HYPERBOLIC_DIR + "/fuchsian.inp"
+    group_specs_fname = HYPERBOLIC_DIR + "/tffg_group_specs.inp"
     group_specs_file = open(group_specs_fname, 'r')
     group_specs_lines = group_specs_file.readlines()
     group_specs_lines = [int(re.sub('[^-\d]', "", line))

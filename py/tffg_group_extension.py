@@ -8,12 +8,12 @@ import numpy as np
 
 from scipy.sparse import diags, lil_matrix, kron
 
-def get_extension(g=1, k=1):
+def get_extension(g=1, k=1, n =1):
     """
         Build and return the sigma matrices of the extension
     """
 
-    s = np.exp(2*np.pi * 1j / k)
+    s = np.exp(n*2*np.pi * 1j / k)
 
     # -- first sigma matrx_inv
     diagonal_0 = [ 1 for x in range(k) ]
@@ -34,7 +34,7 @@ def get_extension(g=1, k=1):
 
     return sigma
 
-def magnetic_representation(generators, k):
+def magnetic_representation(generators, k, n):
     """
         Represent the plain generators in the corresponding magnetic representation
     """
@@ -45,9 +45,9 @@ def magnetic_representation(generators, k):
     # -- genus
     g = n_g // 4
 
-    sigma = get_extension(k)
+    sigma = get_extension(g,k,n)
 
-    mag =  np.array( [ kron(sigma[j], generators[j]) for j in range(4*g) ] )
+    mag = [ kron(sigma[j], generators[j]) for j in range(4*g) ] 
 
     return mag
 
@@ -58,13 +58,14 @@ if __name__ == '__main__':
 
     g = 2
     k = 5
-    sigma = get_extension(g,k)
+    n = 3
+    sigma = get_extension(g,k,n)
 
     # -- check commutation relations
 
     id = lil_matrix(np.eye(k))
-    s = np.exp(2*np.pi * 1j / k) * id
-    s_inv = np.exp(-2*np.pi * 1j / k) * id
+    s = np.exp(n*2*np.pi * 1j / k) * id
+    s_inv = np.exp(-n*2*np.pi * 1j / k) * id
 
     x = sigma[0]
     x_inv = sigma[2*g]
