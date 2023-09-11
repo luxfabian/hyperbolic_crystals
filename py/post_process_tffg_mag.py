@@ -59,6 +59,7 @@ def process_spec(n,k):
 
 def compare_specs(nks, gamma,n_E=50):
 
+    # plt.yscale("log")
 
     for nk in nks:
         N,n,k = nk
@@ -69,7 +70,7 @@ def compare_specs(nks, gamma,n_E=50):
 
         print(n,k,len(spec))
 
-        E_mesh, dos = density_of_states(spec, 4, 7, n_E=n_E, gamma=gamma)
+        E_mesh, dos = density_of_states(spec, -7, 7, n_E=n_E, gamma=gamma)
 
         #plt.plot(E_mesh, dos, '-', linewidth=0.5 + 0.025*k, label='$\phi={}/{}$'.format(n,k) )
         plt.plot(E_mesh, dos, '-', linewidth=0.5 + 0.025*k, label='$p^n={}$'.format(N) )
@@ -92,5 +93,7 @@ def compare_specs(nks, gamma,n_E=50):
 
 # nks = [(1,3),(2,6),(4,12),(8,24),(16,48)]
 
-tuples = [(2,1,3),(3,1,3),(4,1,3),(5,1,3),(6,1,3),(8,1,3)]
-compare_specs(tuples, 0.025, 500)
+# tuples = [(2,1,3),(3,1,3),(4,1,3),(5,1,3),(6,1,3),(8,1,3)]
+
+tuples = [(5,1,1),(5,1,3)]
+compare_specs(tuples, 0.05,500)
