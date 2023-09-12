@@ -16,8 +16,9 @@ import kpm
 
 # -- parameters
 
-k = 197
-ns = np.array([n+1 for n in range(round((k+1)/2))])
+n = 1
+k = 5
+
 
 n_energies = 500
 n_moments = 512
@@ -63,7 +64,7 @@ def spectrum(n):
     H = scipy.sparse.csr_matrix((k*d, k*d), dtype=complex)
 
     for i in range(4*g):
-        H += (-mag[i])
+        H += mag[i]
 
     emesh, dos = kpm.density_of_states(
             H, scale=10, n_moments=n_moments, n_energies=n_energies, n_random_states=n_random_states)
@@ -71,22 +72,9 @@ def spectrum(n):
     return emesh, dos
 
 
-hofstadter = np.zeros((len(ns), n_energies),dtype=float)
-flux = np.zeros(len(ns),dtype=float)
+emesh, dos = spectrum(n)
 
-for i in range(len(ns)):
-    # -- flux
-    phi = ns[i]/k
-
-    print("ϕ={}/{}".format(ns[i],k))
-
-    flux[i] = phi
-
-    emesh, dos = spectrum(ns[i])
-    hofstadter[i,:] = dos
-
-
-np.save("./out/hofstadter_kpm_emesh.npy", emesh)
-np.save("./out/hofstadter_kpm_flux.npy", flux)
-np.save("./out/hofstadter_kpm.npy", hofstadter)
+np.save("./out/tffg_"+str(N)+"_"+str(k)+"_dos_kpm_emesh.npy", emesh)
+np.save("./out/tffg_"+str(N)+"_"+str(k)+"_dos_kpm_flux.npy", n/k)
+np.save("./out/tffg_"+str(N)+"_"+str(k)+"_dos_kpm.npy", dos)
 

@@ -12,17 +12,10 @@ from scipy.sparse import lil_matrix
 
 from tffg_group_extension import magnetic_representation
 
-import kpm
-
 # -- parameters
 
-k = 197
-ns = np.array([n+1 for n in range(round((k+1)/2))])
-
-n_energies = 500
-n_moments = 512
-n_random_states = 10
-
+k = 200
+ns = np.array([n for n in range(k+1)])
 
 # -- group information
 
@@ -63,15 +56,15 @@ def spectrum(n):
     H = scipy.sparse.csr_matrix((k*d, k*d), dtype=complex)
 
     for i in range(4*g):
-        H += (-mag[i])
+        H += mag[i]
 
-    emesh, dos = kpm.density_of_states(
-            H, scale=10, n_moments=n_moments, n_energies=n_energies, n_random_states=n_random_states)
+    H_dense = H.todense()
+    spec = scipy.linalg.eigh(H_dense, eigvals_only=True)
 
-    return emesh, dos
+    return spec
 
 
-hofstadter = np.zeros((len(ns), n_energies),dtype=float)
+hofstadter = np.zeros((len(ns), k*d),dtype=float)
 flux = np.zeros(len(ns),dtype=float)
 
 for i in range(len(ns)):
@@ -81,12 +74,9 @@ for i in range(len(ns)):
     print("ϕ={}/{}".format(ns[i],k))
 
     flux[i] = phi
-
-    emesh, dos = spectrum(ns[i])
-    hofstadter[i,:] = dos
+    hofstadter[i,:] = spectrum(ns[i])
 
 
-np.save("./out/hofstadter_kpm_emesh.npy", emesh)
-np.save("./out/hofstadter_kpm_flux.npy", flux)
-np.save("./out/hofstadter_kpm.npy", hofstadter)
+np.save("./out/hofstadter_flux.npy", flux)
+np.save("./out/hofstadter.npy", hofstadter)
 

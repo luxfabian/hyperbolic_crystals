@@ -34,11 +34,20 @@ graph[i_]:=  graph[i] = DirectedEdge[#[[1]],#[[2]]] &/@  arr[i]["ExplicitPositio
 graphs = graph[#]&/@ Range[2g];
 
 
+MatrixPower[arr[4],12] == IdentityMatrix[dim]
+
+
+GraphPlot[graphs[[2]]]
+
+
 GraphPlot[ Join@@ graphs[[1;;2g ]] ]
 
 
 H = Sum[arr[i],{i,1, 4 g} ];
 spec0 = Eigenvalues[N[Normal[H]]];
+
+
+ListPlot[Sort[spec0]]
 
 
 \[Mu]s = Subdivide[-6,6,500];
@@ -50,22 +59,96 @@ ids0 = ids[#] &/@ \[Mu]s ;
 ListLinePlot[Transpose[{\[Mu]s, ids0}]]
 
 
+spec1 = #[[2]] &/@ magspec[1];
+ListPlot[Sort[spec1]]
+
+
+spec2 = #[[2]] &/@ magspec[2];
+ListPlot[Sort[spec2]]
+
+
+spec3 = #[[2]] &/@ magspec[3];
+ListPlot[Sort[spec3]]
+
+
+
+
+
+4 dim
+
+
+ListPlot[{Sort[spec1],Sort[spec2]}]
+
+
+Mod[i+1,2]+1
+
+
 magspec[k_]:=(
 	s = Exp[(2 \[Pi] I)/k];
 	
 	Clear[\[CapitalSigma]];
-	\[CapitalSigma][i_]:= SparseArray[ IdentityMatrix[k] ];
+	\[CapitalSigma][i_/;i>2]:= SparseArray[ IdentityMatrix[k] ];
 	\[CapitalSigma][1] := If[k>1,SparseArray[{Band[{2,1}]->1},{k,k}], SparseArray[{},{k,k}]]  + SparseArray[{ {1,k}-> 1}, {k,k}];
-	\[CapitalSigma][2] := SparseArray[ {#,#}->s^(k+#-1) &/@ Range[k], {k,k}];
+	\[CapitalSigma][2] := SparseArray[ {#,#}->s^(#-1) &/@ Range[k], {k,k}];
+	\[CapitalSigma][1 + 2 g] := Inverse[\[CapitalSigma][1]];
+	\[CapitalSigma][2 + 2 g] := Inverse[\[CapitalSigma][2]];
 	
-	Hmag = Sum[ KroneckerProduct[ \[CapitalSigma][i] , arr[i]],{i,1,2g } ] // N ;
-	Hmag = (Hmag + ConjugateTranspose[Hmag]);
+	Hmag = Sum[ KroneckerProduct[ \[CapitalSigma][i] , arr[i]],{i,1,4g } ] // N ;
 	Hmagdense = Normal[Hmag];
 	
 	spec = {k/dim,#}&/@ Eigenvalues[N[Hmagdense]];
 	
 	Return[spec];
 );
+
+
+KroneckerProduct[ \[CapitalSigma][i] , arr[i]]
+
+
+\[Gamma][i_]:= arr[i]
+
+k=4;
+s = Exp[(2 \[Pi] I)/k];
+
+Clear[\[CapitalSigma]];
+\[CapitalSigma][i_/;i>2]:= SparseArray[ IdentityMatrix[k] ];
+\[CapitalSigma][1] := If[k>1,SparseArray[{Band[{2,1}]->1},{k,k}], SparseArray[{},{k,k}]]  + SparseArray[{ {1,k}-> 1}, {k,k}];
+\[CapitalSigma][2] := SparseArray[ {#,#}->s^(#-1) &/@ Range[k], {k,k}];
+\[CapitalSigma][1 + 2 g] := Inverse[\[CapitalSigma][1]];
+\[CapitalSigma][2 + 2 g] := Inverse[\[CapitalSigma][2]];
+
+\[Gamma]mag[i_]:= KroneckerProduct[ \[CapitalSigma][i],arr[i]];
+
+
+MatrixForm[\[CapitalSigma][1]]
+
+
+MatrixForm[\[CapitalSigma][2]]
+
+
+MatrixForm[\[CapitalSigma][3]]
+
+
+\[Gamma][1] . \[Gamma][2] . \[Gamma][3] . \[Gamma][4] . \[Gamma][5] . \[Gamma][6] . \[Gamma][7] . \[Gamma][8] == IdentityMatrix[dim]
+
+
+(s \[Gamma]mag[1] . \[Gamma]mag[2] . \[Gamma]mag[3] . \[Gamma]mag[4] . \[Gamma]mag[5] . \[Gamma]mag[6] . \[Gamma]mag[7] . \[Gamma]mag[8] )== IdentityMatrix[dim k]
+
+
+op =  \[Gamma][1] . \[Gamma][2] . \[Gamma][3] . \[Gamma][4] . \[Gamma][5] . \[Gamma][6] . \[Gamma][7] . \[Gamma][8] ;
+
+
+MatrixPower[ op,k]== -IdentityMatrix[dim k]
+
+
+\[Gamma][1] . \[Gamma][2] . \[Gamma][3] . \[Gamma][4] . \[Gamma][5] . \[Gamma][6] . \[Gamma][7] . \[Gamma][8] == IdentityMatrix[dim]
+
+
+spec4 = #[[2]] &/@ magspec[3];
+ListPlot[Sort[spec4]]
+
+
+Mod[1+1,2]+1
 
 
 k = 3;
@@ -99,10 +182,7 @@ s^(k-1)
 s (\[CapitalSigma][1] . \[CapitalSigma][2] . Inverse[\[CapitalSigma][1]] . Inverse[\[CapitalSigma][2]]) //MatrixForm
 
 
-s (\[CapitalSigma][1] . \[CapitalSigma][2] - \[CapitalSigma][2] . \[CapitalSigma][1])  //FullSimplify //MatrixForm
 
-
-spec1= magspec[20];
 
 
 spec2= magspec[3];
@@ -114,11 +194,22 @@ spec1s = #[[2]] &/@ spec1;
 spec2s = #[[2]] &/@ spec2;
 
 
+spec1= magspec[2];
+spec1s = #[[2]] &/@ spec1;
+
 ids[\[Mu]_]:=1/Length[spec1s] Plus@@ ( If[# < \[Mu] ,1,0] &/@ spec1s  ) //N
  
 ids1 = ids[#] &/@ \[Mu]s ;
 
-ListLinePlot[Transpose[{\[Mu]s, ids1}]]
+
+spec2= magspec[2];
+spec2s = #[[2]] &/@ spec2;
+
+ids[\[Mu]_]:=1/Length[spec2s] Plus@@ ( If[# < \[Mu] ,1,0] &/@ spec2s  ) //N
+ 
+ids2 = ids[#] &/@ \[Mu]s ;
+
+ListLinePlot[Transpose[{\[Mu]s, ids2}]]
 
 
 ids[\[Mu]_]:=1/Length[spec2s] Plus@@ ( If[# < \[Mu] ,1,0] &/@ spec2s  ) //N
@@ -128,13 +219,16 @@ ids2 = ids[#] &/@ \[Mu]s ;
 ListLinePlot[Transpose[{\[Mu]s, ids2}]]
 
 
-ListLinePlot[{Transpose[{\[Mu]s, ids0}],Transpose[{\[Mu]s, ids1}],Transpose[{\[Mu]s, ids2}]}, PlotLegends->{"No magnetic field","k=2", "k=3"},Frame-> True, FrameLabel->{"\[Mu]","IDS"}]
+dim 3
+
+
+ListLinePlot[{Transpose[{\[Mu]s, ids0}],Transpose[{\[Mu]s, ids1}],Transpose[{\[Mu]s, ids2}]}, PlotLegends->{"No magnetic field","k=2","k=3"},Frame-> True, FrameLabel->{"\[Mu]","IDS"}]
 
 
 ids1
 
 
-ks = Range[2,dim];
+ks = Range[2,30];
 
 
 dim dim
@@ -143,7 +237,7 @@ dim dim
 specs  = magspec[#]&/@ks;
 
 
-20000/128
+ListPlot[ ArrayFlatten[specs,1] ]
 
 
 DensityHistogram[ArrayFlatten[specs,1],{Round[Length[ks]/2],50}]
@@ -543,3 +637,30 @@ c[n_] := a[n] . b[n] . Inverse[a[n]] . Inverse[b[n]]
 
 
 c[1] . c[2]//N // MatrixForm
+
+
+magspec[k_, n_]:=(
+	s = Exp[n (2 \[Pi] I)/k];
+	
+	Clear[\[CapitalSigma]];
+	\[CapitalSigma][i_/;i>2]:= SparseArray[ IdentityMatrix[k] ];
+	\[CapitalSigma][1] := If[k>1,SparseArray[{Band[{2,1}]->1},{k,k}], SparseArray[{},{k,k}]]  + SparseArray[{ {1,k}-> 1}, {k,k}];
+	\[CapitalSigma][2] := SparseArray[ {#,#}->s^(#-1) &/@ Range[k], {k,k}];
+	\[CapitalSigma][1 + 2 g] := Inverse[\[CapitalSigma][1]];
+	\[CapitalSigma][2 + 2 g] := Inverse[\[CapitalSigma][2]];
+	
+	Hmag = Sum[ KroneckerProduct[ \[CapitalSigma][i] , arr[i]],{i,1,4g } ] // N ;
+	Hmagdense = Normal[Hmag];
+	
+	spec = {n/k,#}&/@ Eigenvalues[N[Hmagdense]];
+	
+	Return[spec];
+);
+
+
+kv = 40;
+ns = Range[0,kv];
+specs = magspec[kv,#] &/@ ns;
+
+
+ListPlot[ ArrayFlatten[specs,1], Frame-> True, GridLines->Automatic, FrameLabel->{" Flux \[Phi] ( s =  \!\(\*SuperscriptBox[\(e\), \(\(2\)  \(\[Pi]\)\(\\\ \)\(\[ImaginaryI]\)\(\\\ \)\(\[Phi]\)\(\\\ \)\)]\))", "Energy"},AspectRatio->1]

@@ -70,7 +70,7 @@ def compare_specs(nks, gamma,n_E=50):
 
         print(n,k,len(spec))
 
-        E_mesh, dos = density_of_states(spec, -7, 7, n_E=n_E, gamma=gamma)
+        E_mesh, dos = density_of_states(spec, -8, 8, n_E=n_E, gamma=gamma)
 
         #plt.plot(E_mesh, dos, '-', linewidth=0.5 + 0.025*k, label='$\phi={}/{}$'.format(n,k) )
         plt.plot(E_mesh, dos, '-', linewidth=0.5 + 0.025*k, label='$p^n={}$'.format(N) )
@@ -95,5 +95,7 @@ def compare_specs(nks, gamma,n_E=50):
 
 # tuples = [(2,1,3),(3,1,3),(4,1,3),(5,1,3),(6,1,3),(8,1,3)]
 
+# tuples = [(2,1,3),(4,1,3),(8,1,3)]
 tuples = [(5,1,1),(5,1,3)]
-compare_specs(tuples, 0.05,500)
+
+compare_specs(tuples, 0.01,500)
