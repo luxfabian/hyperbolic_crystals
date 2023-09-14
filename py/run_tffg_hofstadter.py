@@ -14,7 +14,7 @@ from tffg_group_extension import magnetic_representation
 
 # -- parameters
 
-k = 200
+k = 51
 ns = np.array([n for n in range(k+1)])
 
 # -- group information
@@ -56,7 +56,7 @@ def spectrum(n):
     H = scipy.sparse.csr_matrix((k*d, k*d), dtype=complex)
 
     for i in range(4*g):
-        H += mag[i]
+        H += (-mag[i])
 
     H_dense = H.todense()
     spec = scipy.linalg.eigh(H_dense, eigvals_only=True)

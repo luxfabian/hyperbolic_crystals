@@ -16,13 +16,14 @@ import kpm
 
 # -- parameters
 
-n = 1
-k = 5
+n = 1000
+k = 3001
 
 
-n_energies = 500
-n_moments = 512
+n_energies = 2048
+n_moments = 2048
 n_random_states = 10
+
 
 
 # -- group information
@@ -64,17 +65,17 @@ def spectrum(n):
     H = scipy.sparse.csr_matrix((k*d, k*d), dtype=complex)
 
     for i in range(4*g):
-        H += mag[i]
+        H += mag[i]/ (4*g)
 
     emesh, dos = kpm.density_of_states(
-            H, scale=10, n_moments=n_moments, n_energies=n_energies, n_random_states=n_random_states)
+            H, scale=1.5, n_moments=n_moments, n_energies=n_energies, n_random_states=n_random_states)
 
     return emesh, dos
 
 
 emesh, dos = spectrum(n)
 
-np.save("./out/tffg_"+str(N)+"_"+str(k)+"_dos_kpm_emesh.npy", emesh)
-np.save("./out/tffg_"+str(N)+"_"+str(k)+"_dos_kpm_flux.npy", n/k)
-np.save("./out/tffg_"+str(N)+"_"+str(k)+"_dos_kpm.npy", dos)
+np.save("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_emesh.npy", emesh)
+np.save("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_flux.npy", n/k)
+np.save("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm.npy", dos)
 

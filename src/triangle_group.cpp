@@ -268,10 +268,10 @@ TriangleGroup::TriangleGroup(const long &p, const long &q)
 
   bool triangle_is_admissble = (1.0 / p + 1.0 / q < 0.5);
 
-  if (not triangle_is_admissble)
-  {
-    throw std::invalid_argument("Triangle is not admissible since 1/p +1/q < 1/2 is not fulfilled.");
-  }
+  // if (not triangle_is_admissble)
+  // {
+  //   throw std::invalid_argument("Triangle is not admissible since 1/p +1/q < 1/2 is not fulfilled.");
+  // }
 
   // -- generate relations
   this->relations.push_back(word_power("A", this->p));

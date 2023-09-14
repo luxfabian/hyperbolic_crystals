@@ -14,15 +14,16 @@ from tffg_group_extension import magnetic_representation
 
 import kpm
 
+from math import floor
+
 # -- parameters
 
-k = 197
-ns = np.array([n+1 for n in range(round((k+1)/2))])
+k = 2003
+ns = np.array([n for n in range(floor(k/2))])
 
-n_energies = 500
-n_moments = 512
+n_energies = 2048
+n_moments = 2048
 n_random_states = 10
-
 
 # -- group information
 
@@ -41,6 +42,10 @@ print(fname_prefix)
 # -- read generators
 
 generators = []
+
+couplings = np.array( [1,1,1,1], dtype=complex)
+couplings = np.hstack( (couplings, couplings.conjugate()))
+
 for i in range(4*g):
 
     H = lil_matrix((d, d))
@@ -53,6 +58,7 @@ for i in range(4*g):
 
     generators.append(H)
 
+
 def spectrum(n):
     """
         exact diagonalization
@@ -63,16 +69,16 @@ def spectrum(n):
     H = scipy.sparse.csr_matrix((k*d, k*d), dtype=complex)
 
     for i in range(4*g):
-        H += (-mag[i])
+        H += (-mag[i])/(4*g)     
 
     emesh, dos = kpm.density_of_states(
-            H, scale=10, n_moments=n_moments, n_energies=n_energies, n_random_states=n_random_states)
+            H, scale=2, n_moments=n_moments, n_energies=n_energies, n_random_states=n_random_states)
 
     return emesh, dos
 
 
-hofstadter = np.zeros((len(ns), n_energies),dtype=float)
-flux = np.zeros(len(ns),dtype=float)
+hofstadter = np.zeros((2*len(ns), n_energies),dtype=float)
+flux = np.zeros(2*len(ns),dtype=float)
 
 for i in range(len(ns)):
     # -- flux
@@ -85,6 +91,10 @@ for i in range(len(ns)):
     emesh, dos = spectrum(ns[i])
     hofstadter[i,:] = dos
 
+    flux[2*len(ns)-i-1] = 1-phi
+    hofstadter[2*len(ns)-i-1,:] = dos
+
+# print(flux)
 
 np.save("./out/hofstadter_kpm_emesh.npy", emesh)
 np.save("./out/hofstadter_kpm_flux.npy", flux)
