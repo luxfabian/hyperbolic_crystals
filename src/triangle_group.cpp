@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include "ring_extension.h"
 #include "triangle_group.h"
-#include <boost/algorithm/string.hpp> // include Boost, a C++ library
+#include <boost/algorithm/string/replace.hpp> // include Boost, a C++ library
 
 #include <iostream>
 #include <fstream>
@@ -266,7 +266,7 @@ TriangleGroup::TriangleGroup(const long &p, const long &q)
 
   this->reduction = read_numberfield_reduction(p,q);
 
-  bool triangle_is_admissble = (1.0 / p + 1.0 / q < 0.5);
+  // bool triangle_is_admissble = (1.0 / p + 1.0 / q < 0.5);
 
   // if (not triangle_is_admissble)
   // {
@@ -286,7 +286,7 @@ void TriangleGroup::reduce(string &word)
 {
   for (string relation : this->relations)
   {
-    boost::replace_all(word, relation, "");
+    boost::algorithm::replace_all(word, relation, "");
   }
 }
 
