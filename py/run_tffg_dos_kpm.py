@@ -16,10 +16,11 @@ import kpm
 
 # -- parameters
 
-n = 1000
-k = 3001
 
-
+n = 65538
+k = 196613
+# 2003/
+# 33334/100003
 n_energies = 2048
 n_moments = 2048
 n_random_states = 10

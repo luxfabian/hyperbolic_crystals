@@ -6,7 +6,7 @@
 """
 import numpy as np
 
-from scipy.sparse import diags, lil_matrix, kron
+from scipy.sparse import diags, lil_matrix, kron,eye
 
 def get_extension(g=1, k=1, n =1):
     """
@@ -25,7 +25,7 @@ def get_extension(g=1, k=1, n =1):
     sigma_1 = lil_matrix(diags(diagonal_1, shape=(k,k)))
 
     # -- combine everything into a list
-    sigma = np.array( [lil_matrix(np.eye(k)) for _ in range(4*g) ] )
+    sigma = np.array( [lil_matrix(eye(k)) for _ in range(4*g) ] )
 
     sigma[0] = sigma_0
     sigma[1] = sigma_1

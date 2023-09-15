@@ -20,7 +20,7 @@ from numba import njit
 
 count = 0
 
-def plot(param):
+def plot(param, label):
 
     g,N,k = param
 
@@ -28,7 +28,7 @@ def plot(param):
     flux  = np.load("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_flux.npy")
     dos = np.load("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm.npy")
 
-    plt.plot(-emesh,dos, label='$p^n={}$'.format(N), linewidth=1)
+    plt.plot(-emesh,dos, label=label,linewidth=1)
 
 
 
@@ -39,15 +39,17 @@ k = 3
 # plot((1,16,k))
 # plot((1,32,k))
 # plot((1,64,k))
-plot((1,128,k))
-plot((1,256,k))
-plot((1,512,k))
+# plot((1,128,k))
+# plot((1,256,k))
 
-plot((1,2,3001))
+
+plot((1,2,196613), label='$p^n=2$, $\phi=65538/196613$')
+
+plot((1,512,k), label='$p^n=512$, $\phi=1/3$')
 
 plt.grid()
 
-plt.title("$g=1$, $\phi=1/{}$".format(k)+", $n_{\mathrm{KPM}}=2048$, $n_{\mathrm{rand}}=10$")
+plt.title("$g=1$, $n_{\mathrm{KPM}}=2048$, $n_{\mathrm{rand}}=10$")
 # plt.legend(fontsize=12,framealpha=1,loc='lower right')
 
 ax = plt.gca()
