@@ -18,11 +18,11 @@ from math import floor
 
 # -- parameters
 
-k = 2003
+k = 103
 ns = np.array([n for n in range(floor(k/2))])
 
 n_energies = 2048
-n_moments = 2048
+n_moments = 512
 n_random_states = 10
 
 # -- group information
@@ -54,7 +54,8 @@ for i in range(4*g):
     reg_data = np.loadtxt(reg_fname, dtype=int, delimiter=" ")
 
     for [i, j] in reg_data:
-        H[i, j] += 1
+        if i >= 0 and j >= 0:
+            H[i, j] += 1
 
     generators.append(H)
 
@@ -64,12 +65,19 @@ def spectrum(n):
         exact diagonalization
     """
 
-    mag = magnetic_representation(generators, k,n)
+    mag = magnetic_representation(generators,k,n)
 
     H = scipy.sparse.csr_matrix((k*d, k*d), dtype=complex)
 
+    # U = mag[0]
+    # V = mag[1]
+
+    # H = (-U.dot(U) - V.dot(V) + 16 * (U+V))/12 / 4
+
+    # H += H.conjugate().transpose()
+
     for i in range(4*g):
-        H += (-mag[i])/(4*g)     
+        H += (-mag[i].dot(mag[i]) + 16 * mag[i])/12/(4*g)     
 
     emesh, dos = kpm.density_of_states(
             H, scale=2, n_moments=n_moments, n_energies=n_energies, n_random_states=n_random_states)

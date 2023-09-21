@@ -12,20 +12,10 @@ from scipy.sparse import lil_matrix
 
 from tffg_group_extension import magnetic_representation
 
-import kpm
-
 # -- parameters
 
-
 n = 1
-k = 10
-# 2003/
-# 33334/100003
-n_energies = 2048
-n_moments = 2048
-n_random_states = 10
-
-
+k = 1
 
 # -- group information
 
@@ -56,7 +46,7 @@ for i in range(4*g):
 
     generators.append(H)
 
-def spectrum(n):
+def spectrum(n,k):
     """
         exact diagonalization
     """
@@ -65,21 +55,17 @@ def spectrum(n):
 
     H = scipy.sparse.csr_matrix((k*d, k*d), dtype=complex)
 
-    # for i in range(4*g):
-    #     H += mag[i]/ (4*g)
-
     for i in range(4*g):
-        H += (-mag[i].dot(mag[i]) + 16 * mag[i])/12/(4*g)   
+        H += (-mag[i]) / (4*g)
 
-    emesh, dos = kpm.density_of_states(
-            H, scale=2.0, n_moments=n_moments, n_energies=n_energies, n_random_states=n_random_states)
+    H_dense = H.todense()
+    eigenvalues, eigenvectors = scipy.linalg.eigh(H_dense)
 
-    return emesh, dos
+    return eigenvalues, eigenvectors
 
 
-emesh, dos = spectrum(n)
+eigenvalues, eigenvectors = spectrum(n,k)
 
-np.save("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_emesh.npy", emesh)
-np.save("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_flux.npy", n/k)
-np.save("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm.npy", dos)
+np.save("./out/tffg_3_localization_eigenvalues.npy",  eigenvalues)
+np.save("./out/tffg_3_localization_eigenvectors.npy", eigenvectors)
 
