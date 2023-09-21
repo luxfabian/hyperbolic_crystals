@@ -147,6 +147,28 @@ def get_B(p, q):
 
     return B_mat
 
+def build_gammas(g):
+    """
+        Build the generators of the torsion free Fuchsian group of genus g
+    """
+
+    A = get_A(4*g,4*g)
+    B = get_B(4*g,4*g)
+
+    C = A.dot(B)
+
+    gamma_1 = C.dot(np.linalg.matrix_power(A, 2*g))
+
+    gammas = np.zeros((4*g, 2, 2),dtype=complex)
+
+    for n in range(4*g):
+
+        l = np.linalg.matrix_power(A, (-2*g+1)*n)
+        r = np.linalg.matrix_power(A, (2*g-1)*n)
+
+        gammas[n] = l.dot(gamma_1.dot(r))
+
+    return gammas
 
 def get_r0(p, q):
     """
@@ -217,8 +239,8 @@ if __name__=="__main__":
     titles = [r"$\chi_1(z)$", r"$\chi_2(z)$" , r"$\chi_3(z)$"]
     for region in range(3):
         ax = axs[region]
-       	ax.set_xticklabels([r"$\Upsilon_1^\infty$", r"$\Upsilon_2^\infty$", r"$\Upsilon_3^\infty$"])
-       	ax.set_yticklabels([])
+        ax.set_xticklabels([r"$\Upsilon_1^\infty$", r"$\Upsilon_2^\infty$", r"$\Upsilon_3^\infty$"])
+        ax.set_yticklabels([])
         ax.set_thetagrids([p1*deg, p2*deg, p3*deg])
         ax.set_rticks([])
         ax.set_title(titles[region])
