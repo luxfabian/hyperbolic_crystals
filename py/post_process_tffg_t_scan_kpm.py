@@ -19,15 +19,16 @@ from matplotlib.ticker import SymmetricalLogLocator
 from numba import njit
 
 
-emesh = np.load("./out/hofstadter_kpm_emesh.npy")
-flux = np.load("./out/hofstadter_kpm_flux.npy")
-hofstadter = np.load("./out/hofstadter_kpm.npy")
+emesh = np.load("./out/nnn_t_scan_kpm_emesh.npy")
+ts = np.load("./out/nnn_t_scan_kpm_ts.npy")
+t_scan = np.load("./out/nnn_t_scan_kpm.npy")
 
 Emin = np.amin(emesh)
 Emax = np.amax(emesh)
-
-phimin = np.amin(flux)
-phimax = np.amax(flux)
+print(np.amin(emesh),np.amax(emesh))
+print(Emin, Emax)
+# phimin = np.amin(flux)
+# phimax = np.amax(flux)
 
 
 
@@ -35,13 +36,12 @@ phimax = np.amax(flux)
 
 # plt.imshow(hofstadter.transpose(), aspect='auto',norm=LogNorm(), extent=(phimin,phimax, Emin, Emax), interpolation='bilinear')
 
-
-linthresh = 1.5*10**(0)  # The range within which the plot is linear
+linthresh = 1.5*10**(-4)  # The range within which the plot is linear
 linscale = 1   # The factor by which data smaller than `linthresh` is scaled.
 
 norm = SymLogNorm(linthresh=linthresh, linscale=linscale)
-plt.imshow(hofstadter.transpose(), aspect='auto',norm=norm, extent=(0,1, Emin, Emax), interpolation='gaussian', origin = 'lower' ,resample=True,cmap='inferno')
-# plt.imshow(hofstadter.transpose(), aspect='auto', extent=(0,1, Emin, Emax), interpolation='gaussian', origin = 'lower' ,resample=True,cmap='inferno')
+plt.imshow(t_scan.transpose(), aspect='auto',norm=norm, extent=(np.amin(ts), np.amax(ts) ,Emin, Emax), interpolation='gaussian', origin = 'lower' ,resample=True,cmap='inferno')
+# plt.imshow(t_scan.transpose(), aspect='auto', extent=(0,1, Emin, Emax), interpolation='gaussian', origin = 'lower' ,resample=True,cmap='inferno')
 
 ax = plt.gca()
 
@@ -55,16 +55,16 @@ fs = 14
 cbarfs = 12
 
 
-ax.set_xlabel("$\phi$",fontsize=fs)
-ax.set_ylabel("Energy",fontsize=fs)
-ax.set_ylim( (-1.5,1.5))
+ax.set_xlabel("$t_{2} / t_{1}$",fontsize=fs)
+ax.set_ylabel("Energy [$t_{1}$]",fontsize=fs)
+# ax.set_ylim( (-30, 10))
 
 cbar = plt.colorbar()
 cbar.set_label(label=r'DOS (a.u.)', size=fs)
 
 
-plt.title("$g=1$, $p^n=2^1$, $k=2003$, $n_{\mathrm{KPM}}=2048$, $n_{\mathrm{rand}}=10$",fontsize=11)
+plt.title("$g=2$, $p^n=3^1$, $\phi=1/3$, $n_{\mathrm{KPM}}=2048$, $n_{\mathrm{rand}}=10$",fontsize=11)
 # plt.title("$\phi=1/{}$".format(k)+"")
 plt.tight_layout()
-plt.savefig("./out/hofstadter_kpm.png",dpi=1000)
+plt.savefig("./out/t_scan_kpm.png",dpi=300)
 plt.clf()

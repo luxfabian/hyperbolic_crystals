@@ -24,9 +24,9 @@ def plot(param, label):
 
     g,N,k = param
 
-    emesh = np.load("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_emesh.npy")
-    flux  = np.load("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_flux.npy")
-    dos = np.load("./out/tffg_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm.npy")
+    emesh = np.load("./out/tffg_nnn_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_emesh.npy")
+    flux  = np.load("./out/tffg_nnn_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm_flux.npy")
+    dos = np.load("./out/tffg_nnn_"+str(g)+"_"+str(N)+"_"+str(k)+"_dos_kpm.npy")
 
     plt.plot(-emesh,dos, label=label,linewidth=1)
 
@@ -42,26 +42,29 @@ k = 3
 # plot((1,128,k))
 # plot((1,256,k))
 
-#g N g
-plot((2,3,10), label='$p^n=3^1$, $\phi=1/10$')
-plot((2,5,10), label='$p^n=5^1$, $\phi=1/10$')
-# plot((2,3,3), label='$p^n=3^1$, $\phi=1/3$')
-# plot((2,5,3), label='$p^n=5^1$, $\phi=1/3$')
-# plot((2,9,5), label='$p^n=3^2$, $\phi=1/3$')
-# plot((2,5,5), label='$p^n=5^1$, $\phi=1/5$')
 
-# plot((1,512,k), label='$p^n=512$, $\phi=1/3$')
+# plot((1,2,196613), label='$p^n=2$, $\phi=65538/196613$')
+
+# plot((2,3,3), label='$p^n=3^1$')
+# plot((2,3,1), label='Dirac $p^n = 3$ $\phi=0$')
+plot((2,3,3), label='Dirac $p^n = 3$ $\phi=1/3$')
+
+plot((2,5,3), label='Dirac $p^n = 5$ $\phi=1/3$')
+
+# plot((2,3,5), label='Dirac $p^n = 3$ $\phi=1/5$')
+# plot((2,5,3), label='$p^n=5$, $\phi=1/3$')
+# plot((2,5,3), label='Dirac $p^n = 5$ $\phi=1/3$')
 
 plt.grid()
 
-plt.title("$g=1$, $n_{\mathrm{KPM}}=2048$, $n_{\mathrm{rand}}=10$")
+# plt.title("$g=1$, $n_{\mathrm{KPM}}=2048$, $n_{\mathrm{rand}}=10$")
 # plt.legend(fontsize=12,framealpha=1,loc='lower right')
 
 ax = plt.gca()
 
 ax.legend(fontsize=12,framealpha=1)#,loc='upper left', bbox_to_anchor=(1, 1))
 
-ax.set_xlim((-1,-0.75))
+# ax.set_xlim((-5,5))
 # ax.set_ylim((0,10))
 
 # plt.yscale("log")  
@@ -82,5 +85,5 @@ ax.set_ylabel(r"DOS (a.u.)",fontsize=fs)
 
 
 plt.tight_layout()
-plt.savefig("./out/tffg_dos_kpm.png",dpi=300)
+plt.savefig("./out/tffg_nnn_dos_kpm.png",dpi=300)
 plt.clf()
