@@ -216,6 +216,8 @@ int main()
 
   vector<int> j_map(basis.size(), 0);
 
+  // -- right regular representation
+
   for (G op : operators)
   {
     {
@@ -254,6 +256,62 @@ int main()
 
     ofstream output_file;
     output_file.open(output_file_name + op.word + ".reg", ofstream::out | ofstream::trunc);
+
+    // -- write result to file
+    for (vector<int>::size_type j = 0; j < basis.size(); j++)
+    {
+      output_file << j_map[j] << " " << j << endl;
+    }
+    output_file.close();
+  }
+
+
+  cout << "Generating the left regular representation." << endl;
+
+  // -- left regular representation
+  A.word = "A";
+  B.word = "B";
+  iA.word = "iA";
+  iB.word = "iB";
+
+  for (G op : operators)
+  {
+    {
+      // j = 0;
+      // i = 0;
+      vector<int> zero(basis.size(), 0);
+      j_map = zero;
+
+      unordered_map<G,int,GHash>::iterator basis_iterator = basis.begin();
+      while(basis_iterator!=basis.end())
+      {
+        action = op*(basis_iterator->first);
+
+        if (periodic_boundary) action = action % modulo;
+
+        unordered_map<G,int, GHash>::const_iterator it = basis.find(action);
+
+	if (it != basis.end())
+        {
+          j_map[basis_iterator->second] = it->second;
+        }
+        else
+        {
+          if (periodic_boundary)
+          {
+            // -- must not happen for periodic boundary conditions
+            throw runtime_error("Left regular representation failed for the word " + op.word);
+          }
+
+          // -- intercept boundary
+          j_map[basis_iterator->second] = -1;
+        }
+        basis_iterator++;
+      }
+    }
+
+    ofstream output_file;
+    output_file.open(output_file_name + op.word + ".lreg", ofstream::out | ofstream::trunc);
 
     // -- write result to file
     for (vector<int>::size_type j = 0; j < basis.size(); j++)
