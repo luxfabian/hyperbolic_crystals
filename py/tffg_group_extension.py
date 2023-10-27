@@ -27,9 +27,9 @@ def get_extension(g=1, k=1, n =1):
     # -- combine everything into a list
     sigma = np.array( [lil_matrix(eye(k)) for _ in range(4*g) ] )
 
-    sigma[0] = sigma_0
+    sigma[0] = sigma_0.transpose().conj()
     sigma[1] = sigma_1
-    sigma[2*g] = sigma_0.transpose().conj()
+    sigma[2*g] = sigma_0
     sigma[2*g+1] = sigma_1.transpose().conj()
 
     return sigma
