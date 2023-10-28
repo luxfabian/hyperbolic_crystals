@@ -56,7 +56,7 @@ set(INCLUDE_PATH ${CMAKE_BINARY_DIR}/include)
 #---------------------------------------------------------------------#
 
 find_package(OpenMP REQUIRED)
-find_package(Boost REQUIRED)
+# find_package(Boost REQUIRED)
 find_package(OpenBLAS64 QUIET)
 
 message((${Boost_INCLUDE_DIR}))

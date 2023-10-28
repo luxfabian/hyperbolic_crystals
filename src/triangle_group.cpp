@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include "ring_extension.h"
 #include "triangle_group.h"
-#include <boost/algorithm/string/replace.hpp> // include Boost, a C++ library
+// #include <boost/algorithm/string/replace.hpp> // include Boost, a C++ library
 
 #include <iostream>
 #include <fstream>
@@ -286,7 +286,7 @@ void TriangleGroup::reduce(string &word)
 {
   for (string relation : this->relations)
   {
-    boost::algorithm::replace_all(word, relation, "");
+    // boost::algorithm::replace_all(word, relation, "");
   }
 }
 
