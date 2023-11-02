@@ -34,6 +34,24 @@ graph[i_]:=  graph[i] = DirectedEdge[#[[1]],#[[2]]] &/@  arr[i]["ExplicitPositio
 graphs = graph[#]&/@ Range[2g];
 
 
+cayleygraph = Graph[Join@@graphs];
+
+
+edges = EdgeCount[cayleygraph]
+
+
+vertices = VertexCount[cayleygraph]
+
+
+faces = vertices
+
+
+vertices - edges +faces
+
+
+
+
+
 MatrixPower[arr[4],12] == IdentityMatrix[dim]
 
 
