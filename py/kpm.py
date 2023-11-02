@@ -173,7 +173,7 @@ def random_trace(m, n_random_states=20, n_moments=200):
     return mus/n_random_states
 
 
-def density_of_states(H, scale=1., n_moments=10, n_energies=500,
+def density_of_states(H, site=0, scale=1., n_moments=10, n_energies=500,
                       n_random_states=20, epsilon=0.01, kernel="jackson"):
     """
         KPM calculation of the density of states
@@ -193,15 +193,35 @@ def density_of_states(H, scale=1., n_moments=10, n_energies=500,
     # -- energy values for DOS reconstruction
     E = np.linspace(-1, 1, n_energies) * (1-epsilon)
 
-    # -- obtaine moments
-    moments = random_trace(
-        m, n_random_states=n_random_states, n_moments=n_moments)
+    # -- obtain moments
+    moments = ldos_chebyshev(
+        m, site=site, n_random_states=n_random_states, n_moments=n_moments)
 
     # -- reconstruct dos
-    dos = chebyshev_reconstruction(moments, E, kernel=kernel).real
+    ldos = chebyshev_reconstruction(moments, E, kernel=kernel).real
 
-    return (scale*E, dos/scale)
+    return (scale*E, ldos/scale)
 
+
+def ldos_chebyshev(H, site=0, scale=1., n_moments=10, n_energies=500,
+                      n_random_states=20, epsilon=0.01, kernel="jackson"):
+    
+    """ Calculates the moments for the local DOS using the KPM"""
+
+    
+    # -- hilbert space dimension
+    dim = H.shape[0] 
+
+    # --  state vector of site
+    v = np.zeros(dim)
+    v[site] = 1.0 
+
+    v = scipy.sparse.csc(v).transpose()
+
+    # -- compute moments
+    mus = chebyshev_moments(v, H, n_moments=n_moments)
+
+    return mus
 
 if __name__ == '__main__':
     pass

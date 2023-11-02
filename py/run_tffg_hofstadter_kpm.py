@@ -18,7 +18,7 @@ from math import floor
 
 # -- parameters
 
-k = 103
+k = 101
 ns = np.array([n for n in range(floor(k/2))])
 
 n_energies = 2048

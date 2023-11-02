@@ -16,7 +16,7 @@ from tffg_group_extension import magnetic_representation
 
 # -- parameters
 n = 1
-k = 1
+k = 3
 
 
 access_point = iomodule.get_access_point()
