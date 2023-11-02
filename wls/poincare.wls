@@ -169,6 +169,25 @@ PDGeodesic[x_, y_, pts_,style_:{Thin,PDGeodesicColor}]:=(
 PDGeodesic::usage = "Draw a geodesic between the complex points x and y. pts controls the linear interpolation.";
 
 
+PDGeodesicArrow[x_, y_, pts_,style_:{Thin,PDGeodesicColor}]:=(
+
+	(*Translate point x to 0 (then the geodesic is a straight line)*)
+	\[Phi]y = PDTranslation[-x, y];
+	
+	(*Linear interpolation*)
+	line = PDTranslation[x, # \[Phi]y] &/@ Subdivide[0,1, pts] // PDToXY;
+	
+	lp = ListLinePlot[line, PlotStyle->style,PlotRange->Full];
+	
+	lpwitharrow = lp /. Line[xx_] :> {Arrowheads[{0.05}], Arrow[xx]};
+	
+	Return[lpwitharrow];
+
+);
+
+PDGeodesicArrow::usage = "Draw a geodesic between the complex points x and y. pts controls the linear interpolation.";
+
+
 (* ::Chapter:: *)
 (*Triangles*)
 
