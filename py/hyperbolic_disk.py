@@ -23,6 +23,22 @@ def junction_angles(phi):
 
     return p1, p2, p3
 
+def disk_automorphism(alpha, a, z):
+    """
+        maps the complex number z to 0 for z=a and rotates the result by \
+        angle alpha. The point z=0 is mapped to -a."
+    """
+
+    return np.exp(1j * alpha) * (z-a) / (1- a.conjugate() * z)
+
+def disk_translation(a, z):
+    """
+        a rigid translation in the hyperbolic plane which maps z=0 to a
+        and z=-a to 0.
+    """
+
+    return disk_automorphism(0,-a, z)
+
 
 def ahlfors(z1, z2):
     """
@@ -203,23 +219,50 @@ def triangle_area(z1, z2, z3):
     """
         Find the the area of the triangle with vertices z1, z2, z3 in the
         Poincare disk model
+
+        The function returns zero if the triangle is degenerate
     """
 
-    a = hyperbolic_distance(z1, z2)
-    b = hyperbolic_distance(z2, z3)
-    c = hyperbolic_distance(z3, z1)
+    # -- translate z1 to the orign of the disk
+    a = -z1 
+    z1 = disk_translation(a,z1)
+    z2 = disk_translation(a,z2)
+    z3 = disk_translation(a,z3)
 
-    # -- hyperbolic law of cosines
+    # -- determine if vertices fall on top of each other
 
-    cos_alpha = (np.cosh(b)*np.cosh(c) - np.cosh(a)) / \
-        (np.sinh(b) * np.sinh(c))
+    if abs(z1-z2)<1e-10:
+        return 0
+    
+    if abs(z2-z3)<1e-10:
+        return 0
+    
+    if abs(z3-z1)<1e-10:
+        return 0
+    
+    alpha = arg(z3*z2.conjugate()) 
 
-    alpha = np.arccos(cos_alpha)
+    if alpha>0:
+        # -- positive orientation
+        sign = 1
+        alpha = alpha % (2*np.pi)
+    elif alpha<0:
+        # -- negative orientation
+        sign = -1
+        alpha = (- alpha) % (2*np.pi)
+    else:
+        # -- degenerate
+        return 0
+    
+   
+    a = hyperbolic_distance(z2, z3)
+    b = hyperbolic_distance(z1, z3)
+    c = hyperbolic_distance(z1, z2)
 
     # -- hyperbolic law of sines
 
-    sin_beta = np.sinh(b) * np.sin(alpha) / np.sinh(a)
-    sin_gamma = np.sinh(c) * np.sin(alpha) / np.sinh(a)
+    sin_beta  = (np.sinh(b)/np.sinh(a)) * np.sin(alpha)  
+    sin_gamma = (np.sinh(c)/np.sinh(a)) * np.sin(alpha) 
 
     beta = np.arcsin(sin_beta)
     gamma = np.arcsin(sin_gamma)
@@ -228,16 +271,12 @@ def triangle_area(z1, z2, z3):
 
     area = np.pi - (alpha + beta + gamma)
 
-    return area
+    return sign*area
 
-def area_cocycle(g1,g2, theta):
+def area_cocycle(z1,z2,z3,theta):
     """
         Returns the U(1) phase factor with flux theta. g1 and g2 need to be SL2 matrices
     """
-
-    z1 = 0 + 0j
-    z2 = moebius(g1, 0 + 0j)
-    z3 = moebius(g1.dot(g2), 0 + 0j)
 
     A = triangle_area(z1,z2,z3)
 
@@ -256,7 +295,7 @@ def moebius(sl2_mat, z):
 
 def parse_word(word, A, B, seed):
     """
-
+        reads word from right to left
     """
 
     z = seed
@@ -265,6 +304,20 @@ def parse_word(word, A, B, seed):
             z = moebius(A, z)
         elif c == "B":
             z = moebius(B, z)
+
+    return z
+
+def parse_word_inverse(word, iA, iB, seed):
+    """
+        reads word from left to right
+    """
+
+    z = seed
+    for c in word:
+        if c == "A":
+            z = moebius(iA, z)
+        elif c == "B":
+            z = moebius(iB, z)
 
     return z
 
